@@ -59,8 +59,8 @@ function mul4(a,b){ const o=new Array(16); for(let c=0;c<4;c++) for(let r=0;r<4;
 const PLANES = {
   axial:   {f:[0,0,1],  up:[0,1,0], axis:[0,0,1], tag:'AX',  name:'Axial'},
   coronal: {f:[0,-1,0], up:[0,0,1], axis:[0,1,0], tag:'COR', name:'Coronal'},
-  sagittal:{f:[1,0,0],  up:[0,0,1], axis:[1,0,0], tag:'SAG', name:'Sagittal'},
-  top:     {f:[0,0,-1], up:[0,1,0], axis:[0,0,1], tag:'TOP', name:'Top'},
+  sagittal:{f:[1,0,0],  up:[0,0,1], axis:[1,0,0], tag:'SAG', name:'Sagital'},
+  top:     {f:[0,0,-1], up:[0,1,0], axis:[0,0,1], tag:'TOP', name:'Superior'},
 };
 const TARGET = [0,-16,10], DIST = 540; let TAN = 0.28;
 const qPlane = name => { const P = PLANES[name]; return qFromLook(...basisLook(P.f, P.up)); };
@@ -94,7 +94,7 @@ const chart=$('#chart'), chartCv=$('#chartCv');
 const GL_TRIES = [{antialias:true, alpha:false, depth:true, powerPreference:'high-performance'}, {antialias:false, alpha:false, depth:true}, {}];
 let glTried = [];
 const gl = (()=>{ for (const o of GL_TRIES){ let c = null; try { c = canvas.getContext('webgl2', o); } catch(e){ glTried.push('threw: ' + e.message); } glTried.push(JSON.stringify(o) + ' → ' + (c ? 'ok' : 'null')); if (c) return c; } return null; })();
-canvas.addEventListener('webglcontextlost', e=>{ e.preventDefault(); console.error('WebGL context lost'); try { setPreviewNotice('The graphics driver reset the 3D view. Reload the page to restore it.', rendererDiagnostics()); } catch(err){} });
+canvas.addEventListener('webglcontextlost', e=>{ e.preventDefault(); console.error('Contexto WebGL perdido'); try { setPreviewNotice('El controlador gráfico reinició la vista 3D. Recargue la página para restaurarla.', rendererDiagnostics()); } catch(err){} });
 let META = null, VOL = null, ready = false, dirty = true, sliceAvailable = false;
 const TEX = {};
 function failMsg(m){ $("#loading").innerHTML = `<div class="box"><div style="margin:0;color:var(--ink-2)">${m}</div></div>`; }
@@ -132,40 +132,40 @@ function finishProgram(p){
 function compile(label, vs, fs){ return finishProgram(startProgram(label, vs, fs)); }
 function linked(p){
   const report = [
-    `${p?._label || 'unknown'}: vertex COMPILE_STATUS=${!!p?._vertexOK}, fragment COMPILE_STATUS=${!!p?._fragmentOK}, LINK_STATUS=${!!p?._linkOK}`,
-    `  vertex log: ${p?._vertexLog || '(empty)'}`,
-    `  fragment log: ${p?._fragmentLog || '(empty)'}`,
-    `  program log: ${p?._linkLog || '(empty)'}`,
-    `  GL error after link: ${p?._glError == null ? 'unavailable' : '0x' + p._glError.toString(16)}`
+    `${p?._label || 'desconocido'}: COMPILE_STATUS de vértices=${!!p?._vertexOK}, COMPILE_STATUS de fragmentos=${!!p?._fragmentOK}, LINK_STATUS=${!!p?._linkOK}`,
+    `  registro de vértices: ${p?._vertexLog || '(vacío)'}`,
+    `  registro de fragmentos: ${p?._fragmentLog || '(vacío)'}`,
+    `  registro del programa: ${p?._linkLog || '(vacío)'}`,
+    `  error de GL tras el enlace: ${p?._glError == null ? 'no disponible' : '0x' + p._glError.toString(16)}`
   ].join('\n');
   shaderReports.push(report);
   const ok = !!p && p._vertexOK && p._fragmentOK && p._linkOK;
-  if (!ok) console.error('Shader error', report);
+  if (!ok) console.error('Error de shader', report);
   return ok;
 }
-function gpuName(){ try { const e = gl.getExtension('WEBGL_debug_renderer_info'); return e ? gl.getParameter(e.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER); } catch(e){ return 'unknown'; } }
+function gpuName(){ try { const e = gl.getExtension('WEBGL_debug_renderer_info'); return e ? gl.getParameter(e.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER); } catch(e){ return 'desconocido'; } }
 function escapeHtml(value){ return String(value ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function rendererDiagnostics(){
-  const param = key => { try { return gl.getParameter(key); } catch(e){ return 'unavailable'; } };
+  const param = key => { try { return gl.getParameter(key); } catch(e){ return 'no disponible'; } };
   return [
     `GPU: ${gpuName()}`,
-    `GL vendor: ${param(gl.VENDOR)}`,
-    `GL renderer: ${param(gl.RENDERER)}`,
-    `GL version: ${param(gl.VERSION)}`,
-    `WebGL context lost: ${gl.isContextLost()}`,
-    `Fragment uniform vectors: ${param(gl.MAX_FRAGMENT_UNIFORM_VECTORS)}`,
-    `Texture image units: ${param(gl.MAX_TEXTURE_IMAGE_UNITS)}`,
-    `3D texture size limit: ${param(gl.MAX_3D_TEXTURE_SIZE)}`,
-    `Browser: ${navigator.userAgent}`,
-    `Context attempts: ${glTried.join(' | ')}`,
-    `In frame: ${window.top !== window}`,
+    `Proveedor de GL: ${param(gl.VENDOR)}`,
+    `Renderizador de GL: ${param(gl.RENDERER)}`,
+    `Versión de GL: ${param(gl.VERSION)}`,
+    `Contexto WebGL perdido: ${gl.isContextLost()}`,
+    `Vectores uniformes de fragmentos: ${param(gl.MAX_FRAGMENT_UNIFORM_VECTORS)}`,
+    `Unidades de imagen de textura: ${param(gl.MAX_TEXTURE_IMAGE_UNITS)}`,
+    `Límite de tamaño de textura 3D: ${param(gl.MAX_3D_TEXTURE_SIZE)}`,
+    `Navegador: ${navigator.userAgent}`,
+    `Intentos de contexto: ${glTried.join(' | ')}`,
+    `En iframe: ${window.top !== window}`,
     ...shaderReports
   ].join('\n');
 }
 function showRendererFailure(){
-  failMsg(`The 3D brain renderer could not initialize on this device.<details style="margin-top:10px;text-align:left"><summary>Technical details</summary><pre style="white-space:pre-wrap;font-size:11px;max-height:220px;overflow:auto;user-select:text">${escapeHtml(rendererDiagnostics())}</pre></details>`);
+  failMsg(`El renderizador 3D del encéfalo no pudo inicializarse en este dispositivo.<details style="margin-top:10px;text-align:left"><summary>Detalles técnicos</summary><pre style="white-space:pre-wrap;font-size:11px;max-height:220px;overflow:auto;user-select:text">${escapeHtml(rendererDiagnostics())}</pre></details>`);
   const hl = $('#heroLoad');
-  if (hl){ hl.classList.remove('done'); $('#heroLoadMsg').textContent = 'The 3D view could not start on this device. Open any scan tab for technical details.'; }
+  if (hl){ hl.classList.remove('done'); $('#heroLoadMsg').textContent = 'La vista 3D no pudo iniciarse en este dispositivo. Abra cualquier pestaña de exploración para ver los detalles técnicos.'; }
 }
 const ul = (p,n) => (n in p._u) ? p._u[n] : (p._u[n] = gl.getUniformLocation(p, n));
 const u1i=(p,n,v)=>gl.uniform1i(ul(p,n),v), u1f=(p,n,v)=>gl.uniform1f(ul(p,n),v), u2f=(p,n,a,b)=>gl.uniform2f(ul(p,n),a,b);
@@ -191,22 +191,22 @@ async function fetchBin(url, onp){
       if (i > 0 && (i & (CHUNK - 1)) === 0) await new Promise(r => setTimeout(r, 0));
     }
     const len = out[0] | (out[1] << 8) | (out[2] << 16) | (out[3] << 24);
-    if (String.fromCharCode(out[4], out[5], out[6], out[7]) !== 'NLB1') throw new Error('data image header mismatch');
+    if (String.fromCharCode(out[4], out[5], out[6], out[7]) !== 'NLB1') throw new Error('la cabecera de la imagen de datos no coincide');
     blob = new Blob([out.subarray(8, 8 + len)]);
   }
   const head = new Uint8Array(await blob.slice(0,2).arrayBuffer());
   if (head[0] === 0x1f && head[1] === 0x8b){
-    if (typeof DecompressionStream === 'undefined') throw new Error('This browser cannot unpack the data (needs DecompressionStream).');
+    if (typeof DecompressionStream === 'undefined') throw new Error('Este navegador no puede descomprimir los datos (requiere DecompressionStream).');
     return new Uint8Array(await new Response(blob.stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
   }
   return new Uint8Array(await blob.arrayBuffer());
 }
 async function load(){
-  if (!gl){ await loadCompatibilityPreview('WebGL 2 context unavailable.\nContext attempts: ' + glTried.join(' | ') + '\nIn frame: ' + (window.top !== window) + '\nBrowser: ' + navigator.userAgent); return; }
+  if (!gl){ await loadCompatibilityPreview('Contexto WebGL 2 no disponible.\nIntentos de contexto: ' + glTried.join(' | ') + '\nEn iframe: ' + (window.top !== window) + '\nNavegador: ' + navigator.userAgent); return; }
   // Compile the surface renderer first so the brain can still be shown if a
   // device-specific failure is limited to the more complex scan shader.
-  progMesh = startProgram('brain mesh', VS_MESH, FS_MESH);
-  progSlice = startProgram('scan overlay', VS_FULL, FS_SLICE);
+  progMesh = startProgram('malla del encéfalo', VS_MESH, FS_MESH);
+  progSlice = startProgram('superposición de la exploración', VS_FULL, FS_SLICE);
   // Download the brain while the GPU driver compiles.
   const metaP = fetch('data/meta.json').then(r=>{ if (!r.ok) throw new Error('data/meta.json ' + r.status); return r.json(); });
   const binsP = metaP.then(meta=>{
@@ -223,11 +223,11 @@ async function load(){
   if (gl.isContextLost() || !okM){ await loadCompatibilityPreview(rendererDiagnostics()); return; }
   if (!okS){
     const hl = $('#heroLoad');
-    if (hl){ hl.classList.remove('done'); $('#heroLoadMsg').textContent = '3D brain available; scan overlays unavailable on this device.'; }
-    setPreviewNotice('The 3D brain is available, but scan overlays are disabled because the scanner shader failed.', shaderReports.join('\n\n'));
+    if (hl){ hl.classList.remove('done'); $('#heroLoadMsg').textContent = 'Encéfalo 3D disponible; las superposiciones de exploración no están disponibles en este dispositivo.'; }
+    setPreviewNotice('El encéfalo 3D está disponible, pero las superposiciones de exploración están desactivadas porque falló el shader del escáner.', shaderReports.join('\n\n'));
   }
   const [vol, mesh, jue] = await binsP;
-  $('#loadMsg').textContent = 'Building the brain'; $('#loadPct').textContent = '';
+  $('#loadMsg').textContent = 'Construyendo el encéfalo'; $('#loadPct').textContent = '';
   await new Promise(r=>setTimeout(r,30));
   const [w,h,d] = META.dims, n = w*h*d;
   VOL = {A: vol.subarray(0, n*4), B: vol.subarray(n*4, n*8), C: vol.subarray(n*8, n*12), J: jue, dims:[w,h,d], lo:META.lo};
@@ -262,7 +262,7 @@ async function load(){
   onReady();
   if (!sliceAvailable){
     const hl = $('#heroLoad');
-    if (hl){ hl.classList.remove('done'); $('#heroLoadMsg').textContent = '3D brain ready; scan overlays unavailable on this device.'; }
+    if (hl){ hl.classList.remove('done'); $('#heroLoadMsg').textContent = 'Encéfalo 3D listo; las superposiciones de exploración no están disponibles en este dispositivo.'; }
   }
 }
 
@@ -413,7 +413,9 @@ function voxel(p){
   const o = ((k*h + j)*w + i)*4;
   return {A:VOL.A.subarray(o, o+4), B:VOL.B.subarray(o, o+4), C:VOL.C.subarray(o, o+4), J:VOL.J[o/4]};
 }
-const HEMI = {L:'left', R:'right', M:''};
+const HEMI = {L:'izquierdo', R:'derecho', M:''};
+const GROUP_ES = {'Frontal lobe':'Lóbulo frontal', 'Parietal lobe':'Lóbulo parietal', 'Temporal lobe':'Lóbulo temporal', 'Occipital lobe':'Lóbulo occipital', 'Limbic lobe':'Lóbulo límbico', 'Insula & operculum':'Ínsula y opérculo', 'Deep grey matter':'Sustancia gris profunda', 'Ventricles':'Ventrículos', 'Cerebellum':'Cerebelo', 'Brainstem':'Tronco del encéfalo'};
+const groupEs = g => GROUP_ES[g] || g;
 function describePoint(p){
   const v = voxel(p); if (!v) return null;
   const [t1, gm, wm, csf] = v.A, [bone, , , air] = v.B, [lab, , yeo, jhu] = v.C, jue = v.J;
@@ -421,17 +423,17 @@ function describePoint(p){
     const id = lab >= 128 ? lab - 128 : lab; const r = REG[id];
     if (lab >= 128){
       const tr = META.jhu[jhu];
-      return {name: tr ? tr.name + (tr.hemi !== 'M' ? ' (' + HEMI[tr.hemi] + ')' : '') : 'White matter', sub: tr ? 'white-matter tract' : 'beneath ' + r.name.toLowerCase(), region:r};
+      return {name: tr ? tr.name + (tr.hemi !== 'M' ? ' (' + HEMI[tr.hemi] + ')' : '') : 'Sustancia blanca', sub: tr ? 'tracto de sustancia blanca' : 'por debajo de ' + r.name.toLowerCase(), region:r};
     }
     const ju = META.juelich[jue];
-    return {name: r.name + (r.hemi !== 'M' ? ' (' + HEMI[r.hemi] + ')' : ''), sub: (ju ? ju.name.replace(/_/g,' ') + ' · ' : '') + r.group.toLowerCase(), region:r};
+    return {name: r.name + (r.hemi !== 'M' ? ' (' + HEMI[r.hemi] + ')' : ''), sub: (ju ? ju.name.replace(/_/g,' ') + ' · ' : '') + groupEs(r.group).toLowerCase(), region:r};
   }
-  if (csf > 150) return {name:'Cerebrospinal fluid', sub:'subarachnoid space'};
-  if (gm + wm > 200) return {name:'Brain', sub:'unlabelled'};
-  if (bone > 60) return {name:'Skull', sub: bone > 200 ? 'cortical bone' : 'diploë (marrow)'};
-  if (air > 120) return {name:'Air', sub:'paranasal sinus or airway'};
-  if (t1 > 190) return {name:'Fat', sub:'scalp or orbit'};
-  if (t1 > 25) return {name:'Soft tissue', sub:'scalp, muscle or face'};
+  if (csf > 150) return {name:'Líquido cefalorraquídeo', sub:'espacio subaracnoideo'};
+  if (gm + wm > 200) return {name:'Encéfalo', sub:'sin etiquetar'};
+  if (bone > 60) return {name:'Cráneo', sub: bone > 200 ? 'hueso cortical' : 'diploe (médula ósea)'};
+  if (air > 120) return {name:'Aire', sub:'seno paranasal o vía aérea'};
+  if (t1 > 190) return {name:'Grasa', sub:'cuero cabelludo u órbita'};
+  if (t1 > 25) return {name:'Tejido blando', sub:'cuero cabelludo, músculo o cara'};
   return null;
 }
 
@@ -684,8 +686,8 @@ function drawUnavailableThumb(job){
   const ctx = c.getContext('2d');
   ctx.fillStyle = CH.bg; ctx.fillRect(0, 0, TH, TH);
   ctx.fillStyle = '#64717a'; ctx.font = '11px system-ui'; ctx.textAlign = 'center';
-  ctx.fillText('Scan preview', TH/2, TH/2 - 7);
-  ctx.fillText('unavailable', TH/2, TH/2 + 9);
+  ctx.fillText('Vista previa de la exploración', TH/2, TH/2 - 7);
+  ctx.fillText('no disponible', TH/2, TH/2 + 9);
   thumbCache.set(job.key, c); paintThumb(job.key);
 }
 
@@ -836,7 +838,7 @@ function hoverGlass(cx, cy){
     if (nh !== S.hover){ S.hover = nh; dirty = true; }
     glassEl.classList.toggle('probe', !!f);
     let html = '';
-    if (f){ const F = FINDINGS[f.l.f]; html += `<b class="f">${F.title}</b><span>Click to learn more</span>`; }
+    if (f){ const F = FINDINGS[f.l.f]; html += `<b class="f">${F.title}</b><span>Pulse para saber más</span>`; }
     if (S.labels && !sub.surface && !sub.mip){ const d = describePoint(p); if (d) html += (html ? '<br>' : '') + `<b>${d.name}</b><span>${d.sub}</span>`; }
     if (!html){ hideTip(); return; }
     tip.innerHTML = html; tip.hidden = false;
@@ -854,12 +856,12 @@ function openFinding(fid, cx, cy){
   const F = FINDINGS[fid]; if (!F) return;
   const sub = activeSub(), st = activeState();
   const on = (st.text && (st.text[sub.id] || st.text._)) || '';
-  fcard.innerHTML = `<button type="button" class="x" aria-label="Close finding">✕</button>
-    <span class="eb">Finding · ${sub.name}</span><h4 id="fTitle">${F.title}</h4><p>${F.what}</p>
-    <div class="on"><b>On this scan</b>${on}</div>
-    <p><b style="color:var(--ink)">Why it looks like this.</b> ${F.why}</p>
+  fcard.innerHTML = `<button type="button" class="x" aria-label="Cerrar hallazgo">✕</button>
+    <span class="eb">Hallazgo · ${sub.name}</span><h4 id="fTitle">${F.title}</h4><p>${F.what}</p>
+    <div class="on"><b>En esta exploración</b>${on}</div>
+    <p><b style="color:var(--ink)">Por qué se ve así.</b> ${F.why}</p>
     <ul>${F.teach.map(t=>`<li>${t}</li>`).join('')}</ul>
-    <p style="font-size:12.5px"><b style="color:var(--ink)">Can look similar:</b> ${F.mimics}</p>`;
+    <p style="font-size:12.5px"><b style="color:var(--ink)">Puede parecerse a:</b> ${F.mimics}</p>`;
   fcard.hidden = false;
   const w = Math.min(360, stageW - 32);
   let x = cx + 20; if (x + w > stageW - 16) x = Math.max(16, cx - w - 20);
@@ -872,12 +874,12 @@ document.addEventListener('keydown', e=>{ if (e.key === 'Escape'){ if (!fcard.hi
 /* ---------- UI: rail ---------- */
 const planeTag = s => s.mip ? (s.code === 60 ? 'XA' : 'MIP') : s.surface ? 'MAP' : s.spectrum ? (s.code === 9 ? 'SPEC' : 'DOP') : s.code === 30 ? 'TASK' : PLANES[s.plane].tag;
 function buildRail(){
-  rail.innerHTML = `<button type="button" class="crumb" data-crumb>How it works</button>` + MODS.map(m=>`
+  rail.innerHTML = `<button type="button" class="crumb" data-crumb>Cómo funciona</button>` + MODS.map(m=>`
     <section class="mod" data-mod="${m.id}">
       <button class="mod-head" type="button" aria-expanded="false"><span class="abbr">${m.abbr}</span><span class="full">${m.name}</span><span class="chev" aria-hidden="true"></span></button>
       <ul class="subs">${m.subs.map(s=>`<li><button class="sub" type="button" data-sub="${s.id}"><span>${s.name}</span><span class="ptag">${planeTag(s)}</span></button></li>`).join('')}</ul>
     </section>`).join('') +
-    `<div class="rail-foot"><b>How to use it</b><br>Choose a method to open its brain-state comparisons. Drag the glass over the brain, drag the brain to turn it, scroll to change slice. Amber outlines mark abnormalities: hover and click them.</div>`;
+    `<div class="rail-foot"><b>Cómo usarlo</b><br>Elija un método para abrir sus comparaciones de estados cerebrales. Arrastre la lente sobre el encéfalo, arrastre el encéfalo para girarlo y desplácese para cambiar de corte. Los contornos ámbar marcan anomalías: pase el cursor y pulse sobre ellas.</div>`;
   rail.addEventListener('click', e=>{
     const head = e.target.closest('.mod-head'), sb = e.target.closest('.sub');
     if (e.target.closest('[data-crumb]')){ go(S.mod); return; }
@@ -937,7 +939,7 @@ function setState(key){
 }
 function syncPlaneButtons(){
   const std = standardPlane(), sub = activeSub();
-  const labels = sub.surface ? {axial:'Top', coronal:'Front', sagittal:'Left'} : {axial:'Axial', coronal:'Coronal', sagittal:'Sagittal'};
+  const labels = sub.surface ? {axial:'Superior', coronal:'Frontal', sagittal:'Lateral'} : {axial:'Axial', coronal:'Coronal', sagittal:'Sagital'};
   if (sub.code === 60) Object.assign(labels, {coronal:'AP', sagittal:'Lateral'});
   planesEl.querySelectorAll('button').forEach(b=>{ const pl = viewPlane(b.dataset.plane); b.textContent = labels[b.dataset.plane]; b.setAttribute('aria-pressed', pl === S.plane); b.classList.toggle('std', pl === std); });
 }
@@ -954,9 +956,9 @@ $('#cmpSel').addEventListener('change', e=>{ S.sub2 = e.target.value; syncHud();
 
 function syncHud(){
   const sub = activeSub(), st = activeState(), m = modObj(sub.mod);
-  $('#nowMod').textContent = S.tab === 'lab' ? 'Brain Lab' : m.abbr;
+  $('#nowMod').textContent = S.tab === 'lab' ? 'Laboratorio cerebral' : m.abbr;
   const hideDx = S.caseMode && !S.caseMode.revealed;
-  $('#nowSub').textContent = S.tab === 'lab' ? LAB.subtitle() : sub.name + ' · ' + (hideDx ? 'Case ' + String(S.caseMode.c.id).padStart(2, '0') + ' · diagnosis hidden' : st.name);
+  $('#nowSub').textContent = S.tab === 'lab' ? LAB.subtitle() : sub.name + ' · ' + (hideDx ? 'Caso ' + String(S.caseMode.c.id).padStart(2, '0') + ' · diagnóstico oculto' : st.name);
   sliceWrap.classList.toggle('mip', !!(sub.mip || sub.surface));
   sliceWrap.hidden = S.tab === 'lab' && S.labScan === 'none'; $('#snapBtn').hidden = S.tab === 'lab';
   syncPlaneButtons();
@@ -969,8 +971,8 @@ function syncHud(){
   else if (sub.code === 21) lg = `<span>SUVR</span><span class="ramp" style="background:linear-gradient(90deg,#000,#fff)"></span><span>high</span>`;
   else if (sub.code === 6) lg = `<span class="key"><span><i style="background:#e5484d"></i>L–R</span><span><i style="background:#3fbf5f"></i>A–P</span><span><i style="background:#4a7dff"></i>S–I</span></span>`;
   else if (sub.code === 30) lg = `<span>z</span><span class="ramp" style="background:linear-gradient(90deg,#dc1a0a,#ff8a20,#fff26a)"></span><span>8</span>`;
-  else if (sub.code === 40 || sub.code === 41) lg = `<span>${sub.code === 40 ? '−µV' : 'in'}</span><span class="ramp" style="background:linear-gradient(90deg,#2154bf,#f4f4f6,#c72629)"></span><span>${sub.code === 40 ? '+µV' : 'out'}</span>`;
-  else if (sub.code === 51) lg = `<span class="key"><span><i style="background:#f23a20"></i>toward probe</span><span><i style="background:#2659f2"></i>away</span></span>`;
+  else if (sub.code === 40 || sub.code === 41) lg = `<span>${sub.code === 40 ? '−µV' : 'dentro'}</span><span class="ramp" style="background:linear-gradient(90deg,#2154bf,#f4f4f6,#c72629)"></span><span>${sub.code === 40 ? '+µV' : 'fuera'}</span>`;
+  else if (sub.code === 51) lg = `<span class="key"><span><i style="background:#f23a20"></i>hacia el transductor</span><span><i style="background:#2659f2"></i>alejándose</span></span>`;
   else if (sub.win && (sub.code >= 10 && sub.code < 20)) lg = `<span>${sub.win}</span>`;
   legendEl.innerHTML = lg; legendEl.hidden = !lg || S.tab === 'lab';
   const showScanBtns = S.tab === 'scans';
@@ -988,10 +990,10 @@ function oriLetter(v){
 }
 function sliceLabel(){
   const sub = activeSub();
-  if (sub.surface) return 'Scalp surface';
-  if (sub.mip) return sub.code === 60 ? (S.plane === 'sagittal' ? 'Lateral projection' : S.plane === 'coronal' ? 'AP projection' : 'Projection') : 'Full-volume MIP';
+  if (sub.surface) return 'Superficie del cuero cabelludo';
+  if (sub.mip) return sub.code === 60 ? (S.plane === 'sagittal' ? 'Proyección lateral' : S.plane === 'coronal' ? 'Proyección AP' : 'Proyección') : 'MIP de volumen completo';
   const [, , f] = basisQ(S.q); const P0 = v3.add(TARGET, v3.mul(f, S.slice));
-  if (S.plane === 'free') return `Oblique ${S.slice.toFixed(1)} mm`;
+  if (S.plane === 'free') return `Oblicuo ${S.slice.toFixed(1)} mm`;
   const P = PLANES[S.plane], w = v3.dot(P.axis, P0);
   const L = {axial:['I','S'], top:['I','S'], coronal:['P','A'], sagittal:['L','R']}[S.plane];
   return `${L[w >= 0 ? 1 : 0]} ${Math.abs(w).toFixed(1)} mm`;
@@ -1005,7 +1007,7 @@ function updateAnnotations(){
   const sl = sliceLabel(); sliceOut.textContent = sl;
   const planeTxt = sub.surface ? 'SURF' : sub.mip ? (sub.code === 60 ? 'XA' : 'MIP') : (S.plane === 'free' ? 'OBL' : PLANES[S.plane].tag);
   $('#gTL').innerHTML = `<span class="hi">${sub.label} · ${sub.seq}</span><span class="x"><br>${sub.params}<br>${sub.vox}</span>`;
-  $('#gTR').innerHTML = (S.caseMode && !S.caseMode.revealed) ? `<span class="x">COLIN 27 · ADULT<br></span>Case ${String(S.caseMode.c.id).padStart(2, '0')}<span class="x"><br>Unknown</span>` : `<span class="x">COLIN 27 · ADULT<br></span>${st.name}<span class="x"><br>${st.tag}</span>`;
+  $('#gTR').innerHTML = (S.caseMode && !S.caseMode.revealed) ? `<span class="x">COLIN 27 · ADULTO<br></span>Caso ${String(S.caseMode.c.id).padStart(2, '0')}<span class="x"><br>Desconocido</span>` : `<span class="x">COLIN 27 · ADULTO<br></span>${st.name}<span class="x"><br>${st.tag}</span>`;
   const px = (Math.min(stageW, stageH)/2)/(TAN*(DIST + S.slice)), bar = Math.round(20*px);
   $('#gBL').innerHTML = `${planeTxt} · ${sl}${sub.surface ? '' : `<div class="g-scale"><i style="width:${bar}px"></i>2 cm</div>`}`;
   $('#gBR').innerHTML = `${sub.win}<br>${m.abbr}`;
@@ -1014,24 +1016,24 @@ function updateAnnotations(){
 /* ---------- states panel ---------- */
 function openPanel(on){
   S.panel = on; panel.classList.toggle('open', on); panel.setAttribute('aria-hidden', !on);
-  statesBtn.setAttribute('aria-expanded', on); statesBtn.textContent = on ? 'Hide states' : 'Brain states';
+  statesBtn.setAttribute('aria-expanded', on); statesBtn.textContent = on ? 'Ocultar estados' : 'Estados cerebrales';
   if (on) renderPanel();
 }
 statesBtn.addEventListener('click', ()=>openPanel(!S.panel));
 $('#pClose').addEventListener('click', ()=>openPanel(false));
-const CAT_NAMES = {disease:'Disease and injury', physio:'Physiological states', task:'Tasks and networks'};
+const CAT_NAMES = {disease:'Enfermedad y lesión', physio:'Estados fisiológicos', task:'Tareas y redes'};
 function renderPanel(){
   const m = modObj(), sub = subObj();
   $('#pEyebrow').textContent = m.abbr; $('#pTitle').textContent = m.name; $('#pHow').textContent = m.how;
   $('#pSubs').innerHTML = m.subs.map(s=>`<button class="chip" type="button" data-sub="${s.id}" aria-pressed="${s.id===S.sub}">${s.name}</button>`).join('');
-  const std = sub.surface ? 'Shown on the scalp' : sub.mip ? (sub.code === 60 ? 'Projection: AP or lateral' : 'Maximum-intensity projection') : sub.code === 30 ? 'Plane follows the task' : `Standard plane: ${PLANES[sub.plane].name}`;
+  const std = sub.surface ? 'Mostrado en el cuero cabelludo' : sub.mip ? (sub.code === 60 ? 'Proyección: AP o lateral' : 'Proyección de máxima intensidad') : sub.code === 30 ? 'El plano sigue la tarea' : `Plano estándar: ${PLANES[sub.plane].name}`;
   $('#pSeq').innerHTML = `<span class="k">${sub.seq} · ${sub.params}</span><span class="k">${std}</span><p>${sub.note}</p>`;
   const groups = {};
   for (const k of sub.states){ const c = STATES[k].cat || 'disease'; (groups[c] = groups[c] || []).push(k); }
   let html = '<div id="findChips"></div>';
   for (const c of ['disease','physio','task']){
     if (!groups[c]) continue;
-    html += `<h3 class="p-h3"><span style="font-weight:600;letter-spacing:.12em;text-transform:uppercase">${CAT_NAMES[c]}</span><span>${c === 'task' ? 'same subject' : 'same scan, different patients'}</span></h3><div class="cards">` +
+    html += `<h3 class="p-h3"><span style="font-weight:600;letter-spacing:.12em;text-transform:uppercase">${CAT_NAMES[c]}</span><span>${c === 'task' ? 'mismo sujeto' : 'misma exploración, pacientes distintos'}</span></h3><div class="cards">` +
       groups[c].map(k=>{ const st = STATES[k], key = sub.id + '|' + k, fd = (st.text && (st.text[sub.id] || st.text._)) || '';
         return `<button class="card" type="button" data-state="${k}" aria-pressed="${k===S.state}"><canvas width="${TH}" height="${TH}" data-key="${key}" aria-hidden="true"></canvas><span class="meta"><span class="nm">${st.name}</span><span class="tg">${st.tag}</span><span class="fd">${fd}</span></span></button>`; }).join('') + '</div>';
   }
@@ -1045,7 +1047,7 @@ function renderFindingChips(){
   const sub = subObj(), st = stObj();
   const ids = [...new Set(stateLesions(st, sub).filter(l=>lesionVisible(l, sub)).map(l=>l.f))];
   if (st.noFlow && ['hmpao','cta','dsa','asl'].includes(sub.id)) ids.push('nofill');
-  el.innerHTML = ids.length ? `<h3 class="p-h3" style="margin-top:0"><span style="font-weight:600;letter-spacing:.12em;text-transform:uppercase">Findings on this scan</span></h3><div class="p-subs">${ids.map(f=>`<button class="chip fd" type="button" data-f="${f}">${FINDINGS[f].title}</button>`).join('')}</div>` : '';
+  el.innerHTML = ids.length ? `<h3 class="p-h3" style="margin-top:0"><span style="font-weight:600;letter-spacing:.12em;text-transform:uppercase">Hallazgos en esta exploración</span></h3><div class="p-subs">${ids.map(f=>`<button class="chip fd" type="button" data-f="${f}">${FINDINGS[f].title}</button>`).join('')}</div>` : '';
 }
 $('#pSubs').addEventListener('click', e=>{ const b = e.target.closest('.chip'); if (b) selectSub(S.mod, b.dataset.sub, {rotate:true}); });
 $('#pGroups').addEventListener('click', e=>{
@@ -1090,16 +1092,16 @@ async function loadCompatibilityPreview(details){
   if (stage) stage.prepend(compatCanvas);
   canvas.style.opacity = '0';
   canvas.style.pointerEvents = 'none';
-  $('#hint').textContent = 'Choose Axial, Coronal or Sagittal; use the Slice control to browse the reference anatomy.';
+  $('#hint').textContent = 'Elija Axial, Coronal o Sagital; utilice el control de corte para recorrer la anatomía de referencia.';
   setPreviewNotice(
     gl
-      ? 'The GPU brain renderer could not start. Showing three T1 reference slices instead.'
-      : 'WebGL 2 is unavailable in this preview. Showing three T1 reference slices instead.',
+      ? 'El renderizador GPU del encéfalo no pudo iniciarse. Se muestran tres cortes T1 de referencia.'
+      : 'WebGL 2 no está disponible en esta vista previa. Se muestran tres cortes T1 de referencia.',
     details
   );
-  $('#loadMsg').textContent = 'Loading the reference brain';
+  $('#loadMsg').textContent = 'Cargando el encéfalo de referencia';
   $('#loadPct').textContent = '0%';
-  $('#loadSub').textContent = 'Compatibility preview · three orthogonal T1 slices';
+  $('#loadSub').textContent = 'Vista previa de compatibilidad · tres cortes T1 ortogonales';
 
   const metaResponse = await fetch('data/meta.json');
   if (!metaResponse.ok) throw new Error(`data/meta.json ${metaResponse.status}`);
@@ -1111,7 +1113,7 @@ async function loadCompatibilityPreview(details){
     onLoadProgress(fraction);
   });
   const [w,h,d] = META.dims, voxels = w*h*d, firstVolumeBytes = voxels*4;
-  if (packed.byteLength < firstVolumeBytes) throw new Error('The reference volume is shorter than its metadata dimensions.');
+  if (packed.byteLength < firstVolumeBytes) throw new Error('El volumen de referencia es más corto que las dimensiones de sus metadatos.');
   VOL = {A:packed.slice(0, firstVolumeBytes), dims:META.dims, lo:META.lo};
   compatSliceCache.clear();
   fallbackReady = true;
@@ -1119,7 +1121,7 @@ async function loadCompatibilityPreview(details){
   $('#loading').style.display = 'none';
   setTimeout(()=>$('#loading').remove(), 600);
   $('#heroLoad').classList.add('done');
-  $('#heroLoadMsg').textContent = 'Reference preview ready';
+  $('#heroLoadMsg').textContent = 'Vista previa de referencia lista';
   onReady();
   dirty = true;
 }
@@ -1169,7 +1171,7 @@ function renderCompatibilityPreview(){
   const activePlane = S.plane === 'top' ? 'axial' : ['axial','coronal','sagittal'].includes(S.plane) ? S.plane : 'axial';
   const panes = stageW < 640
     ? [{key:activePlane, title:activePlane.toUpperCase()}]
-    : [{key:'axial',title:'AXIAL'},{key:'coronal',title:'CORONAL'},{key:'sagittal',title:'SAGITTAL'}];
+    : [{key:'axial',title:'AXIAL'},{key:'coronal',title:'CORONAL'},{key:'sagittal',title:'SAGITAL'}];
   const gap = 12;
   const cardW = stageW < 640 ? Math.min(420,stageW-32) : Math.min(300,(stageW-48-gap*2)/3);
   const chartVisible = !$('#chart').hidden;
@@ -1182,10 +1184,10 @@ function renderCompatibilityPreview(){
   compatCtx.textAlign='center';
   compatCtx.fillStyle='#0c161b';
   compatCtx.font='600 13px system-ui, sans-serif';
-  compatCtx.fillText(stageW < 640 ? `${activePlane.toUpperCase()} · T1` : 'COLIN 27 · T1 REFERENCE SLICES',stageW/2,y0-22);
+  compatCtx.fillText(stageW < 640 ? `${activePlane.toUpperCase()} · T1` : 'COLIN 27 · CORTES T1 DE REFERENCIA',stageW/2,y0-22);
   compatCtx.fillStyle='#76858c';
   compatCtx.font='11px system-ui, sans-serif';
-  compatCtx.fillText('Reference anatomy · ' + (gl ? 'the 3D renderer failed on this device (open a scan tab → Renderer details)' : 'this view did not provide WebGL 2 (try opening the page in its own browser tab)'),stageW/2,y0-6);
+  compatCtx.fillText('Anatomía de referencia · ' + (gl ? 'el renderizador 3D falló en este dispositivo (abra una pestaña de exploración → Detalles del renderizador)' : 'esta vista no proporcionó WebGL 2 (pruebe a abrir la página en su propia pestaña del navegador)'),stageW/2,y0-6);
 
   const indices = {axial:compatPlanePosition('axial'),coronal:compatPlanePosition('coronal'),sagittal:compatPlanePosition('sagittal')};
   const [w,h,d] = META.dims, lo=META.lo;
@@ -1294,7 +1296,7 @@ function drawEEG(ctx, W, H, key, nch, thumb){
     }
     ctx.stroke();
   });
-  if (!thumb){ ctx.fillStyle = CH.muted; ctx.fillText('1 s', W - 34, H - 2); ctx.fillText('100 µV', lw + 4, H - 2); ctx.fillText('negative up', W - 160, H - 2); }
+  if (!thumb){ ctx.fillStyle = CH.muted; ctx.fillText('1 s', W - 34, H - 2); ctx.fillText('100 µV', lw + 4, H - 2); ctx.fillText('negativo arriba', W - 160, H - 2); }
 }
 
 /* ---------- MEG ---------- */
@@ -1338,7 +1340,7 @@ function drawMEG(ctx, W, H, key, thumb){
     }
     ctx.stroke();
   });
-  if (!thumb){ ctx.fillStyle = CH.muted; ctx.font = '15px "Azeret Mono", monospace'; ctx.fillText(`${megSensors.length} sensors · butterfly plot · 2 s` + (key !== 'alpha' ? ' · scalp map shows the peak' : ''), 6, H - 6); }
+  if (!thumb){ ctx.fillStyle = CH.muted; ctx.font = '15px "Azeret Mono", monospace'; ctx.fillText(`${megSensors.length} sensores · gráfico en mariposa · 2 s` + (key !== 'alpha' ? ' · el mapa de cuero cabelludo muestra el pico' : ''), 6, H - 6); }
 }
 
 /* ---------- MRS ---------- */
@@ -1380,9 +1382,9 @@ function drawTCD(ctx, W, H, key, thumb){
     ctx.fillStyle = grd; ctx.fillRect(i, Math.min(base, base - h), 2, Math.abs(h));
   }
   ctx.fillStyle = CH.muted; ctx.font = `${thumb ? 13 : 14}px "Azeret Mono", monospace`;
-  if (!P.psv){ ctx.fillText('No flow detected', 10, base - 30); return; }
+  if (!P.psv){ ctx.fillText('No se detecta flujo', 10, base - 30); return; }
   const mfv = P.osc ? 0 : (P.psv + 2*P.edv)/3, pi = P.osc ? 0 : (P.psv - P.edv)/mfv;
-  if (!thumb){ ctx.fillText(P.osc ? 'Oscillating flow · net forward ≈ 0' : `PSV ${P.psv}  EDV ${P.edv}  MFV ${mfv.toFixed(0)} cm/s  PI ${pi.toFixed(2)}`, 8, H - 8); ctx.fillText('100', 4, base - 100*sc + 4); }
+  if (!thumb){ ctx.fillText(P.osc ? 'Flujo oscilante · neto anterógrado ≈ 0' : `PSV ${P.psv}  EDV ${P.edv}  MFV ${mfv.toFixed(0)} cm/s  PI ${pi.toFixed(2)}`, 8, H - 8); ctx.fillText('100', 4, base - 100*sc + 4); }
 }
 
 /* ---------- chart card wiring ---------- */
@@ -1391,15 +1393,15 @@ function setupChart(){
   const sub = activeSub(), st = activeState();
   let show = S.tab === 'scans' || (S.tab === 'lab' && S.labScan === 'fmri');
   let title = '', subt = '', chips = '';
-  if (sub.code === 30){ title = 'BOLD signal · ' + (st.roi || 'ROI'); subt = st.yeoAct ? 'resting fluctuation' : 'block design 15 s on/off'; }
-  else if (sub.code === 40){ title = 'EEG · longitudinal bipolar'; subt = st.name; }
-  else if (sub.code === 41){ title = 'MEG sensors'; subt = st.name; }
-  else if (sub.code === 9){ title = 'Spectrum · PRESS TE 30'; subt = st.name; }
-  else if (sub.code === 51){ title = 'Spectral Doppler · ' + (TCD[st.tcd || 'normal'] || TCD.normal).label; subt = st.name; }
-  else if (sub.code === 60){ title = 'Angiographic run'; subt = '';
-    chips = ['ICA-L','ICA-R','VERT'].map(k=>`<button class="mini" type="button" data-inj="${k}" aria-pressed="${S.dsaInj===k}">${k === 'VERT' ? 'Vertebral' : (k === 'ICA-L' ? 'Left ICA' : 'Right ICA')}</button>`).join('') + `<button class="mini" type="button" data-play aria-pressed="${S.dsaPlay}">${S.dsaPlay ? 'Pause' : 'Play'}</button>`; }
+  if (sub.code === 30){ title = 'Señal BOLD · ' + (st.roi || 'ROI'); subt = st.yeoAct ? 'fluctuación en reposo' : 'diseño de bloques 15 s encendido/apagado'; }
+  else if (sub.code === 40){ title = 'EEG · bipolar longitudinal'; subt = st.name; }
+  else if (sub.code === 41){ title = 'Sensores MEG'; subt = st.name; }
+  else if (sub.code === 9){ title = 'Espectro · PRESS TE 30'; subt = st.name; }
+  else if (sub.code === 51){ title = 'Doppler espectral · ' + (TCD[st.tcd || 'normal'] || TCD.normal).label; subt = st.name; }
+  else if (sub.code === 60){ title = 'Serie angiográfica'; subt = '';
+    chips = ['ICA-L','ICA-R','VERT'].map(k=>`<button class="mini" type="button" data-inj="${k}" aria-pressed="${S.dsaInj===k}">${k === 'VERT' ? 'Vertebral' : (k === 'ICA-L' ? 'ACI izquierda' : 'ACI derecha')}</button>`).join('') + `<button class="mini" type="button" data-play aria-pressed="${S.dsaPlay}">${S.dsaPlay ? 'Pausar' : 'Reproducir'}</button>`; }
   else show = false;
-  if (S.tab === 'lab' && S.labScan === 'fmri'){ title = 'BOLD signal · stimulated site'; subt = 'block design'; }
+  if (S.tab === 'lab' && S.labScan === 'fmri'){ title = 'Señal BOLD · sitio estimulado'; subt = 'diseño de bloques'; }
   chart.hidden = !show; if (!show) return;
   $('#chartTitle').textContent = title; $('#chartSub').textContent = subt; $('#chartChips').innerHTML = chips;
   const big = sub.code === 40;
@@ -1455,11 +1457,11 @@ function drawBold(){
 }
 function drawDsaTimeline(){
   const ctx = chartCtx, W = chartCv.width, H = chartCv.height; ctx.clearRect(0, 0, W, H);
-  const segs = [['Arterial', 0, 0.42, '#d9412b'], ['Capillary', 0.38, 0.72, '#8a5cf6'], ['Venous', 0.62, 1.0, '#0050ff']];
+  const segs = [['Arterial', 0, 0.42, '#d9412b'], ['Capilar', 0.38, 0.72, '#8a5cf6'], ['Venosa', 0.62, 1.0, '#0050ff']];
   ctx.font = '24px "Figtree", sans-serif';
   segs.forEach(([n, a, b, c], i) => { const y = 30 + i*56; ctx.fillStyle = CH.grid; ctx.fillRect(20, y, W - 40, 26); ctx.fillStyle = c; ctx.fillRect(20 + (W - 40)*a, y, (W - 40)*(b - a), 26); ctx.fillStyle = CH.ink; ctx.fillText(n, 28 + (W - 40)*a, y + 52); });
   const x = 20 + (W - 40)*dsaT; ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x, 18); ctx.lineTo(x, H - 30); ctx.stroke();
-  ctx.fillStyle = CH.muted; ctx.font = '22px "Azeret Mono", monospace'; ctx.fillText((dsaT*6).toFixed(1) + ' s after injection', 20, H - 6);
+  ctx.fillStyle = CH.muted; ctx.font = '22px "Azeret Mono", monospace'; ctx.fillText((dsaT*6).toFixed(1) + ' s tras la inyección', 20, H - 6);
 }
 
 /* ---------- DOM overlay: electrode labels, dipole arrows, projection findings ---------- */
@@ -1524,7 +1526,7 @@ function side(s){ // s = 'r' (patient right, viewer left) or 'l'
         <g id="thumb-${s}" style="${o(64,276)}">${limb('thumb-'+s, X(64), 276, X(70), 291, 5)}</g></g></g></g>`;
 }
 function bodySVG(){
-  return `<svg viewBox="0 0 240 480" id="bodySvg" role="img" aria-label="Body figure facing you; the patient's right side is on your left">
+  return `<svg viewBox="0 0 240 480" id="bodySvg" role="img" aria-label="Figura corporal de frente; el lado derecho del paciente queda a su izquierda">
     <style>.bl{stroke:#c5cfd4;stroke-linecap:round;transition:stroke .25s}.bl.hot,.bp.hot{stroke:#0050ff;fill:#0050ff}.bl.feel{stroke:#00a389}.bp.feel{fill:#00a389}
       .bp{fill:#c5cfd4;stroke:none;transition:fill .25s}.skin{fill:#e8edf0;stroke:#a9b6bc;stroke-width:1.2}</style>
     <defs><radialGradient id="glowG"><stop offset="0" stop-color="#0050ff" stop-opacity=".85"/><stop offset="1" stop-color="#0050ff" stop-opacity="0"/></radialGradient>
@@ -1584,73 +1586,73 @@ function animateBody(eff){
   } else if (eff.kind === 'eyes'){
     const dx = eff.side === 'right' ? -3 : 3; $('#pupR').setAttribute('cx', 109 + dx); $('#pupL').setAttribute('cx', 131 + dx); $('#headG').classList.add(eff.side === 'right' ? 'tw-r' : 'tw-l'); glowAt(120, 44, 20);
   } else if (eff.kind === 'speech'){
-    fx.insertAdjacentHTML('beforeend', `<g class="glow"><path d="M150 18 h66 a8 8 0 0 1 8 8 v22 a8 8 0 0 1 -8 8 h-50 l-12 10 l2 -10 h-6 a8 8 0 0 1 -8 -8 v-22 a8 8 0 0 1 8 -8z" fill="#ffffff" stroke="#0050ff"/><text x="186" y="42" text-anchor="middle" fill="#0050ff" font-size="13" font-family="Figtree, sans-serif">${eff.title.startsWith('Speech') ? 'one, two, th…' : 'a… pencil? no…'}</text></g>`);
+    fx.insertAdjacentHTML('beforeend', `<g class="glow"><path d="M150 18 h66 a8 8 0 0 1 8 8 v22 a8 8 0 0 1 -8 8 h-50 l-12 10 l2 -10 h-6 a8 8 0 0 1 -8 -8 v-22 a8 8 0 0 1 8 -8z" fill="#ffffff" stroke="#0050ff"/><text x="186" y="42" text-anchor="middle" fill="#0050ff" font-size="13" font-family="Figtree, sans-serif">${/habla/i.test(eff.title) ? 'uno, dos, tre…' : 'a… ¿lápiz? no…'}</text></g>`);
     $('#mouth').setAttribute('d', 'M112 61 L128 61');
   } else if (eff.kind === 'hear'){
     for (const s of sides){ const x = s === 'r' ? 84 : 156, d = s === 'r' ? -1 : 1; fx.insertAdjacentHTML('beforeend', `<g class="glow" stroke="#0050ff" fill="none" stroke-width="2">${[8,14,20].map(r=>`<path d="M${x} ${47 - r} a${r} ${r} 0 0 ${d > 0 ? 1 : 0} 0 ${2*r}" transform="translate(${d*4},0)"/>`).join('')}</g>`); }
   } else if (eff.kind === 'memory' || eff.kind === 'self' || eff.kind === 'emotion'){
     if (eff.kind === 'self') $('#ghost').setAttribute('opacity', 0.8);
     if (eff.kind === 'memory') fx.insertAdjacentHTML('beforeend', `<g class="glow"><circle cx="160" cy="14" r="14" fill="#ffffff" stroke="#c08ac9"/><circle cx="146" cy="32" r="3" fill="#c08ac9"/><circle cx="152" cy="26" r="4" fill="#c08ac9"/><text x="160" y="18" text-anchor="middle" fill="#c08ac9" font-size="10" font-family="Figtree, sans-serif">déjà vu</text></g>`);
-    if (eff.kind === 'emotion'){ $('#brows').setAttribute('d', eff.title.includes('fear') ? 'M106 30 l8 4 M126 34 l8 -4' : 'M106 33 l8 -3 M126 30 l8 3'); $('#mouth').setAttribute('d', eff.title.includes('fear') ? 'M112 63 Q120 58 128 63' : 'M108 58 Q120 70 132 58'); glowAt(120, 46, 26); if (eff.title.includes('stomach')) $('#gut').setAttribute('opacity', 1); }
+    if (eff.kind === 'emotion'){ $('#brows').setAttribute('d', /miedo/i.test(eff.title) ? 'M106 30 l8 4 M126 34 l8 -4' : 'M106 33 l8 -3 M126 30 l8 3'); $('#mouth').setAttribute('d', /miedo/i.test(eff.title) ? 'M112 63 Q120 58 128 63' : 'M108 58 Q120 70 132 58'); glowAt(120, 46, 26); if (/epigástric|náusea/i.test(eff.title)) $('#gut').setAttribute('opacity', 1); }
   } else if (eff.kind === 'gut'){ $('#gut').setAttribute('opacity', 1); $('#gut').classList.add('glow'); glowAt(120, 64, 12); }
   else if (eff.kind === 'see'){ glowAt(120, 44, 22); }
-  else if (eff.kind === 'quiet' && eff.title.startsWith('Tremor')){ colour(['hand','fingers'], 'feel'); }
+  else if (eff.kind === 'quiet' && /temblor/i.test(eff.title)){ colour(['hand','fingers'], 'feel'); }
 }
 function visualField(f){
   if (!f) return '';
   const q = (path, on) => `<path d="${path}" fill="${on ? '#f2b705' : '#e8edf0'}" class="${on ? 'flash' : ''}" stroke="#a9b6bc"/>`;
-  if (f.face) return `<div class="vf"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="#e8edf0" stroke="#a9b6bc"/><g class="flash"><ellipse cx="60" cy="60" rx="20" ry="26" fill="none" stroke="#f2b705" stroke-width="2"/><path d="M50 52 q4 -4 8 0 M64 50 q4 4 8 -1 M52 72 q8 6 16 -2" stroke="#f2b705" stroke-width="2" fill="none"/></g></svg><p class="lab-tip">The face in view seems to morph.</p></div>`;
+  if (f.face) return `<div class="vf"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="#e8edf0" stroke="#a9b6bc"/><g class="flash"><ellipse cx="60" cy="60" rx="20" ry="26" fill="none" stroke="#f2b705" stroke-width="2"/><path d="M50 52 q4 -4 8 0 M64 50 q4 4 8 -1 M52 72 q8 6 16 -2" stroke="#f2b705" stroke-width="2" fill="none"/></g></svg><p class="lab-tip">El rostro a la vista parece deformarse.</p></div>`;
   const L = f.side === 'left', up = f.upper;
   const ul = q('M60 60 L60 4 A56 56 0 0 0 4 60 Z', !f.central && L && up), ur = q('M60 60 L116 60 A56 56 0 0 0 60 4 Z', !f.central && !L && up);
   const ll = q('M60 60 L4 60 A56 56 0 0 0 60 116 Z', !f.central && L && !up), lr = q('M60 60 L60 116 A56 56 0 0 0 116 60 Z', !f.central && !L && !up);
-  return `<div class="vf"><svg viewBox="0 0 120 120" aria-label="Visual field as the patient sees it">${ul}${ur}${ll}${lr}<circle cx="60" cy="60" r="12" fill="${f.central ? '#f2b705' : '#e8edf0'}" class="${f.central ? 'flash' : ''}" stroke="#a9b6bc"/><text x="6" y="116" fill="#7d8e95" font-size="9">L</text><text x="108" y="116" fill="#7d8e95" font-size="9">R</text></svg><p class="lab-tip">Visual field as the patient sees it.<br>Light appears where it flashes.</p></div>`;
+  return `<div class="vf"><svg viewBox="0 0 120 120" aria-label="Campo visual tal como lo ve el paciente">${ul}${ur}${ll}${lr}<circle cx="60" cy="60" r="12" fill="${f.central ? '#f2b705' : '#e8edf0'}" class="${f.central ? 'flash' : ''}" stroke="#a9b6bc"/><text x="6" y="116" fill="#7d8e95" font-size="9">I</text><text x="108" y="116" fill="#7d8e95" font-size="9">D</text></svg><p class="lab-tip">Campo visual tal como lo ve el paciente.<br>La luz aparece donde parpadea.</p></div>`;
 }
 
 /* ---------- panels ---------- */
 function labRailHTML(){
-  const groups = GROUP_ORDER.map(g=>{ const c = GROUP_COLORS[g].map(v=>Math.round(v*255)); return `<label class="grp"><input type="checkbox" data-g="${g}" ${LAB.groups[g] !== false ? 'checked' : ''}><i style="background:rgb(${c})"></i>${g}</label>`; }).join('');
+  const groups = GROUP_ORDER.map(g=>{ const c = GROUP_COLORS[g].map(v=>Math.round(v*255)); return `<label class="grp"><input type="checkbox" data-g="${g}" ${LAB.groups[g] !== false ? 'checked' : ''}><i style="background:rgb(${c})"></i>${groupEs(g)}</label>`; }).join('');
   return `
-  <div class="lab-sec"><h3>Tool</h3><div class="seg2" id="labTool"><button type="button" data-t="stim" aria-pressed="${LAB.tool==='stim'}">Stimulate</button><button type="button" data-t="dissect" aria-pressed="${LAB.tool==='dissect'}">Dissect</button></div>
-    <p class="hint-s">${LAB.tool === 'stim' ? 'Click anywhere on the cortex to deliver a 50 Hz pulse train, as surgeons do when mapping an awake patient.' : 'Click a structure to learn about it. Hide groups, pull lobes apart, or cut through the brain.'}</p></div>
-  <div class="lab-sec"><h3>Hemispheres</h3><div class="row"><button type="button" class="mini" data-h="L" aria-pressed="${LAB.hemi.L}">Left</button><button type="button" class="mini" data-h="R" aria-pressed="${LAB.hemi.R}">Right</button></div></div>
-  <div class="lab-sec"><h3>Structures</h3>${groups}<div class="row"><button type="button" class="mini" id="labAll">Show all</button><button type="button" class="mini" id="labDeep">Reveal deep structures</button></div></div>
-  <div class="lab-sec"><h3>Pull apart</h3><div class="row"><label>Explode<input type="range" id="labExplode" min="0" max="1" step="0.01" value="${LAB.explode}"></label></div></div>
-  <div class="lab-sec"><h3>Cut</h3>
-    <div class="row"><button type="button" class="mini" id="labCutOn" aria-pressed="${LAB.cut.on}">${LAB.cut.on ? 'Cutting' : 'Cut open'}</button>
-      <select id="labCutAxis" aria-label="Cut plane">${['axial','coronal','sagittal'].map(a=>`<option value="${a}" ${a===LAB.cut.axis?'selected':''}>${a[0].toUpperCase()+a.slice(1)}</option>`).join('')}</select>
-      <button type="button" class="mini" id="labCutFlip">Flip side</button></div>
-    <div class="row"><label>Depth<input type="range" id="labCutPos" min="-80" max="80" step="1" value="${LAB.cut.pos}"></label></div>
-    <p class="hint-s" id="labCutNote" ${LAB.explode > 0.01 && LAB.cut.on ? '' : 'hidden'}>Set explode to zero to see the cut.</p></div>
-  <div class="lab-sec" style="border:0"><h3>Colour</h3><div class="seg2" id="labColor"><button type="button" data-c="lobe" aria-pressed="${LAB.colorBy==='lobe'}">By lobe</button><button type="button" data-c="region" aria-pressed="${LAB.colorBy==='region'}">By region</button></div></div>`;
+  <div class="lab-sec"><h3>Herramienta</h3><div class="seg2" id="labTool"><button type="button" data-t="stim" aria-pressed="${LAB.tool==='stim'}">Estimular</button><button type="button" data-t="dissect" aria-pressed="${LAB.tool==='dissect'}">Diseccionar</button></div>
+    <p class="hint-s">${LAB.tool === 'stim' ? 'Pulse en cualquier punto de la corteza para aplicar un tren de pulsos de 50 Hz, como hacen los cirujanos al mapear a un paciente despierto.' : 'Pulse una estructura para conocerla. Oculte grupos, separe los lóbulos o seccione el encéfalo.'}</p></div>
+  <div class="lab-sec"><h3>Hemisferios</h3><div class="row"><button type="button" class="mini" data-h="L" aria-pressed="${LAB.hemi.L}">Izquierdo</button><button type="button" class="mini" data-h="R" aria-pressed="${LAB.hemi.R}">Derecho</button></div></div>
+  <div class="lab-sec"><h3>Estructuras</h3>${groups}<div class="row"><button type="button" class="mini" id="labAll">Mostrar todo</button><button type="button" class="mini" id="labDeep">Revelar estructuras profundas</button></div></div>
+  <div class="lab-sec"><h3>Separar</h3><div class="row"><label>Explosión<input type="range" id="labExplode" min="0" max="1" step="0.01" value="${LAB.explode}"></label></div></div>
+  <div class="lab-sec"><h3>Corte</h3>
+    <div class="row"><button type="button" class="mini" id="labCutOn" aria-pressed="${LAB.cut.on}">${LAB.cut.on ? 'Cortando' : 'Abrir corte'}</button>
+      <select id="labCutAxis" aria-label="Plano de corte">${[['axial','Axial'],['coronal','Coronal'],['sagittal','Sagital']].map(([a,t])=>`<option value="${a}" ${a===LAB.cut.axis?'selected':''}>${t}</option>`).join('')}</select>
+      <button type="button" class="mini" id="labCutFlip">Invertir lado</button></div>
+    <div class="row"><label>Profundidad<input type="range" id="labCutPos" min="-80" max="80" step="1" value="${LAB.cut.pos}"></label></div>
+    <p class="hint-s" id="labCutNote" ${LAB.explode > 0.01 && LAB.cut.on ? '' : 'hidden'}>Ajuste la explosión a cero para ver el corte.</p></div>
+  <div class="lab-sec" style="border:0"><h3>Color</h3><div class="seg2" id="labColor"><button type="button" data-c="lobe" aria-pressed="${LAB.colorBy==='lobe'}">Por lóbulo</button><button type="button" data-c="region" aria-pressed="${LAB.colorBy==='region'}">Por región</button></div></div>`;
 }
 function renderLabRail(){
-  const el = $('#labRail'); el.innerHTML = `<button type="button" class="crumb" data-go="lab">About Brain Lab</button>` + labRailHTML();
+  const el = $('#labRail'); el.innerHTML = `<button type="button" class="crumb" data-go="lab">Acerca del Laboratorio cerebral</button>` + labRailHTML();
 }
 function renderLabPanel(){
   const el = $('#labPanel');
   if (LAB.tool === 'stim'){
     const s = LAB.stim;
     const use3d = typeof lbBuild === 'function' && !!lbBuild();
-    el.innerHTML = `<div class="lh"><span class="eb">Cortical stimulation mapping</span><h2>${s ? s.effect.title : 'Touch the brain'}</h2></div>
+    el.innerHTML = `<div class="lh"><span class="eb">Mapeo por estimulación cortical</span><h2>${s ? s.effect.title : 'Toque el encéfalo'}</h2></div>
       <div class="lb">
         <div class="lab-fb">
-        ${s ? `<div class="stim-res"><div class="sr-top"><span class="k">Stimulation site</span><span class="sr-mni">MNI ${s.p.map(v=>v.toFixed(0)).join(', ')}</span></div>
-          <b class="sr-reg">${s.region.name}</b><span class="sr-hemi">${s.region.hemi !== 'M' ? HEMI[s.region.hemi] + ' hemisphere' : 'midline'}${s.effect.side && s.effect.side !== 'both' && s.region.hemi !== 'M' ? ' → ' + s.effect.side + ' side of the body' : ''}</span>
-          <p>${s.effect.text}</p></div>` : `<p class="lab-intro">Click a spot on the cortex. Stimulating motor cortex moves the opposite side of the body; sensory cortex makes it tingle; visual cortex flashes lights in the opposite visual field; language areas stop speech. The figure faces you, so the patient's right is on your left.</p>`}
+        ${s ? `<div class="stim-res"><div class="sr-top"><span class="k">Sitio de estimulación</span><span class="sr-mni">MNI ${s.p.map(v=>v.toFixed(0)).join(', ')}</span></div>
+          <b class="sr-reg">${s.region.name}</b><span class="sr-hemi">${s.region.hemi !== 'M' ? 'hemisferio ' + HEMI[s.region.hemi] : 'línea media'}${s.effect.side && s.effect.side !== 'both' && s.region.hemi !== 'M' ? ' → lado ' + (s.effect.side === 'right' ? 'derecho' : 'izquierdo') + ' del cuerpo' : ''}</span>
+          <p>${s.effect.text}</p></div>` : `<p class="lab-intro">Pulse un punto de la corteza. La estimulación de la corteza motora mueve el lado opuesto del cuerpo; la sensitiva lo hace hormiguear; la visual produce destellos de luz en el campo visual opuesto; las áreas del lenguaje detienen el habla. La figura está de frente, así que la derecha del paciente queda a su izquierda.</p>`}
         ${use3d ? '<div class="lab-body" id="labBody"></div>' : `<div class="body-wrap">${bodySVG()}</div>`}
         </div>
         ${s && s.effect.field ? visualField(s.effect.field) : ''}
-        <div class="row"><label>Add a scan<select id="labScan" aria-label="Scan to add">${[['none','None'],['fmri','fMRI activation'],['fdg','FDG PET'],['t1','T1 anatomy'],['dti','DTI tracts']].map(([v,n])=>`<option value="${v}" ${v===LAB.scan?'selected':''}>${n}</option>`).join('')}</select></label></div>
-        ${LAB.log.length ? `<div class="log"><b>Recent</b>${LAB.log.map(l=>`<div><span>${l.where}</span><b>${l.what}</b></div>`).join('')}</div>` : ''}
+        <div class="row"><label>Añadir una exploración<select id="labScan" aria-label="Exploración que añadir">${[['none','Ninguna'],['fmri','Activación por RMf'],['fdg','PET con FDG'],['t1','Anatomía T1'],['dti','Tractos DTI']].map(([v,n])=>`<option value="${v}" ${v===LAB.scan?'selected':''}>${n}</option>`).join('')}</select></label></div>
+        ${LAB.log.length ? `<div class="log"><b>Reciente</b>${LAB.log.map(l=>`<div><span>${l.where}</span><b>${l.what}</b></div>`).join('')}</div>` : ''}
       </div>`;
     if (use3d) lbMount($('#labBody'), s); else if (s) requestAnimationFrame(()=>animateBody(s.effect));
   } else {
     const r = LAB.selR > 0 ? REG[LAB.selR] : null, info = r ? (REGION_INFO[r.name] || {}) : null;
-    el.innerHTML = `<div class="lh"><span class="eb">${r ? r.group + (r.hemi !== 'M' ? ' · ' + HEMI[r.hemi] : '') : 'Dissection'}</span><h2>${r ? r.name : 'Pick a structure'}</h2></div>
-      <div class="lb">${r ? `<dl><dt>Function</dt><dd>${info.fn || '—'}</dd><dt>If damaged</dt><dd>${info.clin || '—'}</dd><dt>Blood supply</dt><dd>${info.supply || '—'}</dd></dl>
-        <div class="row"><button type="button" class="mini" id="labHide">Hide this</button><button type="button" class="mini" id="labIso">Isolate</button><button type="button" class="mini" id="labAll2">Show all</button></div>`
-        : `<p>Click any structure to see what it does, what happens when it is damaged, and which artery feeds it. Turn off the four lobes to reveal the thalamus, basal ganglia, hippocampus and ventricles beneath.</p>`}
-        <p class="lab-tip">Atlas: Harvard-Oxford cortical and subcortical (FSL), cerebellum from AAL. Gyral chunks include the white matter beneath each gyrus.</p></div>`;
+    el.innerHTML = `<div class="lh"><span class="eb">${r ? groupEs(r.group) + (r.hemi !== 'M' ? ' · ' + HEMI[r.hemi] : '') : 'Disección'}</span><h2>${r ? r.name : 'Elija una estructura'}</h2></div>
+      <div class="lb">${r ? `<dl><dt>Función</dt><dd>${info.fn || '—'}</dd><dt>Si se lesiona</dt><dd>${info.clin || '—'}</dd><dt>Irrigación</dt><dd>${info.supply || '—'}</dd></dl>
+        <div class="row"><button type="button" class="mini" id="labHide">Ocultar esta</button><button type="button" class="mini" id="labIso">Aislar</button><button type="button" class="mini" id="labAll2">Mostrar todo</button></div>`
+        : `<p>Pulse cualquier estructura para ver qué hace, qué ocurre cuando se lesiona y qué arteria la irriga. Desactive los cuatro lóbulos para revelar el tálamo, los ganglios basales, el hipocampo y los ventrículos subyacentes.</p>`}
+        <p class="lab-tip">Atlas: Harvard-Oxford cortical y subcortical (FSL), cerebelo según AAL. Los fragmentos gíricos incluyen la sustancia blanca situada bajo cada circunvolución.</p></div>`;
   }
 }
 
@@ -1670,7 +1672,7 @@ $('#labRail').addEventListener('change', e=>{
 });
 $('#labRail').addEventListener('input', e=>{
   if (e.target.id === 'labExplode'){ LAB.explode = parseFloat(e.target.value); labApplyRegions(); const n = $('#labCutNote'); if (n) n.hidden = !(LAB.explode > 0.01 && LAB.cut.on); }
-  if (e.target.id === 'labCutPos'){ LAB.cut.pos = parseFloat(e.target.value); if (!LAB.cut.on){ LAB.cut.on = true; $('#labCutOn').setAttribute('aria-pressed', true); $('#labCutOn').textContent = 'Cutting'; } dirty = true; }
+  if (e.target.id === 'labCutPos'){ LAB.cut.pos = parseFloat(e.target.value); if (!LAB.cut.on){ LAB.cut.on = true; $('#labCutOn').setAttribute('aria-pressed', true); $('#labCutOn').textContent = 'Cortando'; } dirty = true; }
 });
 $('#labPanel').addEventListener('change', e=>{
   if (e.target.id === 'labScan'){ LAB.scan = e.target.value; S.labScan = LAB.scan; if (LAB.stim) centreSliceOn(LAB.stim.p); placeLabGlass(); syncHud(); vesKey = ''; dirty = true; }
@@ -1696,7 +1698,7 @@ LAB.hover = function(cx, cy, clientX, clientY){
   const hit = pickAt(cx, cy);
   const id = hit ? hit.id : -1;
   if (id !== this.hoverR){ this.hoverR = id; dirty = true; }
-  if (hit && REG[hit.id]){ const r = REG[hit.id]; tip.innerHTML = `<b>${r.name}${r.hemi !== 'M' ? ' (' + HEMI[r.hemi] + ')' : ''}</b><span>${r.group}${this.tool === 'stim' ? ' · click to stimulate' : ' · click for details'}</span>`; tip.hidden = false;
+  if (hit && REG[hit.id]){ const r = REG[hit.id]; tip.innerHTML = `<b>${r.name}${r.hemi !== 'M' ? ' (' + HEMI[r.hemi] + ')' : ''}</b><span>${groupEs(r.group)}${this.tool === 'stim' ? ' · pulse para estimular' : ' · pulse para ver detalles'}</span>`; tip.hidden = false;
     tip.style.left = Math.min(cx + 16, stageW - 270) + 'px'; tip.style.top = Math.min(cy + 14, stageH - 60) + 'px'; }
   else tip.hidden = true;
 };
@@ -1752,7 +1754,7 @@ if (typeof requestIdleCallback !== 'undefined'){
    Chapter content: how each machine works
    ===================================================================== */
 const ORDER = ['mri','ct','pet','spect','fmri','eeg','meg','us','dsa'];
-const TAB_NAMES = {mri:'MRI', ct:'CT', pet:'PET', spect:'SPECT', fmri:'fMRI', eeg:'EEG', meg:'MEG', us:'Ultrasound', dsa:'Angiography', lab:'Brain Lab'};
+const TAB_NAMES = {mri:'MRI', ct:'CT', pet:'PET', spect:'SPECT', fmri:'fMRI', eeg:'EEG', meg:'MEG', us:'Ecografía', dsa:'Angiografía', lab:'Laboratorio cerebral'};
 
 /* =====================================================================
    Scenes: one drawing per chapter step, in a 1000 × 1000 unit box.
@@ -1795,7 +1797,7 @@ function fade(a, fn){ if (a <= 0.002) return; const c = G.ctx; c.save(); c.globa
 function clip(fn, draw){ const c = G.ctx; c.save(); c.beginPath(); fn(c); c.clip(); draw(); c.restore(); }
 function box(x, y, w, h, title, o = {}){ rr(x, y, w, h, 3, o.fill || null, o.stroke || KC.line, 1); if (title) head(title, x, y - 10*G.u); }
 function img(cv, x, y, w, h, a = 1){ if (!cv) { rr(x, y, w, h, 3, KC.film); return; } fade(a, ()=>{ const c = G.ctx; c.imageSmoothingEnabled = true; c.drawImage(cv, x, y, w, h); }); }
-function placeholder(x, y, w, h, s = 'Loading the brain…'){ rr(x, y, w, h, 3, KC.soft, KC.line, 1); txt(s, x + w/2, y + h/2, {align:'center', color:KC.muted, size:10.5}); }
+function placeholder(x, y, w, h, s = 'Cargando el encéfalo…'){ rr(x, y, w, h, 3, KC.soft, KC.line, 1); txt(s, x + w/2, y + h/2, {align:'center', color:KC.muted, size:10.5}); }
 const rnd = seed => () => { seed = (seed*16807) % 2147483647; return (seed - 1)/2147483646; };
 const hashf = i => { const s = Math.sin(i*127.1 + 311.7)*43758.5453; return s - Math.floor(s); };
 
@@ -1973,7 +1975,7 @@ function imgFit(cv, x, y, w, h){ // draw keeping aspect, film behind
    MRI
    ===================================================================== */
 const T1 = {wm:840, gm:1350, csf:4200}, T2 = {wm:75, gm:95, csf:2000}, PD = {wm:0.7, gm:0.8, csf:1};
-const TIS = [['wm','White matter',KC.ink],['gm','Grey matter','#8b9aa1'],['csf','CSF',KC.sig]];
+const TIS = [['wm','Sustancia blanca',KC.ink],['gm','Sustancia gris','#8b9aa1'],['csf','LCR',KC.sig]];
 function mriMagnet(p, t, opts = {}){
   const a = smooth(0, 0.4, p);
   // field lines: through the bore, returning outside the magnet
@@ -1992,14 +1994,14 @@ function mriMagnet(p, t, opts = {}){
   rr(470, 528, 400, 62, 28, KC.soft, KC.ink2, 1.2); circ(432, 552, 38, KC.soft, KC.ink2, 1.2);
   if (opts.bare) return;
   fade(smooth(0.05, 0.3, p), ()=>{
-    callout(299, 320, 380, 160, 'superconducting coil, 4 K', {maxW:420});
+    callout(299, 320, 380, 160, 'bobina superconductora, 4 K', {maxW:420});
     txt('B₀ = 3 T', 630, 488, {color:KC.sig, size:13, weight:500});
     arrow(560, 470, 760, 470, KC.sig, 1.6);
   });
   fade(smooth(0.3, 0.6, p), ()=>{
     ln(905, 385, 905, 615, KC.ink2, 1); ln(895, 385, 915, 385, KC.ink2, 1); ln(895, 615, 915, 615, KC.ink2, 1);
     txt('70 cm', 920, 505, {size:11});
-    callout(440, 575, 520, 880, 'head at the centre of the field', {maxW:420});
+    callout(440, 575, 520, 880, 'cabeza en el centro del campo', {maxW:420});
   });
 }
 const mriSpins = (()=>{ const R = rnd(11), s = []; for (let r = 0; r < 5; r++) for (let c = 0; c < 6; c++) s.push({x:150 + c*86, y:270 + r*105, a0:R()*TAU, ph:R()*TAU, anti:R() < 0.12}); return s; })();
@@ -2019,9 +2021,9 @@ mri:[
       circ(s.x, s.y, 7, KC.paper, KC.ink2, 1.2);
     }
     const M = 230*a;
-    fade(a, ()=>{ arrow(840, 700, 840, 700 - M, KC.sig, 4.5, 16); txt('M', 862, 700 - M*0.55, {color:KC.sig, size:16, weight:500}); label('net magnetisation', 840, 740, {align:'center', color:KC.ink2}); });
+    fade(a, ()=>{ arrow(840, 700, 840, 700 - M, KC.sig, 4.5, 16); txt('M', 862, 700 - M*0.55, {color:KC.sig, size:16, weight:500}); label('magnetización neta', 840, 740, {align:'center', color:KC.ink2}); });
     fade(smooth(0.5, 0.8, p), ()=>{ rr(150, 820, 510, 92, 4, KC.soft); txt('f = γB₀', 172, 856, {size:15, color:KC.ink, weight:500}); txt('= 42.58 MHz/T × 3 T ≈ 128 MHz', 172, 890, {size:11.5}); });
-    fade(1 - a, ()=>txt('No field: spins point anywhere', 410, 820, {align:'center', color:KC.muted, size:11}));
+    fade(1 - a, ()=>txt('Sin campo: los espines apuntan en cualquier dirección', 410, 820, {align:'center', color:KC.muted, size:11}));
   },
   (p, t, E)=>{
     const al = E.ctl && E.ctl.flip != null ? E.ctl.flip*Math.PI/180 : Math.PI/2*smooth(0.12, 0.62, p), ph = t*2.4, O = [380, 560], R = 220, c30 = Math.cos(Math.PI/6), s30 = 0.5;
@@ -2041,13 +2043,13 @@ mri:[
     txt(`flip angle ${Math.round(al*180/Math.PI)}°`, 120, 880, {size:12, color:KC.amber});
     // RF pulse panel
     const fx = 640, fw = 300, pr = smooth(0.1, 0.62, p);
-    box(fx, 170, fw, 150, 'RF pulse · 128 MHz');
+    box(fx, 170, fw, 150, 'Pulso de RF · 128 MHz');
     curve(u=>{ const x = (u - 0.5)*12, env = Math.abs(x) < 1e-3 ? 1 : Math.sin(x)/x; return [fx + 12 + u*(fw - 24), 245 - 58*env*Math.sin(u*90)*(u <= pr ? 1 : 0)]; }, 0, 1, 260, KC.ink, 1.1);
     // FID panel
-    box(fx, 640, fw, 150, 'Signal in the receiver coil');
+    box(fx, 640, fw, 150, 'Señal en la bobina receptora');
     const amp = Math.abs(Math.sin(al));
     curve(u=>[fx + 12 + u*(fw - 24), 715 - 58*amp*Math.exp(-u*3)*Math.cos(u*60 - t*6)], 0, 1, 240, KC.sig, 1.3);
-    fade(1 - amp*2, ()=>txt(al > 2.5 ? 'inverted · no signal yet' : 'no transverse M · no signal', fx + fw/2, 720, {align:'center', color:KC.muted, size:10.5}));
+    fade(1 - amp*2, ()=>txt(al > 2.5 ? 'invertida · aún sin señal' : 'sin M transversal · sin señal', fx + fw/2, 720, {align:'center', color:KC.muted, size:10.5}));
     txt(`signal ∝ sin α = ${amp.toFixed(2)}`, fx, 820, {size:11, color:KC.ink});
   },
   (p, t, E)=>{
@@ -2055,7 +2057,7 @@ mri:[
     const TR = E.ctl && E.ctl.tr != null ? E.ctl.tr : lerp(500, 4000, w), TE = E.ctl && E.ctl.te != null ? E.ctl.te : lerp(10, 100, w);
     E.cur = Object.assign(E.cur || {}, {tr:Math.round(TR), te:Math.round(TE)});
     const g1 = {x:60, y:150, w:300, h:200}, g2 = {x:60, y:420, w:300, h:200};
-    box(g1.x, g1.y, g1.w, g1.h, 'T1 recovery · Mz'); box(g2.x, g2.y, g2.w, g2.h, 'T2 decay · Mxy');
+    box(g1.x, g1.y, g1.w, g1.h, 'Recuperación T1 · Mz'); box(g2.x, g2.y, g2.w, g2.h, 'Decaimiento T2 · Mxy');
     for (const [k, , col] of TIS){
       curve(u=>[g1.x + u/5000*g1.w, g1.y + g1.h - 10 - PD[k]*(1 - Math.exp(-u/T1[k]))*(g1.h - 30)], 0, 5000, 80, col, 1.6);
       const mz = PD[k]*(1 - Math.exp(-TR/T1[k]));
@@ -2073,26 +2075,26 @@ mri:[
     const key = Math.round(TR/10) + '|' + Math.round(TE);
     if (E.mrKey !== key){ E.mrKey = key; const r = synthMR(F, TR, TE); E.mrCv = floatCanvas(F, r.buf, v=>255*Math.pow(v/r.ref, 0.9)); }
     imgFit(E.mrCv, X, Y, S, S);
-    const kind = TR > 1800 && TE > 60 ? ['T2-weighted', 'CSF bright · white matter darker than grey'] : TR < 900 && TE < 30 ? ['T1-weighted', 'CSF dark · white matter brighter than grey'] : TR > 1800 && TE < 35 ? ['Proton-density weighted', 'contrast follows water content'] : ['Mixed weighting', 'neither T1 nor T2 dominates'];
+    const kind = TR > 1800 && TE > 60 ? ['Ponderada en T2', 'LCR hiperintenso · sustancia blanca más oscura que la gris'] : TR < 900 && TE < 30 ? ['Ponderada en T1', 'LCR hipointenso · sustancia blanca más brillante que la gris'] : TR > 1800 && TE < 35 ? ['Ponderada en densidad protónica', 'el contraste sigue el contenido de agua'] : ['Ponderación mixta', 'ni T1 ni T2 predomina'];
     txt(kind[0], X, Y + S + 32, {size:13, color:KC.ink, font:'body', weight:600}); txt(kind[1], X, Y + S + 56, {size:10.5});
-    head(`Spin echo · TR ${Math.round(TR)} ms · TE ${Math.round(TE)} ms`, X, Y - 12);
+    head(`Eco de espín · TR ${Math.round(TR)} ms · TE ${Math.round(TE)} ms`, X, Y - 12);
   },
   (p, t)=>{
     const n = 128, m = Math.round(smooth(0.04, 0.92, p)*64), K = kspace();
     const A = {x:80, y:250, s:390}, B = {x:530, y:250, s:390};
-    box(A.x, A.y, A.s, A.s, 'k-space (raw data)'); box(B.x, B.y, B.s, B.s, 'Image = inverse FFT');
+    box(A.x, A.y, A.s, A.s, 'espacio k (datos crudos)'); box(B.x, B.y, B.s, B.s, 'Imagen = FFT inversa');
     if (!K){ placeholder(A.x, A.y, A.s, A.s); placeholder(B.x, B.y, B.s, B.s); return; }
     rr(A.x, A.y, A.s, A.s, 3, KC.film);
     const row = A.s/n;
     clip(c=>c.rect(A.x, A.y + (n/2 - m)*row, A.s, (2*m + 1)*row), ()=>img(K.kcv, A.x, A.y, A.s, A.s));
     if (m < 64){ const flick = (Math.floor(t*12) % 2) ? 1 : 0, yy = flick ? A.y + (n/2 - m)*row : A.y + (n/2 + m + 1)*row; ln(A.x, yy, A.x + A.s, yy, KC.sig, 2.5); }
     img(kRecon(m), B.x, B.y, B.s, B.s);
-    txt(`${2*m + 1} of ${n} lines`, A.x, A.y + A.s + 30, {size:11.5, color:KC.ink});
-    txt('filled from the centre out', A.x, A.y + A.s + 54, {size:10.5});
-    txt(m < 10 ? 'Centre only: contrast, no detail' : m < 40 ? 'Edges add fine detail' : 'All lines: full resolution', B.x, B.y + B.s + 30, {size:11.5, color:KC.ink});
+    txt(`${2*m + 1} de ${n} líneas`, A.x, A.y + A.s + 30, {size:11.5, color:KC.ink});
+    txt('rellenado desde el centro hacia fuera', A.x, A.y + A.s + 54, {size:10.5});
+    txt(m < 10 ? 'Solo el centro: contraste, sin detalle' : m < 40 ? 'Los bordes añaden detalle fino' : 'Todas las líneas: resolución completa', B.x, B.y + B.s + 30, {size:11.5, color:KC.ink});
     // gradient coils
-    const gx = 80; head('Gradients', gx, 160);
-    [['Gz','slice'],['Gy','phase'],['Gx','frequency']].forEach(([g, w], i)=>{ const x = gx + 140 + i*230, on = Math.floor(t*2 + i) % 3 === 0;
+    const gx = 80; head('Gradientes', gx, 160);
+    [['Gz','corte'],['Gy','fase'],['Gx','frecuencia']].forEach(([g, w], i)=>{ const x = gx + 140 + i*230, on = Math.floor(t*2 + i) % 3 === 0;
       poly([[x, 175], [x + 46, 140], [x + 46, 175]], on ? KC.sig : KC.soft2); txt(g, x + 56, 165, {size:12, color:KC.ink, weight:500}); txt(w, x + 56, 182, {size:10}); });
   },
 ],
@@ -2105,8 +2107,8 @@ ct:[
     const pr3 = mini3d('ct', 40, 110, 920, 800, t, p, E);
     if (pr3){
       const tp = pr3('tube'), dt = pr3('det'), tb = pr3('table'), a3 = smooth(0, 0.3, p);
-      fade(a3, ()=>{ if (tp) callout(tp[0], tp[1], tp[0] < 500 ? 250 : 750, 170, 'X-ray tube', {maxW:160}); if (dt) callout(dt[0], dt[1], dt[0] < 500 ? 250 : 750, 840, 'Detector arc', {maxW:160}); if (tb) callout(tb[0], tb[1], 800, 900, 'Patient table', {maxW:160}); });
-      fade(smooth(0.25, 0.55, p), ()=>{ txt('one turn ≈ 0.3 s', 40, 70, {size:12, color:KC.ink}); txt('slowed down here · drag to turn', 40, 94, {size:10.5}); txt('120 kV · 64–320 rows', 960, 70, {size:12, color:KC.ink, align:'right'}); });
+      fade(a3, ()=>{ if (tp) callout(tp[0], tp[1], tp[0] < 500 ? 250 : 750, 170, 'Tubo de rayos X', {maxW:160}); if (dt) callout(dt[0], dt[1], dt[0] < 500 ? 250 : 750, 840, 'Arco de detectores', {maxW:160}); if (tb) callout(tb[0], tb[1], 800, 900, 'Camilla del paciente', {maxW:160}); });
+      fade(smooth(0.25, 0.55, p), ()=>{ txt('una vuelta ≈ 0.3 s', 40, 70, {size:12, color:KC.ink}); txt('ralentizado aquí · arrastre para girar', 40, 94, {size:10.5}); txt('120 kV · 64–320 filas', 960, 70, {size:12, color:KC.ink, align:'right'}); });
       return;
     }
     const a = smooth(0, 0.3, p), th = t*1.5, C = [500, 500];
@@ -2119,8 +2121,8 @@ ct:[
     rr(380, 655, 240, 14, 3, KC.soft2);
     for (let k = -7; k <= 7; k++){ const ang = dA + k*0.06; const x = C[0] + 350*Math.sin(ang), y = C[1] - 350*Math.cos(ang); const c = G.ctx; c.save(); c.translate(x, y); c.rotate(ang); rr(-9, -16, 18, 32, 2, KC.sig); c.restore(); }
     { const c = G.ctx; c.save(); c.translate(...tp); c.rotate(th); rr(-34, -26, 68, 52, 6, KC.ink); circ(0, 10, 6, KC.amber); c.restore(); }
-    fade(a, ()=>{ txt('X-ray tube', tp[0], tp[1] + (Math.cos(th) > 0 ? -44 : 58), {align:'center', size:11, color:KC.ink}); txt('Detectors', (d1[0] + d2[0])/2, (d1[1] + d2[1])/2 + (Math.cos(dA) > 0 ? -40 : 50), {align:'center', size:11, color:KC.sig}); });
-    fade(smooth(0.25, 0.55, p), ()=>{ txt('one turn ≈ 0.3 s', 40, 70, {size:12, color:KC.ink}); txt('slowed down here', 40, 94, {size:10.5}); txt('120 kV · 64–320 rows', 960, 70, {size:12, color:KC.ink, align:'right'}); });
+    fade(a, ()=>{ txt('Tubo de rayos X', tp[0], tp[1] + (Math.cos(th) > 0 ? -44 : 58), {align:'center', size:11, color:KC.ink}); txt('Detectores', (d1[0] + d2[0])/2, (d1[1] + d2[1])/2 + (Math.cos(dA) > 0 ? -40 : 50), {align:'center', size:11, color:KC.sig}); });
+    fade(smooth(0.25, 0.55, p), ()=>{ txt('una vuelta ≈ 0.3 s', 40, 70, {size:12, color:KC.ink}); txt('ralentizado aquí', 40, 94, {size:10.5}); txt('120 kV · 64–320 filas', 960, 70, {size:12, color:KC.ink, align:'right'}); });
   },
   (p, t)=>{
     const C = [330, 520], y = 480, a = smooth(0, 0.6, p);
@@ -2131,10 +2133,10 @@ ct:[
     for (let i = 0; i < xs.length - 1; i++) ln(xs[i], y, xs[i + 1], y, KC.sig, 1 + 7*I[i]);
     for (let k = 0; k < 14; k++){ const u = ((t*0.45 + k/14) % 1), x = 80 + u*520, alive = hashf(k) < (x < 155 ? 1 : x < 505 ? 0.62 : 0.3); if (alive) circ(x, y, 5, KC.sig); }
     txt('I = I₀ · e^(−μx)', 330, 410, {align:'center', size:14, color:KC.ink, weight:500});
-    txt('bone absorbs most', 155, 560, {align:'center', size:10.5}); ln(155, 500, 155, 540, KC.line, 1);
+    txt('el hueso absorbe la mayor parte', 155, 560, {align:'center', size:10.5}); ln(155, 500, 155, 540, KC.line, 1);
     // HU table
-    const rows = [['Air', -1000], ['Fat', -100], ['Water', 0], ['White matter', 25], ['Grey matter', 35], ['Fresh blood', 70], ['Bone', 1000]];
-    head('Hounsfield units', 680, 200); head('as seen in a brain window', 680, 222, {color:KC.muted});
+    const rows = [['Aire', -1000], ['Grasa', -100], ['Agua', 0], ['Sustancia blanca', 25], ['Sustancia gris', 35], ['Sangre fresca', 70], ['Hueso', 1000]];
+    head('Unidades Hounsfield', 680, 200); head('tal como se ven en una ventana cerebral', 680, 222, {color:KC.muted});
     rows.forEach(([nm, hu], i)=>{ const yy = 260 + i*82, show = smooth(i/rows.length*0.8, i/rows.length*0.8 + 0.12, p);
       fade(show, ()=>{ const g = Math.round(Math.max(0, Math.min(1, hu/80))*255); rr(680, yy, 52, 52, 2, `rgb(${g},${g},${g})`, KC.line, 1);
         txt(nm, 750, yy + 22, {size:12, font:'body', color:KC.ink}); txt((hu > 0 ? '+' : hu < 0 ? '−' : '') + Math.abs(hu) + ' HU', 750, yy + 44, {size:10.5}); }); });
@@ -2148,33 +2150,33 @@ ct:[
     G.ctx.beginPath(); G.ctx.arc(C[0], C[1], R + 48, Math.PI, Math.PI + ang); _st(KC.amber, 2); G.ctx.stroke();
     txt(`${Math.round(ang*180/Math.PI)}°`, C[0], C[1] - R - 66, {align:'center', size:13, color:KC.amber, weight:500});
     const S = {x:520, y:200, w:400, h:620};
-    box(S.x, S.y, S.w, S.h, 'Sinogram');
+    box(S.x, S.y, S.w, S.h, 'Sinograma');
     if (!T){ placeholder(S.x, S.y, S.w, S.h); return; }
     rr(S.x, S.y, S.w, S.h, 3, KC.film);
     const rows = ang/Math.PI;
     clip(c=>c.rect(S.x, S.y, S.w, S.h*rows), ()=>img(T.sinoCv, S.x, S.y, S.w, S.h));
     ln(S.x, S.y + S.h*rows, S.x + S.w, S.y + S.h*rows, KC.sig, 2);
-    txt('detector position →', S.x, S.y + S.h + 26, {size:10.5}); txt('angle ↓', S.x + S.w, S.y + S.h + 26, {size:10.5, align:'right'});
+    txt('posición del detector →', S.x, S.y + S.h + 26, {size:10.5}); txt('ángulo ↓', S.x + S.w, S.y + S.h + 26, {size:10.5, align:'right'});
   },
   (p, t)=>{
     const T = tomo('ctb', 'normal'), k = Math.round(smooth(0.03, 0.9, p)*180);
     const A = {x:80, y:260, s:390}, B = {x:530, y:260, s:390};
-    box(A.x, A.y, A.s, A.s, 'Back-projection only'); box(B.x, B.y, B.s, B.s, 'Ramp-filtered back-projection');
+    box(A.x, A.y, A.s, A.s, 'Solo retroproyección'); box(B.x, B.y, B.s, B.s, 'Retroproyección con filtro de rampa');
     if (!T){ placeholder(A.x, A.y, A.s, A.s); placeholder(B.x, B.y, B.s, B.s); return; }
     tomoTo(T, k);
     if (G.env.ctK !== k){ G.env.ctK = k; G.env.ctA = bufCanvas(T.accB, T.n, CM.gray); const f = Float32Array.from(T.accF, v=>Math.max(0, v)); G.env.ctB = bufCanvas(f, T.n, CM.gray, k ? undefined : 1); }
     img(G.env.ctA, A.x, A.y, A.s, A.s); img(G.env.ctB, B.x, B.y, B.s, B.s);
     const ang = (k - 1)*Math.PI/180;
     for (const P of [A, B]) if (k > 0 && k < 180){ const cx = P.x + P.s/2, cy = P.y + P.s/2, r = P.s*0.5; ln(cx - Math.sin(ang)*r, cy + Math.cos(ang)*r, cx + Math.sin(ang)*r, cy - Math.cos(ang)*r, 'rgba(0,80,255,.7)', 1.5, [5, 4]); }
-    txt(`${k} of 180 angles`, A.x, A.y + A.s + 32, {size:11.5, color:KC.ink});
-    txt('smeared profiles pile up as a 1/r blur', A.x, A.y + A.s + 56, {size:10.5, maxW:A.s});
-    txt('the ramp filter restores the edges', B.x, B.y + B.s + 32, {size:11.5, color:KC.ink, maxW:B.s});
+    txt(`${k} de 180 ángulos`, A.x, A.y + A.s + 32, {size:11.5, color:KC.ink});
+    txt('los perfiles difuminados se acumulan como un desenfoque 1/r', A.x, A.y + A.s + 56, {size:10.5, maxW:A.s});
+    txt('el filtro de rampa restaura los bordes', B.x, B.y + B.s + 32, {size:11.5, color:KC.ink, maxW:B.s});
   },
   (p, t, E)=>{
     const W = E.ctl && E.ctl.ww != null ? E.ctl.ww : (p < 0.5 ? 80 : 2000), L = E.ctl && E.ctl.wl != null ? E.ctl.wl : (p < 0.5 ? 40 : 500);
     E.cur = Object.assign(E.cur || {}, {ww:W, wl:L});
     const F = volSliceAxial(4), X = 70, Y = 150, S = 560;
-    head(`Window ${Math.round(W)} · Level ${Math.round(L)} HU`, X, Y - 12);
+    head(`Ventana ${Math.round(W)} · Nivel ${Math.round(L)} HU`, X, Y - 12);
     if (!F){ placeholder(X, Y, S, S); return; }
     if (!E.hu) E.hu = synthCT(F);
     const key = Math.round(W) + '|' + Math.round(L);
@@ -2185,12 +2187,12 @@ ct:[
     for (let i = 0; i < 112; i++){ const hu = 1400 - i*25, g = Math.max(0, Math.min(255, (hu - (L - W/2))/W*255)); rr(gx, gy + i*5, 26, 5, 0, `rgb(${g},${g},${g})`); }
     // tissue markers; labels are spread apart when the scale squeezes them together
     let lastY = -1e9;
-    [['Bone', 1000], ['Fresh blood', 70], ['Grey matter', 37], ['White matter', 27], ['CSF', 6], ['Fat', -95], ['Air', -1000]].forEach(([nm, hu])=>{
+    [['Hueso', 1000], ['Sangre fresca', 70], ['Sustancia gris', 37], ['Sustancia blanca', 27], ['LCR', 6], ['Grasa', -95], ['Aire', -1000]].forEach(([nm, hu])=>{
       const y = gy + (1400 - hu)/25*5; if (y < gy || y > gy + gh) return; const ly = Math.max(y, lastY + 17); lastY = ly;
       ln(gx + 28, y, gx + 36, y, KC.ink2, 1); ln(gx + 36, y, gx + 44, ly, KC.ink2, 0.8); txt(`${nm} ${hu > 0 ? '+' : ''}${hu}`, gx + 48, ly + 4, {size:10.5, color:KC.ink}); });
     const wy0 = gy + (1400 - (L + W/2))/25*5, wy1 = gy + (1400 - (L - W/2))/25*5;
     rr(gx - 10, Math.max(gy, wy0), 4, Math.max(2, Math.min(gy + gh, wy1) - Math.max(gy, wy0)), 1, KC.sig);
-    txt('Only this band of HU is spread across black → white', X, Y + S + 32, {size:11, color:KC.ink, maxW:S});
+    txt('Solo esta banda de HU se reparte del negro al blanco', X, Y + S + 32, {size:11, color:KC.ink, maxW:S});
   },
 ],
 
@@ -2204,44 +2206,44 @@ pet:[
     txt('O', V[0][0], V[0][1] + 6*G.u, {align:'center', size:15, color:KC.ink, font:'body', weight:600});
     const sub = (v, dx, dy, s, col = KC.ink, hl) => { const e = [v[0] + dx, v[1] + dy]; ln(v[0], v[1], e[0] - dx*0.25, e[1] - dy*0.25, col, 1.8); if (hl){ circ(e[0] + dx*0.25, e[1] + dy*0.25, 30 + 6*Math.sin(t*4), 'rgba(0,80,255,.14)'); } txt(s, e[0] + dx*0.25, e[1] + dy*0.25 + 6*G.u, {align:'center', size:14, color:col, font:'body', weight:600}); };
     sub(V[1], 80, 0, 'OH'); sub(V[2], 60, 70, '¹⁸F', KC.sig, true); sub(V[3], -60, 70, 'OH'); sub(V[4], -84, 0, 'HO'); sub(V[5], -60, -76, 'CH₂OH');
-    txt('FDG', C[0], 760, {align:'center', size:16, color:KC.ink, font:'disp'}); txt('2-deoxy-2-[¹⁸F]fluoro-D-glucose', C[0], 790, {align:'center', size:10.5});
+    txt('FDG', C[0], 760, {align:'center', size:16, color:KC.ink, font:'disp'}); txt('2-desoxi-2-[¹⁸F]fluoro-D-glucosa', C[0], 790, {align:'center', size:10.5});
     // decay curve
-    const g = {x:570, y:250, w:360, h:330}; box(g.x, g.y, g.w, g.h, 'Activity left · half-life 110 min');
+    const g = {x:570, y:250, w:360, h:330}; box(g.x, g.y, g.w, g.h, 'Actividad restante · semivida 110 min');
     const X = m => g.x + m/360*g.w, Y = v => g.y + g.h - 12 - v*(g.h - 36);
     fade(1, ()=>{ G.ctx.fillStyle = 'rgba(0,80,255,.08)'; G.ctx.fillRect(X(30), g.y, X(60) - X(30), g.h); G.ctx.fillStyle = 'rgba(232,150,42,.16)'; G.ctx.fillRect(X(60), g.y, X(80) - X(60), g.h); });
     const pr = smooth(0.05, 0.7, p);
     curve(m=>[X(m), Y(Math.exp(-Math.LN2*m/110))], 0, 360*pr, 90, KC.sig, 2);
     fade(smooth(0.3, 0.6, p), ()=>{ ln(X(110), Y(0.5), X(110), g.y + g.h, KC.ink2, 1, [3, 3]); ln(g.x, Y(0.5), X(110), Y(0.5), KC.ink2, 1, [3, 3]); txt('50 %', g.x + 6, Y(0.5) - 6, {size:10}); txt('110 min', X(110) + 6, g.y + g.h - 8, {size:10}); });
-    txt('uptake', X(45), g.y + 18, {align:'center', size:9.5, color:KC.sig}); txt('scan', X(70) + 4, g.y + 36, {align:'center', size:9.5, color:KC.amber});
+    txt('captación', X(45), g.y + 18, {align:'center', size:9.5, color:KC.sig}); txt('adquisición', X(70) + 4, g.y + 36, {align:'center', size:9.5, color:KC.amber});
     txt('0', g.x, g.y + g.h + 18, {size:9.5, color:KC.muted}); txt('6 h', g.x + g.w, g.y + g.h + 18, {size:9.5, color:KC.muted, align:'right'});
-    fade(smooth(0.5, 0.8, p), ()=>txt('Trapped as FDG-6-phosphate inside cells', g.x, g.y + g.h + 60, {size:11.5, color:KC.ink, maxW:g.w}));
+    fade(smooth(0.5, 0.8, p), ()=>txt('Atrapado como FDG-6-fosfato en el interior celular', g.x, g.y + g.h + 60, {size:11.5, color:KC.ink, maxW:g.w}));
   },
   (p, t)=>{
     const T = 3.4, u = (t % T)/T, N = [250, 540], M = [540, 470];
     const R = rnd(5), pts = [N]; for (let i = 1; i <= 9; i++){ const k = i/9; pts.push([lerp(N[0], M[0], k) + (i < 9 ? (R() - 0.5)*70 : 0), lerp(N[1], M[1], k) + (i < 9 ? (R() - 0.5)*70 : 0)]); }
     for (let i = 0; i < 12; i++){ const a = i*2.4, rr2 = 16*Math.sqrt(i); circ(N[0] + Math.cos(a)*rr2, N[1] + Math.sin(a)*rr2, 15, i % 2 ? '#c9d2d6' : '#9fadb3', KC.paper, 1); }
-    txt('¹⁸F nucleus', N[0], N[1] + 90, {align:'center', size:11, color:KC.ink});
+    txt('núcleo de ¹⁸F', N[0], N[1] + 90, {align:'center', size:11, color:KC.ink});
     const k1 = smooth(0, 0.42, u);
     if (u < 0.48){ const c = G.ctx; c.beginPath(); const nSeg = k1*(pts.length - 1); for (let i = 0; i <= Math.floor(nSeg); i++) i ? c.lineTo(...pts[i]) : c.moveTo(...pts[i]);
       const i0 = Math.floor(nSeg), f = nSeg - i0, q = i0 < pts.length - 1 ? [lerp(pts[i0][0], pts[i0 + 1][0], f), lerp(pts[i0][1], pts[i0 + 1][1], f)] : pts[pts.length - 1]; c.lineTo(...q); _st(KC.sig, 1.2, [3, 4]); c.stroke(); c.setLineDash([]);
       circ(q[0], q[1], 13, KC.sig); txt('+', q[0], q[1] + 5*G.u, {align:'center', color:'#fff', size:13, weight:600});
       const e = [M[0] + 30*Math.sin(t*3), M[1] - 20 + 14*Math.cos(t*2)]; circ(e[0], e[1], 13, KC.ink); txt('−', e[0], e[1] + 5*G.u, {align:'center', color:'#fff', size:13, weight:600});
-      txt('positron e⁺', 330, 380, {size:11, color:KC.sig}); txt('electron e⁻', M[0] + 40, M[1] - 50, {size:11, color:KC.ink}); }
+      txt('positrón e⁺', 330, 380, {size:11, color:KC.sig}); txt('electrón e⁻', M[0] + 40, M[1] - 50, {size:11, color:KC.ink}); }
     if (u >= 0.44 && u < 0.62){ const f = smooth(0.44, 0.62, u); circ(M[0], M[1], 20 + 90*f, `rgba(232,150,42,${0.55*(1 - f)})`); }
     if (u >= 0.48){ const f = smooth(0.48, 1, u), ang = -0.32, L = 60 + 520*f;
       for (const sgn of [1, -1]){ const dx = Math.cos(ang)*sgn, dy = Math.sin(ang)*sgn, nx = -dy, ny = dx;
         curve(s=>[M[0] + dx*s + nx*12*Math.sin(s*0.22 - t*20), M[1] + dy*s + ny*12*Math.sin(s*0.22 - t*20)], Math.max(0, L - 170), L, 60, KC.amber, 2.2);
         txt('511 keV', M[0] + dx*L + (sgn > 0 ? -40 : 40), M[1] + dy*L - 26, {align:'center', size:12, color:KC.amber, weight:500}); }
-      fade(f, ()=>txt('≈ 180° apart', M[0], M[1] + 70, {align:'center', size:11, color:KC.ink})); }
-    ln(N[0], 760, M[0], 760, KC.ink2, 1); ln(N[0], 750, N[0], 770, KC.ink2, 1); ln(M[0], 750, M[0], 770, KC.ink2, 1); txt('≈ 0.6 mm in tissue', (N[0] + M[0])/2, 795, {align:'center', size:10.5});
+      fade(f, ()=>txt('separados ≈ 180°', M[0], M[1] + 70, {align:'center', size:11, color:KC.ink})); }
+    ln(N[0], 760, M[0], 760, KC.ink2, 1); ln(N[0], 750, N[0], 770, KC.ink2, 1); ln(M[0], 750, M[0], 770, KC.ink2, 1); txt('≈ 0.6 mm en tejido', (N[0] + M[0])/2, 795, {align:'center', size:10.5});
   },
   (p, t, E)=>{
     const pr3 = mini3d('pet', 40, 110, 920, 800, t, p, E);
     if (pr3){
       const rg = pr3('ring'), hd = pr3('head');
-      fade(smooth(0, 0.3, p), ()=>{ if (rg) callout(rg[0], rg[1], 760, 860, 'Rings of crystal detectors', {maxW:180}); if (hd) callout(hd[0], hd[1], 250, 860, 'Annihilation in the brain', {maxW:180}); });
-      txt(`${(E.petN || 0).toLocaleString('en-GB')} coincidences`, 40, 70, {size:12, color:KC.ink}); txt('each line joins two detectors hit within ≈ 4 ns', 40, 94, {size:10.5, maxW:420});
-      txt('drag to turn', 960, 70, {size:10.5, align:'right'});
+      fade(smooth(0, 0.3, p), ()=>{ if (rg) callout(rg[0], rg[1], 760, 860, 'Anillos de detectores de cristal', {maxW:180}); if (hd) callout(hd[0], hd[1], 250, 860, 'Aniquilación en el encéfalo', {maxW:180}); });
+      txt(`${(E.petN || 0).toLocaleString('es-ES')} coincidencias`, 40, 70, {size:12, color:KC.ink}); txt('cada línea une dos detectores alcanzados en ≈ 4 ns', 40, 94, {size:10.5, maxW:420});
+      txt('arrastre para girar', 960, 70, {size:10.5, align:'right'});
       return;
     }
     const C = [500, 500], R = 380, nB = 64, P = petSampler();
@@ -2257,11 +2259,11 @@ pet:[
     for (const e of E.ev){ const f = 1 - (t - e.at)/0.9; fade(f, ()=>{ ln(e.A[0], e.A[1], e.B[0], e.B[1], KC.sig, 1.2); circ(e.x, e.y, 6, KC.amber); }); }
     for (let i = 0; i < nB; i++){ const ang = (i + 0.5)/nB*TAU, c = G.ctx; c.save(); c.translate(C[0] + Math.cos(ang)*(R + 22), C[1] + Math.sin(ang)*(R + 22)); c.rotate(ang); rr(-22, -15, 44, 30, 2, KC.paper, KC.ink2, 1); if (E.lit[i] > 0.02) rr(-22, -15, 44, 30, 2, `rgba(0,80,255,${E.lit[i]})`); c.restore(); E.lit[i] *= 0.9; }
     txt(`${E.n.toLocaleString('en-GB')} coincidences`, 40, 60, {size:12, color:KC.ink}); txt('coincidence window ≈ 4 ns', 960, 60, {size:10.5, align:'right'});
-    if (!P) txt('Loading the brain…', C[0], C[1], {align:'center', color:KC.muted});
+    if (!P) txt('Cargando el encéfalo…', C[0], C[1], {align:'center', color:KC.muted});
   },
   (p, t, E)=>{
     const P = petSampler(), A = {x:80, y:260, s:390}, B = {x:530, y:260, s:390};
-    box(A.x, A.y, A.s, A.s, 'Lines of response, back-projected'); box(B.x, B.y, B.s, B.s, 'After OSEM reconstruction');
+    box(A.x, A.y, A.s, A.s, 'Líneas de respuesta, retroproyectadas'); box(B.x, B.y, B.s, B.s, 'Tras la reconstrucción OSEM');
     if (!P){ placeholder(A.x, A.y, A.s, A.s); placeholder(B.x, B.y, B.s, B.s); return; }
     const target = Math.round(smooth(0, 0.8, p)*60000);
     if (target < P.count){ P.acc.fill(0); P.count = 0; }
@@ -2269,8 +2271,8 @@ pet:[
     if (E.petN !== P.count){ E.petN = P.count; E.petCv = bufCanvas(P.acc, P.n, CM.hot); }
     rr(A.x, A.y, A.s, A.s, 3, KC.film); img(E.petCv, A.x, A.y, A.s, A.s);
     rr(B.x, B.y, B.s, B.s, 3, KC.film); img(scanCanvas('fdg', 'normal'), B.x, B.y, B.s, B.s, smooth(0.55, 0.9, p));
-    txt(`${P.count.toLocaleString('en-GB')} events`, A.x, A.y + A.s + 32, {size:11.5, color:KC.ink}); txt('a real scan collects tens of millions', A.x, A.y + A.s + 56, {size:10.5, maxW:A.s});
-    txt('iterative, with attenuation correction', B.x, B.y + B.s + 32, {size:11.5, color:KC.ink, maxW:B.s});
+    txt(`${P.count.toLocaleString('es-ES')} eventos`, A.x, A.y + A.s + 32, {size:11.5, color:KC.ink}); txt('una exploración real recoge decenas de millones', A.x, A.y + A.s + 56, {size:10.5, maxW:A.s});
+    txt('iterativa, con corrección de atenuación', B.x, B.y + B.s + 32, {size:11.5, color:KC.ink, maxW:B.s});
   },
 ],
 
@@ -2280,23 +2282,23 @@ pet:[
 spect:[
   (p, t)=>{
     const g = {x:90, y:230, w:830, h:420}, xs = [0, 0.16, 0.4, 0.64, 1], lab = ['0', '2 min', '1 h', '2 h', '6 h'];
-    box(g.x, g.y, g.w, g.h, 'After one injection (time not to scale)');
+    box(g.x, g.y, g.w, g.h, 'Tras una inyección (tiempo no a escala)');
     const X = u => g.x + u*g.w, Y = v => g.y + g.h - 20 - v*(g.h - 60);
     xs.forEach((u, i)=>{ ln(X(u), g.y + g.h, X(u), g.y + g.h + 8, KC.ink2, 1); txt(lab[i], X(u), g.y + g.h + 26, {align:'center', size:10}); });
     const pr = smooth(0.05, 0.7, p);
     curve(u=>[X(u), Y(u < 0.02 ? 0.25 : u < 0.1 ? 0.25 + 0.7*smooth(0.02, 0.06, u) - 0.3*smooth(0.07, 0.12, u) : 0.3 + 0.05*Math.sin(u*40))], 0, Math.min(1, pr*1.2), 200, KC.ink2, 1.4, [4, 3]);
     curve(u=>[X(u), Y(0.82*smooth(0.01, 0.16, u)*Math.exp(-0.45*Math.max(0, u - 0.16)))], 0, pr, 160, KC.sig, 2.4);
-    fade(smooth(0.1, 0.3, p), ()=>{ circ(X(0.03), Y(0.95), 8, KC.amber); txt('Inject during a seizure', X(0.03) + 16, Y(0.95) + 4, {size:11, color:KC.ink}); });
-    txt('blood flow', X(0.86), Y(0.34) - 10, {size:10.5, color:KC.ink2}); fade(pr, ()=>txt('tracer held in the brain', X(0.5), Y(0.86) - 12, {size:11, color:KC.sig}));
-    fade(smooth(0.45, 0.75, p), ()=>{ G.ctx.fillStyle = 'rgba(232,150,42,.15)'; G.ctx.fillRect(X(0.4), g.y, X(0.64) - X(0.4), g.h); txt('scan', X(0.52), g.y + 22, {align:'center', size:10.5, color:KC.amber}); });
-    fade(smooth(0.6, 0.9, p), ()=>txt('The image still shows flow at the moment of injection.', 90, 770, {size:12, color:KC.ink, maxW:820}));
+    fade(smooth(0.1, 0.3, p), ()=>{ circ(X(0.03), Y(0.95), 8, KC.amber); txt('Inyectar durante una crisis epiléptica', X(0.03) + 16, Y(0.95) + 4, {size:11, color:KC.ink}); });
+    txt('flujo sanguíneo', X(0.86), Y(0.34) - 10, {size:10.5, color:KC.ink2}); fade(pr, ()=>txt('trazador retenido en el encéfalo', X(0.5), Y(0.86) - 12, {size:11, color:KC.sig}));
+    fade(smooth(0.45, 0.75, p), ()=>{ G.ctx.fillStyle = 'rgba(232,150,42,.15)'; G.ctx.fillRect(X(0.4), g.y, X(0.64) - X(0.4), g.h); txt('adquisición', X(0.52), g.y + 22, {align:'center', size:10.5, color:KC.amber}); });
+    fade(smooth(0.6, 0.9, p), ()=>txt('La imagen sigue mostrando el flujo en el momento de la inyección.', 90, 770, {size:12, color:KC.ink, maxW:820}));
   },
   (p, t, E)=>{
     for (let i = 0; i < 7; i++) circ(170 + i*110, 170, 42, KC.soft, KC.ink2, 1);
-    txt('photomultiplier tubes', 500, 110, {align:'center', size:10.5});
-    rr(110, 220, 780, 48, 2, 'rgba(0,80,255,.10)', KC.sig, 1); txt('NaI crystal', 900, 252, {size:10.5, color:KC.sig});
+    txt('tubos fotomultiplicadores', 500, 110, {align:'center', size:10.5});
+    rr(110, 220, 780, 48, 2, 'rgba(0,80,255,.10)', KC.sig, 1); txt('cristal de NaI', 900, 252, {size:10.5, color:KC.sig});
     for (let x = 110; x <= 890; x += 18) ln(x, 270, x, 380, KC.ink2, 2);
-    txt('lead collimator', 900, 330, {size:10.5, color:KC.ink});
+    txt('colimador de plomo', 900, 330, {size:10.5, color:KC.ink});
     ell(500, 720, 280, 170, KC.soft, KC.line, 1);
     const src = [[420, 690], [560, 740], [480, 780], [620, 680], [380, 760]];
     E.ph = E.ph || []; E.last = E.last || t; E.em = E.em || 0; E.pass = E.pass || 0; E.flash = E.flash || [];
@@ -2309,36 +2311,36 @@ spect:[
       if (ph.hit && !pass) fade(1 - (t - ph.t0 - tot/900)*3, ()=>{ ln(x - 6, y - 6, x + 6, y + 6, KC.ink2, 1.4); ln(x - 6, y + 6, x + 6, y - 6, KC.ink2, 1.4); }); }
     E.flash = E.flash.filter(f=>t - f.t0 < 0.5); for (const f of E.flash) circ(f.x, 244, 26*(1 - (t - f.t0)*2) + 4, `rgba(0,80,255,${0.6*(1 - (t - f.t0)*2)})`);
     for (const s of src) circ(s[0], s[1], 7, KC.amber);
-    txt('⁹⁹ᵐTc in the brain · 140 keV', 500, 925, {align:'center', size:11, color:KC.ink});
-    txt('Only photons travelling straight up reach the crystal', 500, 430, {align:'center', size:11, color:KC.ink, maxW:700});
+    txt('⁹⁹ᵐTc en el encéfalo · 140 keV', 500, 925, {align:'center', size:11, color:KC.ink});
+    txt('Solo los fotones que viajan en vertical alcanzan el cristal', 500, 430, {align:'center', size:11, color:KC.ink, maxW:700});
   },
   (p, t, E)=>{
     const pr3 = mini3d('spect', 40, 110, 920, 800, t, p, E);
     if (pr3){
       const k3 = Math.round(smooth(0, 0.92, p)*120), h0 = pr3('head0');
-      fade(smooth(0, 0.3, p), ()=>{ if (h0) callout(h0[0], h0[1], h0[0] < 500 ? 250 : 750, 180, 'Gamma camera head', {maxW:170}); });
-      txt(`${k3} of 120 views`, 40, 70, {size:12, color:KC.ink}); txt('3° apart · three heads turning together', 40, 94, {size:10.5});
-      txt('drag to turn', 960, 70, {size:10.5, align:'right'});
-      fade(smooth(0.3, 0.6, p), ()=>txt('Only photons that travel straight into a collimator hole are counted', 500, 930, {align:'center', size:11, color:KC.ink, maxW:700}));
+      fade(smooth(0, 0.3, p), ()=>{ if (h0) callout(h0[0], h0[1], h0[0] < 500 ? 250 : 750, 180, 'Cabezal de cámara gamma', {maxW:170}); });
+      txt(`${k3} de 120 vistas`, 40, 70, {size:12, color:KC.ink}); txt('separadas 3° · tres cabezales girando juntos', 40, 94, {size:10.5});
+      txt('arrastre para girar', 960, 70, {size:10.5, align:'right'});
+      fade(smooth(0.3, 0.6, p), ()=>txt('Solo se cuentan los fotones que viajan en línea recta por un orificio del colimador', 500, 930, {align:'center', size:11, color:KC.ink, maxW:700}));
       return;
     }
     const C = [500, 520], th = t*0.45, k = Math.round(smooth(0, 0.92, p)*120);
     for (let i = 0; i < 120; i++){ const a = i/120*TAU; ln(C[0] + Math.cos(a)*400, C[1] + Math.sin(a)*400, C[0] + Math.cos(a)*(i < k ? 430 : 412), C[1] + Math.sin(a)*(i < k ? 430 : 412), i < k ? KC.sig : KC.line, i < k ? 2 : 1); }
     ell(C[0], C[1], 140, 170, KC.soft2, KC.ink2, 1.2); ell(C[0], C[1], 124, 154, KC.soft, null);
     for (let h = 0; h < 3; h++){ const a = th + h*TAU/3, c = G.ctx; c.save(); c.translate(C[0] + Math.cos(a)*290, C[1] + Math.sin(a)*290); c.rotate(a + Math.PI/2); rr(-120, -32, 240, 64, 4, KC.paper, KC.ink2, 1.3); rr(-110, 18, 220, 10, 1, KC.sig); c.restore(); }
-    txt(`${k} of 120 views`, 40, 70, {size:12, color:KC.ink}); txt('3° apart', 40, 94, {size:10.5}); txt('three heads', 960, 70, {size:10.5, align:'right'});
+    txt(`${k} de 120 vistas`, 40, 70, {size:12, color:KC.ink}); txt('separadas 3°', 40, 94, {size:10.5}); txt('tres cabezales', 960, 70, {size:10.5, align:'right'});
   },
   (p, t, E)=>{
     const T = tomo('hmpao', 'normal'), k = Math.round(smooth(0.03, 0.8, p)*180), A = {x:70, y:250, s:440};
-    box(A.x, A.y, A.s, A.s, 'HMPAO perfusion, reconstructing');
+    box(A.x, A.y, A.s, A.s, 'Perfusión con HMPAO, reconstruyendo');
     if (!T) placeholder(A.x, A.y, A.s, A.s);
     else { tomoTo(T, k); if (E.spK !== k){ E.spK = k; const f = Float32Array.from(T.accF, v=>Math.max(0, v)); E.spCv = bufCanvas(f, T.n, CM.spect, k ? undefined : 1); }
       rr(A.x, A.y, A.s, A.s, 3, KC.film); img(E.spCv, A.x, A.y, A.s, A.s); img(scanCanvas('hmpao', 'normal'), A.x, A.y, A.s, A.s, smooth(0.8, 0.98, p)); }
-    txt(`${k} of 180 angles`, A.x, A.y + A.s + 32, {size:11.5, color:KC.ink});
+    txt(`${k} de 180 ángulos`, A.x, A.y + A.s + 32, {size:11.5, color:KC.ink});
     const d1 = scanCanvas('dat', 'normal'), d2 = scanCanvas('dat', 'pd');
     fade(smooth(0.3, 0.6, p), ()=>{ head('DaTscan', 560, 240); d1 ? img(d1, 560, 250, 180, 180) : placeholder(560, 250, 180, 180, '…'); d2 ? img(d2, 760, 250, 180, 180) : placeholder(760, 250, 180, 180, '…');
-      txt('normal: two commas', 560, 456, {size:10.5, maxW:180}); txt('Parkinson’s: full stops', 760, 456, {size:10.5, maxW:180}); });
-    fade(smooth(0.5, 0.8, p), ()=>txt('Readers judge the pattern. Edges stay soft at 8–10 mm resolution.', 560, 560, {size:11.5, color:KC.ink, maxW:380}));
+      txt('normal: dos comas', 560, 456, {size:10.5, maxW:180}); txt('Parkinson: puntos finales', 760, 456, {size:10.5, maxW:180}); });
+    fade(smooth(0.5, 0.8, p), ()=>txt('Los lectores interpretan el patrón. Los bordes permanecen suaves con 8–10 mm de resolución.', 560, 560, {size:11.5, color:KC.ink, maxW:380}));
   },
 ],
 
@@ -2353,59 +2355,59 @@ fmri:[
     poly([[S[0], S[1] - 44], [S[0] - 40, S[1] + 26], [S[0] + 40, S[1] + 26]], KC.paper, KC.ink, 1.6);
     const rate = lerp(0.8, 7, a); E.sp = E.sp || []; E.lt = E.lt || t; while (t - E.lt > 1/rate){ E.lt += 1/rate; E.sp.push(t); } E.sp = E.sp.filter(s=>t - s < 0.7);
     for (const s of E.sp){ const f = (t - s)/0.7; circ(S[0], S[1], 40 + 120*f, null, `rgba(0,80,255,${0.7*(1 - f)})`, 1.6); }
-    txt('Neuron firing', S[0] + 70, S[1] + 10, {size:11, color:KC.sig});
+    txt('Descarga neuronal', S[0] + 70, S[1] + 10, {size:11, color:KC.sig});
     const r = lerp(40, 60, a), cy = 700;
     G.ctx.fillStyle = 'rgba(217,65,43,.06)'; G.ctx.fillRect(60, cy - r, 880, 2*r); ln(60, cy - r, 940, cy - r, KC.red, 2); ln(60, cy + r, 940, cy + r, KC.red, 2);
     const v = lerp(70, 170, a), fo = lerp(0.5, 0.92, a);
     for (let i = 0; i < 16; i++){ const x = 60 + (((i*61 + t*v) % 900) + 900) % 900, ox = hashf(i + Math.floor((i*61 + t*v)/900)*17) < fo; if (x > 940) continue; ell(x, cy + (hashf(i*3) - 0.5)*r, 18, 12, ox ? KC.red : KC.deoxy); }
-    txt('Capillary', 60, cy - r - 16, {size:11, color:KC.ink});
+    txt('Capilar', 60, cy - r - 16, {size:11, color:KC.ink});
     fade(a, ()=>{ txt('widens', 940, cy - r - 16, {size:11, align:'right', color:KC.red}); arrow(900, cy - 40, 900, cy - r + 2, KC.red, 1.4, 7); });
-    fade(smooth(0.35, 0.7, p), ()=>{ rr(560, 230, 360, 150, 4, KC.soft); txt('blood flow  +30–50 %', 584, 285, {size:12.5, color:KC.ink}); txt('oxygen use  +5–20 %', 584, 325, {size:12.5, color:KC.ink}); txt('→ surplus of oxygen-rich blood', 584, 360, {size:10.5}); });
-    ell(140, 860, 14, 10, KC.red); txt('oxygenated', 164, 864, {size:10.5}); ell(340, 860, 14, 10, KC.deoxy); txt('deoxygenated', 364, 864, {size:10.5});
+    fade(smooth(0.35, 0.7, p), ()=>{ rr(560, 230, 360, 150, 4, KC.soft); txt('flujo sanguíneo  +30–50 %', 584, 285, {size:12.5, color:KC.ink}); txt('consumo de oxígeno  +5–20 %', 584, 325, {size:12.5, color:KC.ink}); txt('→ excedente de sangre rica en oxígeno', 584, 360, {size:10.5}); });
+    ell(140, 860, 14, 10, KC.red); txt('oxigenada', 164, 864, {size:10.5}); ell(340, 860, 14, 10, KC.deoxy); txt('desoxigenada', 364, 864, {size:10.5});
   },
   (p, t)=>{
-    const sides = [[270, 'Rest', 0.55, 40], [730, 'Active', 0.15, 46]], a = smooth(0, 0.4, p);
+    const sides = [[270, 'Reposo', 0.55, 40], [730, 'Activo', 0.15, 46]], a = smooth(0, 0.4, p);
     for (const [cx, nm, fd, t2s] of sides){
       head(nm, cx, 170, {align:'center', color:KC.ink});
       circ(cx, 330, 130, 'rgba(217,65,43,.05)', KC.red, 1.6);
       for (let i = 0; i < 16; i++){ const ang = i*2.4 + t*0.3, rad = 30 + (i % 4)*24, x = cx + Math.cos(ang)*rad, y = 330 + Math.sin(ang)*rad, de = hashf(i + cx) < fd;
         if (de) fade(a, ()=>circ(x, y, 24 + 3*Math.sin(t*3 + i), null, 'rgba(107,42,79,.45)', 1, [2, 3])); circ(x, y, 12, de ? KC.deoxy : KC.red); }
-      const g = {x:cx - 190, y:540, w:380, h:220}; box(g.x, g.y, g.w, g.h, 'T2* decay');
-      curve(u=>[g.x + u/100*g.w, g.y + g.h - 10 - Math.exp(-u/t2s)*(g.h - 30)], 0, 100, 80, nm === 'Rest' ? KC.ink2 : KC.sig, 2);
+      const g = {x:cx - 190, y:540, w:380, h:220}; box(g.x, g.y, g.w, g.h, 'Decaimiento T2*');
+      curve(u=>[g.x + u/100*g.w, g.y + g.h - 10 - Math.exp(-u/t2s)*(g.h - 30)], 0, 100, 80, nm === 'Reposo' ? KC.ink2 : KC.sig, 2);
       const te = 30, sv = Math.exp(-te/t2s); ln(g.x + te/100*g.w, g.y, g.x + te/100*g.w, g.y + g.h, KC.amber, 1.2, [4, 3]);
-      circ(g.x + te/100*g.w, g.y + g.h - 10 - sv*(g.h - 30), 6, nm === 'Rest' ? KC.ink2 : KC.sig); txt('TE 30 ms', g.x + te/100*g.w + 8, g.y + 20, {size:10, color:KC.amber});
+      circ(g.x + te/100*g.w, g.y + g.h - 10 - sv*(g.h - 30), 6, nm === 'Reposo' ? KC.ink2 : KC.sig); txt('TE 30 ms', g.x + te/100*g.w + 8, g.y + 20, {size:10, color:KC.amber});
     }
-    fade(smooth(0.4, 0.7, p), ()=>{ txt('more signal at TE when deoxyhaemoglobin is washed out', 500, 830, {align:'center', size:12, color:KC.ink, maxW:820}); txt('real change ≈ 1–3 %, exaggerated here', 500, 858, {align:'center', size:10.5}); });
+    fade(smooth(0.4, 0.7, p), ()=>{ txt('más señal en TE cuando se elimina la desoxihemoglobina', 500, 830, {align:'center', size:12, color:KC.ink, maxW:820}); txt('cambio real ≈ 1–3 %, exagerado aquí', 500, 858, {align:'center', size:10.5}); });
   },
   (p, t)=>{
     const g = {x:100, y:240, w:800, h:440}, X = s => g.x + s/30*g.w, Y = v => g.y + g.h*0.72 - v*g.h*0.62;
     const gam = (x, k) => x <= 0 ? 0 : Math.pow(x, k - 1)*Math.exp(-x);
     const raw = s => gam(s, 6)/120 - gam(s, 16)/(1.3076744e12*6); let mx = 0; for (let s = 0; s < 30; s += 0.1) mx = Math.max(mx, raw(s)); const h = s => raw(s)/mx;
-    box(g.x, g.y, g.w, g.h, 'BOLD response to a 1 s stimulus');
+    box(g.x, g.y, g.w, g.h, 'Respuesta BOLD a un estímulo de 1 s');
     ln(g.x, Y(0), g.x + g.w, Y(0), KC.line, 1);
     for (let s = 0; s <= 30; s += 2){ ln(X(s), g.y + g.h, X(s), g.y + g.h - (s % 10 ? 6 : 12), KC.ink2, 1); if (s % 10 === 0) txt(s + ' s', X(s), g.y + g.h + 22, {align:'center', size:10}); }
-    rr(X(0), g.y + g.h - 34, X(1) - X(0), 20, 1, KC.amber); txt('stimulus', X(1) + 8, g.y + g.h - 19, {size:10, color:KC.amber});
+    rr(X(0), g.y + g.h - 34, X(1) - X(0), 20, 1, KC.amber); txt('estímulo', X(1) + 8, g.y + g.h - 19, {size:10, color:KC.amber});
     const pr = smooth(0.05, 0.7, p);
     curve(s=>[X(s), Y(h(s))], 0, 30*pr, 200, KC.sig, 2.4);
-    fade(smooth(0.3, 0.5, p), ()=>{ circ(X(5), Y(1), 6, KC.sig); txt('peak ≈ 5–6 s', X(5) + 14, Y(1) - 8, {size:11, color:KC.ink}); });
+    fade(smooth(0.3, 0.5, p), ()=>{ circ(X(5), Y(1), 6, KC.sig); txt('pico ≈ 5–6 s', X(5) + 14, Y(1) - 8, {size:11, color:KC.ink}); });
     fade(smooth(0.55, 0.75, p), ()=>{ circ(X(15.5), Y(h(15.5)), 6, KC.ink2); txt('undershoot', X(15.5), Y(h(15.5)) + 30, {size:11, align:'center'}); });
     const tp = (t*4) % 30; fade(pr > 0.99 ? 1 : 0, ()=>{ ln(X(tp), g.y, X(tp), g.y + g.h, 'rgba(0,80,255,.3)', 1); circ(X(tp), Y(h(tp)), 5, KC.sig); });
-    txt('ticks: one brain volume every 2 s (TR)', g.x, g.y + g.h + 54, {size:10.5});
-    fade(smooth(0.6, 0.9, p), ()=>txt('Neurons answer in milliseconds; the blood takes seconds.', g.x, 170, {size:12, color:KC.ink, maxW:800}));
+    txt('marcas: un volumen cerebral cada 2 s (TR)', g.x, g.y + g.h + 54, {size:10.5});
+    fade(smooth(0.6, 0.9, p), ()=>txt('Las neuronas responden en milisegundos; la sangre tarda segundos.', g.x, 170, {size:12, color:KC.ink, maxW:800}));
   },
   (p, t, E)=>{
     const g = {x:80, y:170, w:840, h:90}, N = 240, X = i => g.x + i/N*g.w;
-    head('Task design · 15 s blocks', g.x, g.y - 12);
-    for (let b = 0; b < 8; b++) if (b % 2) { G.ctx.fillStyle = 'rgba(0,80,255,.08)'; G.ctx.fillRect(X(b*30), g.y, X(30) - X(0), g.h + 170); txt('tap', X(b*30 + 15), g.y + 20, {align:'center', size:10, color:KC.sig}); }
+    head('Diseño de la tarea · bloques de 15 s', g.x, g.y - 12);
+    for (let b = 0; b < 8; b++) if (b % 2) { G.ctx.fillStyle = 'rgba(0,80,255,.08)'; G.ctx.fillRect(X(b*30), g.y, X(30) - X(0), g.h + 170); txt('golpeo', X(b*30 + 15), g.y + 20, {align:'center', size:10, color:KC.sig}); }
     if (!E.ts){ const R = rnd(3), box = Array.from({length:N}, (_, i)=>Math.floor(i/30) % 2), hrf = Array.from({length:24}, (_, k)=>{ const s = k*0.5; return Math.pow(s, 5)*Math.exp(-s)/120 - Math.pow(s, 15)*Math.exp(-s)/(1.3e12*6); });
       const m = box.map((_, i)=>{ let s = 0; for (let k = 0; k < 24; k++) if (i - k >= 0) s += box[i - k]*hrf[k]; return s; }), mm = Math.max(...m);
       E.ts = m.map(v=>v/mm); E.noisy = E.ts.map(v=>v + (R() + R() + R() - 1.5)*0.45); }
     const pr = smooth(0.05, 0.6, p), yb = g.y + g.h + 140;
     curve(i=>[X(i), yb - E.noisy[Math.min(N - 1, Math.round(i))]*90], 0, (N - 1)*pr, Math.max(2, Math.round(N*pr)), KC.ink2, 1.2);
     fade(smooth(0.3, 0.6, p), ()=>curve(i=>[X(i), yb - E.ts[Math.round(i)]*90], 0, N - 1, N, KC.sig, 2, [5, 3]));
-    txt('one voxel in left motor cortex', g.x, yb + 40, {size:10.5}); fade(smooth(0.3, 0.6, p), ()=>txt('model (task ⊗ HRF)', g.x + g.w, yb + 40, {size:10.5, color:KC.sig, align:'right'}));
+    txt('un vóxel en la corteza motora izquierda', g.x, yb + 40, {size:10.5}); fade(smooth(0.3, 0.6, p), ()=>txt('modelo (tarea ⊗ HRF)', g.x + g.w, yb + 40, {size:10.5, color:KC.sig, align:'right'}));
     const cv = scanCanvas('bold', 'motor'), s = 380, x = 500 - s/2, y = 520;
-    fade(smooth(0.45, 0.8, p), ()=>{ cv ? img(cv, x, y, s, s) : placeholder(x, y, s, s); txt('z-map on anatomy', x + s + 20, y + 30, {size:11.5, color:KC.ink}); txt('right-hand tapping', x + s + 20, y + 56, {size:10.5}); txt('→ left motor cortex', x + s + 20, y + 78, {size:10.5}); });
+    fade(smooth(0.45, 0.8, p), ()=>{ cv ? img(cv, x, y, s, s) : placeholder(x, y, s, s); txt('mapa z sobre la anatomía', x + s + 20, y + 30, {size:11.5, color:KC.ink}); txt('golpeo con la mano derecha', x + s + 20, y + 56, {size:10.5}); txt('→ corteza motora izquierda', x + s + 20, y + 78, {size:10.5}); });
   },
 ],
 
@@ -2415,7 +2417,7 @@ fmri:[
 eeg:[
   (p, t)=>{
     const a = smooth(0.12, 0.6, p);
-    const bands = [['Scalp', 150, 215, KC.skin], ['Skull', 215, 285, '#e4e7e8'], ['CSF', 285, 315, '#dfeaff'], ['Cortex', 315, 640, '#f1ebe8'], ['White matter', 640, 760, KC.paper]];
+    const bands = [['Cuero cabelludo', 150, 215, KC.skin], ['Cráneo', 215, 285, '#e4e7e8'], ['LCR', 285, 315, '#dfeaff'], ['Corteza', 315, 640, '#f1ebe8'], ['Sustancia blanca', 640, 760, KC.paper]];
     for (const [nm, y0, y1, col] of bands){ G.ctx.fillStyle = col; G.ctx.fillRect(40, y0, 920, y1 - y0); ln(40, y1, 960, y1, KC.line, 1); txt(nm, 52, y0 + 22, {size:10, color:KC.muted}); }
     for (let i = 0; i < 50; i++) circ(60 + hashf(i)*880, 228 + hashf(i + 9)*44, 3 + hashf(i + 3)*4, '#d0d6d8');
     const xs = [230, 330, 430, 530, 630, 730, 830];
@@ -2423,10 +2425,10 @@ eeg:[
       ln(x, 560, x, 330, KC.ink2, 2); ln(x, 420, x - 40, 370, KC.ink2, 1.2); ln(x, 450, x + 40, 400, KC.ink2, 1.2); ln(x, 572, x - 40, 620, KC.ink2, 1.2); ln(x, 572, x + 40, 620, KC.ink2, 1.2);
       poly([[x, 532], [x - 22, 584], [x + 22, 584]], KC.paper, KC.ink, 1.4);
       const y = 560 - ph*220; circ(x, y, 6, KC.sig); });
-    fade(a, ()=>{ arrow(900, 560, 900, 340, KC.sig, 3, 14); txt('+', 918, 350, {size:16, color:KC.sig}); txt('−', 918, 572, {size:16, color:KC.sig}); txt('dipole', 900, 600, {align:'center', size:10.5, color:KC.sig}); });
-    rr(470, 120, 60, 26, 13, KC.ink); ln(500, 120, 500, 60, KC.ink, 2); txt('electrode', 540, 100, {size:11, color:KC.ink});
+    fade(a, ()=>{ arrow(900, 560, 900, 340, KC.sig, 3, 14); txt('+', 918, 350, {size:16, color:KC.sig}); txt('−', 918, 572, {size:16, color:KC.sig}); txt('dipolo', 900, 600, {align:'center', size:10.5, color:KC.sig}); });
+    rr(470, 120, 60, 26, 13, KC.ink); ln(500, 120, 500, 60, KC.ink, 2); txt('electrodo', 540, 100, {size:11, color:KC.ink});
     const amp = lerp(0.15, 1, a); curve(u=>[80 + u*840, 860 - amp*55*Math.sin(u*40 - t*9)*(0.6 + 0.4*Math.sin(u*7))], 0, 1, 200, KC.ink, 1.5);
-    txt('scalp signal', 80, 800, {size:10.5}); txt(a > 0.6 ? 'cells in step: signals add' : 'cells out of step: signals cancel', 920, 800, {size:10.5, align:'right', color:a > 0.6 ? KC.sig : KC.muted});
+    txt('señal de cuero cabelludo', 80, 800, {size:10.5}); txt(a > 0.6 ? 'células en fase: las señales se suman' : 'células desfasadas: las señales se cancelan', 920, 800, {size:10.5, align:'right', color:a > 0.6 ? KC.sig : KC.muted});
   },
   (p, t)=>{
     const C = [500, 540], R = 330;
@@ -2437,11 +2439,11 @@ eeg:[
     const E = [['Fz',0.4,0],['Cz',0,0],['Pz',0.4,180],['C3',0.4,-90],['C4',0.4,90],['F3',0.51,-39],['F4',0.51,39],['P3',0.51,-141],['P4',0.51,141],
       ['Fp1',0.8,-18],['Fp2',0.8,18],['F7',0.8,-54],['F8',0.8,54],['T7',0.8,-90],['T8',0.8,90],['P7',0.8,-126],['P8',0.8,126],['O1',0.8,-162],['O2',0.8,162],['A1',1.06,-90],['A2',1.06,90]];
     const k = Math.ceil(smooth(0, 0.75, p)*E.length);
-    fade(1 - smooth(0.2, 0.5, p), ()=>{ [[0.1,'10 %'],[0.3,'20 %'],[0.5,'20 %'],[0.7,'20 %'],[0.9,'20 %']].forEach(([f, s], i)=>{ const y = C[1] - R + f*2*R; ln(C[0] - 10, y, C[0] + 10, y, KC.ink2, 1); }); txt('nasion → inion, in 10 % and 20 % steps', C[0] + 20, C[1] - R + 80, {size:10.5}); });
+    fade(1 - smooth(0.2, 0.5, p), ()=>{ [[0.1,'10 %'],[0.3,'20 %'],[0.5,'20 %'],[0.7,'20 %'],[0.9,'20 %']].forEach(([f, s], i)=>{ const y = C[1] - R + f*2*R; ln(C[0] - 10, y, C[0] + 10, y, KC.ink2, 1); }); txt('nasión → inión, en pasos del 10 % y del 20 %', C[0] + 20, C[1] - R + 80, {size:10.5}); });
     E.slice(0, k).forEach(([nm, r, d], i)=>{ const x = C[0] + R*r*Math.sin(d*Math.PI/180), y = C[1] - R*r*Math.cos(d*Math.PI/180), ref = nm[0] === 'A', fresh = i === k - 1;
       circ(x, y, 26, ref ? KC.soft : KC.paper, fresh ? KC.sig : KC.ink, fresh ? 2.4 : 1.4); txt(nm, x, y + 4*G.u, {align:'center', size:10.5, color:ref ? KC.muted : KC.ink, weight:500}); });
-    txt('nose', C[0], C[1] - R - 64, {align:'center', size:10}); txt('L', C[0] - R - 70, C[1] + 6, {size:12, align:'center', color:KC.ink}); txt('R', C[0] + R + 70, C[1] + 6, {size:12, align:'center', color:KC.ink});
-    fade(smooth(0.6, 0.9, p), ()=>txt('odd = left · even = right · z = midline', C[0], C[1] + R + 60, {align:'center', size:11, color:KC.ink}));
+    txt('nariz', C[0], C[1] - R - 64, {align:'center', size:10}); txt('L', C[0] - R - 70, C[1] + 6, {size:12, align:'center', color:KC.ink}); txt('R', C[0] + R + 70, C[1] + 6, {size:12, align:'center', color:KC.ink});
+    fade(smooth(0.6, 0.9, p), ()=>txt('impares = izquierda · pares = derecha · z = línea media', C[0], C[1] + R + 60, {align:'center', size:11, color:KC.ink}));
   },
   (p, t)=>{
     const hum = u => Math.sin(u*120 - t*30)*28, sig = u => Math.sin(u*28 - t*9)*16*(0.7 + 0.3*Math.sin(u*5 - t));
@@ -2451,15 +2453,15 @@ eeg:[
     poly([[520, 330], [520, 570], [700, 450]], KC.paper, KC.ink, 2); txt('+', 536, 408, {size:16, color:KC.ink}); txt('−', 536, 508, {size:16, color:KC.ink});
     ln(700, 450, 740, 450, KC.ink2, 1.4);
     box(740, 360, 220, 180, 'Fp1 − F7'); curve(u=>[750 + u*200, 450 + sig(u)*0.7*3], 0, 1, 160, KC.sig, 1.6);
-    fade(smooth(0.2, 0.5, p), ()=>{ txt('mains hum on both inputs', 300, 160, {align:'center', size:10.5, color:KC.ink2}); txt('cancels in the difference', 850, 610, {align:'center', size:11, color:KC.sig}); });
-    fade(smooth(0.45, 0.8, p), ()=>{ ln(760, 700, 760, 760, KC.ink, 1.4); txt('50 µV', 772, 736, {size:10.5}); ln(760, 790, 860, 790, KC.ink, 1.4); txt('1 s', 810, 815, {size:10.5, align:'center'}); txt('gain ≈ 10,000–100,000', 120, 820, {size:11, color:KC.ink}); });
+    fade(smooth(0.2, 0.5, p), ()=>{ txt('zumbido de red en ambas entradas', 300, 160, {align:'center', size:10.5, color:KC.ink2}); txt('se cancela en la diferencia', 850, 610, {align:'center', size:11, color:KC.sig}); });
+    fade(smooth(0.45, 0.8, p), ()=>{ ln(760, 700, 760, 760, KC.ink, 1.4); txt('50 µV', 772, 736, {size:10.5}); ln(760, 790, 860, 790, KC.ink, 1.4); txt('1 s', 810, 815, {size:10.5, align:'center'}); txt('ganancia ≈ 10.000–100.000', 120, 820, {size:11, color:KC.ink}); });
   },
   (p, t)=>{
-    const B = [['Delta', '< 4 Hz', 'deep sleep', 2, 1, 1], ['Theta', '4–8 Hz', 'drowsy', 6, 0.7, 0.9], ['Alpha', '8–13 Hz', 'eyes closed, relaxed', 10, 0.6, 0.8], ['Beta', '13–30 Hz', 'alert, thinking', 20, 0.35, 0.9], ['Gamma', '> 30 Hz', 'binding, attention', 40, 0.2, 1]];
+    const B = [['Delta', '< 4 Hz', 'sueño profundo', 2, 1, 1], ['Theta', '4–8 Hz', 'somnolencia', 6, 0.7, 0.9], ['Alfa', '8–13 Hz', 'ojos cerrados, relajado', 10, 0.6, 0.8], ['Beta', '13–30 Hz', 'alerta, pensando', 20, 0.35, 0.9], ['Gamma', '> 30 Hz', 'integración, atención', 40, 0.2, 1]];
     const hi = Math.min(4, Math.floor(smooth(0, 1, p)*5));
     B.forEach(([nm, hz, st, f, a, irr], i)=>{ const y = 220 + i*150, on = i === hi;
       fade(on ? 1 : 0.42, ()=>{ txt(nm, 60, y - 12, {size:15, color:on ? KC.sig : KC.ink, font:'disp'}); txt(hz, 60, y + 14, {size:10.5}); txt(st, 60, y + 36, {size:10.5, color:KC.ink2, maxW:240});
-        curve(u=>{ const tt = u*2.5 + t*0.8; const env = nm === 'Alpha' ? 0.6 + 0.4*Math.sin(tt*1.4) : 1; return [330 + u*620, y + 6 - 52*a*env*(Math.sin(TAU*f*tt*0.35) + 0.3*irr*Math.sin(TAU*f*tt*0.53 + 1))]; }, 0, 1, 360, on ? KC.sig : KC.ink2, on ? 1.8 : 1.1); }); });
+        curve(u=>{ const tt = u*2.5 + t*0.8; const env = nm === 'Alfa' ? 0.6 + 0.4*Math.sin(tt*1.4) : 1; return [330 + u*620, y + 6 - 52*a*env*(Math.sin(TAU*f*tt*0.35) + 0.3*irr*Math.sin(TAU*f*tt*0.53 + 1))]; }, 0, 1, 360, on ? KC.sig : KC.ink2, on ? 1.8 : 1.1); }); });
     txt('1 s', 950, 950, {size:10, align:'right'});
   },
 ],
@@ -2472,17 +2474,17 @@ meg:[
     const C = [300, 520], a = smooth(0, 0.4, p);
     for (let k = 1; k <= 4; k++) fade(a*(1.1 - k*0.18), ()=>{ const c = G.ctx; c.beginPath(); c.ellipse(C[0], C[1], 24*k, 70*k, 0, 0, TAU); _st(KC.sig, 1.3, [8, 6]); c.lineDashOffset = -t*24*G.u; c.stroke(); c.setLineDash([]); c.lineDashOffset = 0; });
     arrow(C[0] - 120, C[1], C[0] + 120, C[1], KC.amber, 5, 18);
-    txt('current', C[0], C[1] + 96, {align:'center', size:11, color:KC.amber}); txt('magnetic field circles it', C[0], C[1] - 320, {align:'center', size:11, color:KC.sig});
+    txt('current', C[0], C[1] + 96, {align:'center', size:11, color:KC.amber}); txt('el campo magnético lo rodea', C[0], C[1] - 320, {align:'center', size:11, color:KC.sig});
     const x = 700, y0 = 860, y1 = 160, dec = v => Math.log10(v), Y = v => y0 - (dec(v) - dec(1e-15))/(dec(1e-4) - dec(1e-15))*(y0 - y1);
     ln(x, y0, x, y1, KC.ink2, 1.6);
     [[1e-15,'1 fT'],[1e-12,'1 pT'],[1e-9,'1 nT'],[1e-6,'1 µT']].forEach(([v, s])=>{ ln(x - 8, Y(v), x, Y(v), KC.ink2, 1.2); txt(s, x - 14, Y(v) + 4, {size:10, align:'right'}); });
-    const M = [[50e-6,'Earth',KC.ink],[1e-6,'City traffic',KC.ink2],[50e-12,'Heart',KC.ink2],[1e-12,'Alpha rhythm',KC.sig],[100e-15,'Evoked response',KC.sig],[3e-15,'Sensor noise',KC.muted]];
+    const M = [[50e-6,'Tierra',KC.ink],[1e-6,'Tráfico urbano',KC.ink2],[50e-12,'Corazón',KC.ink2],[1e-12,'Ritmo alfa',KC.sig],[100e-15,'Respuesta evocada',KC.sig],[3e-15,'Ruido del sensor',KC.muted]];
     M.forEach(([v, s, col], i)=>fade(smooth(i*0.1, i*0.1 + 0.2, p), ()=>{ circ(x, Y(v), 6, col); ln(x + 6, Y(v), x + 30, Y(v), col, 1); txt(s, x + 38, Y(v) + 4, {size:11, color:col, font:'body'}); }));
-    head('Field strength', x - 60, y1 - 30);
+    head('Intensidad del campo', x - 60, y1 - 30);
   },
   (p, t)=>{
     for (let k = 0; k < 3; k++) rr(40 + k*16, 110 + k*16, 920 - k*32, 820 - k*32, 4, null, k ? KC.line : KC.ink2, k ? 1 : 2);
-    txt('magnetically shielded room', 72, 168, {size:10.5});
+    txt('sala blindada magnéticamente', 72, 168, {size:10.5});
     const C = [500, 610];
     G.ctx.beginPath(); G.ctx.arc(C[0], C[1], 260, Math.PI*1.08, Math.PI*1.92); G.ctx.arc(C[0], C[1], 196, Math.PI*1.92, Math.PI*1.08, true); G.ctx.closePath(); G.ctx.fillStyle = 'rgba(0,80,255,.09)'; G.ctx.fill(); _st(KC.ink2, 1.4); G.ctx.stroke();
     rr(440, 170, 120, 190, 10, 'rgba(0,80,255,.09)', KC.ink2, 1.4);
@@ -2490,8 +2492,8 @@ meg:[
       const c = G.ctx; c.save(); c.translate(x, y); c.rotate(a + Math.PI/2); rr(-9, -9, 18, 18, 2, `rgba(0,80,255,${0.35 + 0.5*on})`); c.restore(); }
     circ(C[0], C[1] + 20, 150, KC.soft, KC.ink2, 1.4); poly([[C[0] - 150, C[1] + 30], [C[0] - 178, C[1] + 60], [C[0] - 146, C[1] + 70]], KC.soft, KC.ink2, 1.2);
     rr(C[0] - 60, C[1] + 160, 120, 140, 20, KC.soft, KC.ink2, 1.2);
-    fade(smooth(0.1, 0.4, p), ()=>{ callout(C[0] + 200, C[1] - 120, 760, 300, 'SQUID sensors', {maxW:200}); callout(C[0] - 210, C[1] - 150, 230, 300, 'liquid helium, 4 K', {maxW:220}); });
-    fade(smooth(0.4, 0.7, p), ()=>txt('306 channels · 102 positions', 500, 850, {align:'center', size:11.5, color:KC.ink}));
+    fade(smooth(0.1, 0.4, p), ()=>{ callout(C[0] + 200, C[1] - 120, 760, 300, 'sensores SQUID', {maxW:200}); callout(C[0] - 210, C[1] - 150, 230, 300, 'helio líquido, 4 K', {maxW:220}); });
+    fade(smooth(0.4, 0.7, p), ()=>txt('306 canales · 102 posiciones', 500, 850, {align:'center', size:11.5, color:KC.ink}));
   },
   (p, t, E)=>{
     const C = [500, 520], R = 330, n = 180, ang = E.ctl && E.ctl.ori != null ? E.ctl.ori*Math.PI/180 : lerp(0.2, 2.6, smooth(0, 1, p)), src = E.src || [0.12, 0.08], d = E.ctl && E.ctl.depth != null ? E.ctl.depth/100 : 0.32;
@@ -2509,15 +2511,15 @@ meg:[
     circ(C[0], C[1], R, null, KC.ink2, 1.6);
     const sx = C[0] + src[0]*R, sy = C[1] + src[1]*R, L = 90; arrow(sx - Math.cos(ang)*L, sy - Math.sin(ang)*L, sx + Math.cos(ang)*L, sy + Math.sin(ang)*L, KC.ink, 4, 16);
     const ox = -Math.sin(ang), oy = Math.cos(ang);
-    txt('field out', sx + ox*190, sy + oy*190, {align:'center', size:11, color:'#b2271f', weight:500}); txt('field in', sx - ox*190, sy - oy*190, {align:'center', size:11, color:'#1c3fbf', weight:500});
-    txt('source', sx, sy + 130, {align:'center', size:10.5, color:KC.ink});
-    txt('seen from above, nose up · drag the source', C[0], C[1] + R + 50, {align:'center', size:10.5});
+    txt('campo saliente', sx + ox*190, sy + oy*190, {align:'center', size:11, color:'#b2271f', weight:500}); txt('campo entrante', sx - ox*190, sy - oy*190, {align:'center', size:11, color:'#1c3fbf', weight:500});
+    txt('fuente', sx, sy + 130, {align:'center', size:10.5, color:KC.ink});
+    txt('visto desde arriba, nariz arriba · arrastre la fuente', C[0], C[1] + R + 50, {align:'center', size:10.5});
   },
   (p, t)=>{
-    const panes = [['Pulse at the right wrist', 20, 'N20m · 20 ms', 0.9, 6], ['Tone in both ears', 100, 'M100 · 100 ms', 1, 22]];
+    const panes = [['Pulso en la muñeca derecha', 20, 'N20m · 20 ms', 0.9, 6], ['Tono en ambos oídos', 100, 'M100 · 100 ms', 1, 22]];
     panes.forEach(([nm, pk, lab, amp, w], i)=>{ const g = {x:90, y:200 + i*360, w:820, h:250}, X = ms => g.x + ms/250*g.w, Y = v => g.y + g.h/2 - v*g.h*0.4;
       box(g.x, g.y, g.w, g.h, nm); ln(g.x, Y(0), g.x + g.w, Y(0), KC.line, 1);
-      ln(X(0), g.y, X(0), g.y + g.h, KC.amber, 1.6); txt('stimulus', X(0) + 6, g.y + 18, {size:10, color:KC.amber});
+      ln(X(0), g.y, X(0), g.y + g.h, KC.amber, 1.6); txt('estímulo', X(0) + 6, g.y + 18, {size:10, color:KC.amber});
       const pr = smooth(i*0.3, i*0.3 + 0.45, p);
       for (let k = 0; k < 8; k++){ const s = (hashf(k + i*10) - 0.5)*2; curve(ms=>[X(ms), Y(s*amp*(Math.exp(-(((ms - pk)/w)**2)) - (i ? 0.45*Math.exp(-(((ms - 190)/40)**2)) : 0.5*Math.exp(-(((ms - pk - 13)/6)**2))) + 0.05*Math.sin(ms*0.3 + k)))], 0, 250*pr, 200, `hsla(${210 + k*8},60%,${30 + k*4}%,.6)`, 1.2); }
       fade(smooth(i*0.3 + 0.25, i*0.3 + 0.45, p), ()=>{ ln(X(pk), g.y, X(pk), g.y + g.h, KC.sig, 1.2, [4, 3]); txt(lab, X(pk) + 8, g.y + g.h - 12, {size:11.5, color:KC.sig, weight:500}); });
@@ -2535,36 +2537,36 @@ us:[
     for (let x = 425; x <= 575; x += 12) ln(x, 186, x, 204, KC.sig, 2);
     G.ctx.fillStyle = KC.skin; G.ctx.fillRect(60, 212, 880, 36); G.ctx.fillStyle = '#f5f1ef'; G.ctx.fillRect(60, 248, 880, 680);
     G.ctx.fillStyle = '#dfeaff'; G.ctx.fillRect(60, 640, 880, 120); ln(60, 640, 940, 640, KC.ink2, 2);
-    txt('tissue', 80, 290, {size:10.5, color:KC.muted}); txt('fluid (CSF)', 80, 700, {size:10.5, color:KC.muted});
+    txt('tejido', 80, 290, {size:10.5, color:KC.muted}); txt('líquido (LCR)', 80, 700, {size:10.5, color:KC.muted});
     const T = 1.4, u = (t % T)/T, d = u*900;
     if (d < 430) for (let k = 0; k < 3; k++){ const y = 210 + d - k*14; if (y > 210) fade(1 - k*0.3, ()=>{ G.ctx.beginPath(); G.ctx.arc(500, 210, y - 210, Math.PI*0.18, Math.PI*0.82); _st(KC.sig, 2); G.ctx.stroke(); }); }
     else { const back = d - 430; for (let k = 0; k < 3; k++){ const r = back - k*14; if (r > 0 && r < 430) fade((1 - k*0.3)*(1 - r/500), ()=>{ G.ctx.beginPath(); G.ctx.arc(500, 640, r, Math.PI*1.2, Math.PI*1.8); _st(KC.amber, 2, [6, 4]); G.ctx.stroke(); }); }
       if (back > 400) circ(500, 196, 30, 'rgba(232,150,42,.35)'); }
-    fade(smooth(0.1, 0.4, p), ()=>{ txt('pulse out', 620, 360, {size:11, color:KC.sig}); txt('echo back', 620, 560, {size:11, color:KC.amber}); callout(575, 195, 760, 120, 'piezoelectric crystals', {maxW:200}); });
-    fade(smooth(0.4, 0.7, p), ()=>{ txt('c ≈ 1540 m/s in soft tissue', 500, 880, {align:'center', size:12, color:KC.ink}); txt('2–15 MHz', 500, 906, {align:'center', size:10.5}); });
+    fade(smooth(0.1, 0.4, p), ()=>{ txt('pulso emitido', 620, 360, {size:11, color:KC.sig}); txt('eco de retorno', 620, 560, {size:11, color:KC.amber}); callout(575, 195, 760, 120, 'cristales piezoeléctricos', {maxW:200}); });
+    fade(smooth(0.4, 0.7, p), ()=>{ txt('c ≈ 1540 m/s en tejido blando', 500, 880, {align:'center', size:12, color:KC.ink}); txt('2–15 MHz', 500, 906, {align:'center', size:10.5}); });
   },
   (p, t)=>{
     const ax = 150, top = 170, depth = 640, echoes = [[0.12, 0.7], [0.34, 0.35], [0.52, 0.9], [0.66, 0.25], [0.84, 0.55]];
     rr(ax - 40, top - 40, 80, 30, 6, KC.ink); ln(ax, top, ax, top + depth, KC.ink2, 1.2);
     echoes.forEach(([dd, a])=>{ const y = top + dd*depth; poly([[ax, y - 8], [ax + a*120, y], [ax, y + 8]], KC.ink); });
-    head('A-line', ax - 40, top + depth + 34);
+    head('Línea A', ax - 40, top + depth + 34);
     for (let i = 0; i < 40; i++){ const y = top + i/40*depth; let v = 0; for (const [dd, a] of echoes) v += a*Math.exp(-((((i/40) - dd)/0.025)**2)); const g = Math.round(255 - Math.min(1, v)*235); rr(330, y, 30, depth/40, 0, `rgb(${g},${g},${g})`); }
-    head('brightness', 300, top + depth + 34); arrow(280, top + depth/2, 318, top + depth/2, KC.ink2, 1.2, 7);
+    head('brillo', 300, top + depth + 34); arrow(280, top + depth/2, 318, top + depth/2, KC.ink2, 1.2, 7);
     const cv = scanCanvas('cus', 'normal'), X = 420, Y = 170, S = 520, sw = smooth(0.08, 0.9, p);
     if (cv){ rr(X, Y, S, S, 3, KC.film); clip(c=>{ c.moveTo(X + S/2, Y + S*0.02); c.arc(X + S/2, Y + S*0.02, S*1.2, Math.PI/2 + 1.2, Math.PI/2 + 1.2 - 2.4*sw, true); c.closePath(); }, ()=>img(cv, X, Y, S, S)); }
     else placeholder(X, Y, S, S);
-    head('B-mode: many lines across a fan', X, Y - 12);
-    fade(smooth(0.4, 0.75, p), ()=>{ txt('depth = c × t ÷ 2', 420, 760, {size:13, color:KC.ink, weight:500}); txt('13 µs per cm, so 100+ lines per frame at 30 frames/s', 420, 790, {size:10.5, maxW:520}); });
+    head('Modo B: muchas líneas en abanico', X, Y - 12);
+    fade(smooth(0.4, 0.75, p), ()=>{ txt('profundidad = c × t ÷ 2', 420, 760, {size:13, color:KC.ink, weight:500}); txt('13 µs por cm, es decir 100+ líneas por imagen a 30 imágenes/s', 420, 790, {size:10.5, maxW:520}); });
   },
   (p, t)=>{
     const L = [260, 540], Rt = [740, 540];
-    head('Newborn', L[0], 200, {align:'center', color:KC.ink}); head('Adult', Rt[0], 200, {align:'center', color:KC.ink});
+    head('Recién nacido', L[0], 200, {align:'center', color:KC.ink}); head('Adulto', Rt[0], 200, {align:'center', color:KC.ink});
     G.ctx.beginPath(); G.ctx.arc(L[0], L[1], 170, -Math.PI/2 + 0.2, -Math.PI/2 - 0.2 + TAU); _st(KC.ink2, 10); G.ctx.stroke();
     ell(L[0], L[1], 160, 160, KC.soft); ell(L[0] - 30, L[1] + 10, 20, 46, '#dfeaff');
-    fade(smooth(0, 0.3, p), ()=>{ poly([[L[0], L[1] - 168], [L[0] - 110, L[1] + 120], [L[0] + 110, L[1] + 120]], 'rgba(0,80,255,.12)'); rr(L[0] - 24, L[1] - 210, 48, 40, 6, KC.ink); txt('anterior fontanelle', L[0] + 40, L[1] - 196, {size:10.5, color:KC.ink, maxW:180}); });
+    fade(smooth(0, 0.3, p), ()=>{ poly([[L[0], L[1] - 168], [L[0] - 110, L[1] + 120], [L[0] + 110, L[1] + 120]], 'rgba(0,80,255,.12)'); rr(L[0] - 24, L[1] - 210, 48, 40, 6, KC.ink); txt('fontanela anterior', L[0] + 40, L[1] - 196, {size:10.5, color:KC.ink, maxW:180}); });
     circ(Rt[0], Rt[1], 170, KC.soft, KC.ink2, 14);
     G.ctx.beginPath(); G.ctx.arc(Rt[0], Rt[1], 170, Math.PI - 0.12, Math.PI + 0.12); _st('#c9d2d6', 7); G.ctx.stroke();
-    fade(smooth(0.3, 0.6, p), ()=>{ rr(Rt[0] - 230, Rt[1] - 22, 44, 44, 6, KC.ink); ln(Rt[0] - 186, Rt[1], Rt[0] - 10, Rt[1] + 4, KC.sig, 5); circ(Rt[0], Rt[1] + 6, 14, null, KC.red, 3); txt('MCA', Rt[0] + 22, Rt[1] + 12, {size:10.5, color:KC.red}); txt('thin temporal bone', Rt[0] - 200, Rt[1] + 220, {size:10.5, color:KC.ink, maxW:260}); });
+    fade(smooth(0.3, 0.6, p), ()=>{ rr(Rt[0] - 230, Rt[1] - 22, 44, 44, 6, KC.ink); ln(Rt[0] - 186, Rt[1], Rt[0] - 10, Rt[1] + 4, KC.sig, 5); circ(Rt[0], Rt[1] + 6, 14, null, KC.red, 3); txt('MCA', Rt[0] + 22, Rt[1] + 12, {size:10.5, color:KC.red}); txt('hueso temporal delgado', Rt[0] - 200, Rt[1] + 220, {size:10.5, color:KC.ink, maxW:260}); });
     txt('5–8 MHz', L[0], L[1] + 230, {align:'center', size:11}); txt('2 MHz', Rt[0], Rt[1] + 260, {align:'center', size:11});
   },
   (p, t, E)=>{
@@ -2581,16 +2583,16 @@ us:[
     curve(s=>[P[0] + dx*s + 26*dy - dy*8*Math.sin(s*0.26 + t*12), P[1] + dy*s - 26*dx + dx*8*Math.sin(s*0.26 + t*12)], 40, Ls - 30, 120, KC.amber, 1.6);
     { const G2 = G.ctx; G2.beginPath(); G2.arc(500, vy, 70, -th, 0, false); _st(KC.ink2, 1.2, [3, 3]); G2.stroke();
       txt('θ', 500 + 90*Math.cos(-th/2), vy + 90*Math.sin(-th/2) + 5, {align:'center', size:13, color:KC.ink, weight:500}); }
-    const mid = Ls*0.55; txt('sent: f₀', P[0] + dx*mid + 40, P[1] + dy*mid - 6, {size:11, color:KC.sig}); txt('echo: f₀ + Δf', P[0] + dx*mid - 150, P[1] + dy*mid + 30, {size:11, color:KC.amber});
+    const mid = Ls*0.55; txt('emitido: f₀', P[0] + dx*mid + 40, P[1] + dy*mid - 6, {size:11, color:KC.sig}); txt('eco: f₀ + Δf', P[0] + dx*mid - 150, P[1] + dy*mid + 30, {size:11, color:KC.amber});
     const cosT = Math.cos(th), df = 2*2e6*0.62*cosT/1540;
     txt('Δf = 2·f₀·v·cosθ / c', 90, 110, {size:14, color:KC.ink, weight:500});
-    txt(`θ = ${Math.round(th*180/Math.PI)}°  ·  Δf = ${Math.round(df)} Hz  ·  an uncorrected machine reads ${Math.round(62*cosT)} cm/s of a true 62`, 90, 138, {size:10.5, color:KC.ink2, maxW:420});
-    const g = {x:90, y:560, w:820, h:300}; box(g.x, g.y, g.w, g.h, 'Transcranial Doppler · middle cerebral artery');
+    txt(`θ = ${Math.round(th*180/Math.PI)}°  ·  Δf = ${Math.round(df)} Hz  ·  un equipo sin corrección lee ${Math.round(62*cosT)} cm/s de un valor real de 62`, 90, 138, {size:10.5, color:KC.ink2, maxW:420});
+    const g = {x:90, y:560, w:820, h:300}; box(g.x, g.y, g.w, g.h, 'Doppler transcraneal · arteria cerebral media');
     const base = g.y + g.h - 30, sc = (g.h - 70)/120;
     for (let i = 0; i < g.w; i += 3){ const tt = t - 4 + 4*i/g.w, v = tcdVel('normal', tt)*Math.max(0, cosT), h = v*sc;
       const grd = G.ctx.createLinearGradient(0, base, 0, base - h); grd.addColorStop(0, 'rgba(12,22,27,.05)'); grd.addColorStop(0.8, 'rgba(12,22,27,.45)'); grd.addColorStop(1, 'rgba(12,22,27,.9)'); G.ctx.fillStyle = grd; G.ctx.fillRect(g.x + i, base - h, 3, h); }
     ln(g.x, base, g.x + g.w, base, KC.ink2, 1); ln(g.x, base - 100*sc, g.x + g.w, base - 100*sc, KC.line, 1, [3, 3]); txt('100 cm/s', g.x + 8, base - 100*sc - 6, {size:10});
-    fade(smooth(0.4, 0.7, p), ()=>txt('peak in systole, steady flow in diastole', g.x + g.w - 10, g.y + 24, {size:10.5, align:'right'}));
+    fade(smooth(0.4, 0.7, p), ()=>txt('pico en sístole, flujo estable en diástole', g.x + g.w - 10, g.y + 24, {size:10.5, align:'right'}));
   },
 ],
 
@@ -2609,30 +2611,30 @@ dsa:[
     const f = smooth(0.05, 0.9, p), segs = path.length - 1, pos = f*segs, i0 = Math.min(segs - 1, Math.floor(pos)), fr = pos - i0;
     const tip = [lerp(path[i0][0], path[i0 + 1][0], fr), lerp(path[i0][1], path[i0 + 1][1], fr)];
     poly([...path.slice(0, i0 + 1), tip], null, KC.ink, 2.6, false); circ(tip[0], tip[1], 8, KC.sig); circ(tip[0], tip[1], 16 + 4*Math.sin(t*5), 'rgba(0,80,255,.15)');
-    fade(smooth(0, 0.2, p), ()=>callout(462, 630, 250, 760, 'femoral artery', {maxW:200}));
-    fade(smooth(0.3, 0.55, p), ()=>callout(490, 280, 760, 330, 'aortic arch', {maxW:200}));
-    fade(smooth(0.7, 0.9, p), ()=>callout(482, 190, 760, 170, 'carotid artery', {maxW:200}));
-    fade(smooth(0.1, 0.35, p), ()=>callout(650, 480, 800, 560, 'or the radial artery at the wrist', {maxW:170}));
+    fade(smooth(0, 0.2, p), ()=>callout(462, 630, 250, 760, 'arteria femoral', {maxW:200}));
+    fade(smooth(0.3, 0.55, p), ()=>callout(490, 280, 760, 330, 'arco aórtico', {maxW:200}));
+    fade(smooth(0.7, 0.9, p), ()=>callout(482, 190, 760, 170, 'arteria carótida', {maxW:200}));
+    fade(smooth(0.1, 0.35, p), ()=>callout(650, 480, 800, 560, 'o la arteria radial en la muñeca', {maxW:170}));
   },
   (p, t)=>{
     const T = 8, ph = (t*0.9) % T, F = {x:250, y:150, s:500};
     rr(F.x, F.y, F.s, F.s, 4, KC.paper, KC.line, 1);
     angio(F.x, F.y, F.s, ph/T, true);
-    head(`${ph.toFixed(1)} s after injection`, F.x, F.y - 12);
+    head(`${ph.toFixed(1)} s tras la inyección`, F.x, F.y - 12);
     const g = {x:100, y:740, w:800, h:40}, X = s => g.x + s/T*g.w;
-    [['Arterial', 0, 3, KC.red], ['Capillary', 2.6, 5.4, '#8a5cf6'], ['Venous', 5, 8, KC.sig]].forEach(([n, a, b, c], i)=>{ rr(X(a), g.y + i*12, X(b) - X(a), 8, 2, c); txt(n, X(a), g.y + 70 + i*0, {size:10.5, color:c}); });
+    [['Arterial', 0, 3, KC.red], ['Capilar', 2.6, 5.4, '#8a5cf6'], ['Venosa', 5, 8, KC.sig]].forEach(([n, a, b, c], i)=>{ rr(X(a), g.y + i*12, X(b) - X(a), 8, 2, c); txt(n, X(a), g.y + 70 + i*0, {size:10.5, color:c}); });
     for (let s = 0; s <= T; s += 1/3) ln(X(s), g.y - 10, X(s), g.y - 2, KC.ink2, 1);
     ln(X(ph), g.y - 20, X(ph), g.y + 44, KC.ink, 2);
-    txt('ticks: 3 frames per second', g.x + g.w, g.y + 70, {size:10.5, align:'right'});
+    txt('marcas: 3 imágenes por segundo', g.x + g.w, g.y + 70, {size:10.5, align:'right'});
   },
   (p, t)=>{
     const s = 270, y = 330, xs = [50, 365, 680];
     const a = smooth(0.1, 0.6, p);
-    rr(xs[0], y, s, s, 4, '#e9ecee'); angioSkull(xs[0], y, s); head('Mask, before contrast', xs[0], y - 12);
-    rr(xs[1], y, s, s, 4, '#e9ecee'); angioSkull(xs[1], y, s); angio(xs[1], y, s, 0.22, false); head('Contrast frame', xs[1], y - 12);
-    rr(xs[2], y, s, s, 4, KC.paper, KC.line, 1); fade(a, ()=>angio(xs[2], y, s, 0.22, true)); head('Subtracted', xs[2], y - 12);
+    rr(xs[0], y, s, s, 4, '#e9ecee'); angioSkull(xs[0], y, s); head('Máscara, antes del contraste', xs[0], y - 12);
+    rr(xs[1], y, s, s, 4, '#e9ecee'); angioSkull(xs[1], y, s); angio(xs[1], y, s, 0.22, false); head('Imagen con contraste', xs[1], y - 12);
+    rr(xs[2], y, s, s, 4, KC.paper, KC.line, 1); fade(a, ()=>angio(xs[2], y, s, 0.22, true)); head('Sustraída', xs[2], y - 12);
     txt('−', (xs[0] + s + xs[1])/2, y + s/2 + 10, {align:'center', size:30, color:KC.ink}); txt('=', (xs[1] + s + xs[2])/2, y + s/2 + 10, {align:'center', size:30, color:KC.ink});
-    fade(smooth(0.5, 0.8, p), ()=>txt('Bone is the same in both frames, so it cancels. Only the contrast remains.', 500, 700, {align:'center', size:12, color:KC.ink, maxW:820}));
+    fade(smooth(0.5, 0.8, p), ()=>txt('El hueso es idéntico en ambas imágenes, así que se cancela. Solo queda el contraste.', 500, 700, {align:'center', size:12, color:KC.ink, maxW:820}));
   },
   (p, t, E)=>{
     const B = [500, 560];
@@ -2644,9 +2646,9 @@ dsa:[
     if (!E.coil){ const R = rnd(21), pts = []; let x = 0, y = 40, a = -1.2; for (let i = 0; i < 700; i++){ a += (R() - 0.5)*0.9; x += Math.cos(a)*9; y += Math.sin(a)*9; const d = Math.hypot(x, y); if (d > 96){ x *= 96/d; y *= 96/d; a += Math.PI*0.7; } pts.push([x, y]); } E.coil = pts; }
     const k = Math.floor(f*E.coil.length);
     if (k > 1) poly(E.coil.slice(0, k).map(([x, y])=>[sac[0] + x, sac[1] + y]), null, '#6f7d84', 2.6, false);
-    txt('aneurysm', sac[0] + 140, sac[1] - 90, {size:11, color:KC.red}); txt('platinum coil', sac[0] - 260, sac[1] - 60, {size:11, color:KC.ink});
-    txt('microcatheter', B[0] + 30, 900, {size:10.5});
-    fade(smooth(0.7, 0.95, p), ()=>txt('The packed sac clots and is sealed off from the circulation.', 500, 920 - 840, {align:'center', size:12, color:KC.ink, maxW:820}));
+    txt('aneurisma', sac[0] + 140, sac[1] - 90, {size:11, color:KC.red}); txt('espiral de platino', sac[0] - 260, sac[1] - 60, {size:11, color:KC.ink});
+    txt('microcatéter', B[0] + 30, 900, {size:10.5});
+    fade(smooth(0.7, 0.95, p), ()=>txt('El saco empaquetado coagula y queda aislado de la circulación.', 500, 920 - 840, {align:'center', size:12, color:KC.ink, maxW:820}));
   },
 ],
 
@@ -2659,7 +2661,7 @@ lab:[
     const parts = SOMATO.map(s=>s[0]), tot = parts.reduce((s, k)=>s + W[k], 0);
     G.ctx.beginPath(); G.ctx.moveTo(C[0], C[1] - ry + 40); G.ctx.ellipse(C[0], C[1], rx, ry, 0, -Math.PI/2, -0.05); _st(KC.ink2, 2); G.ctx.stroke();
     ln(C[0], C[1] - ry, C[0], C[1] - ry + 220, KC.ink2, 2, [3, 0]);
-    txt('midline', C[0] - 12, C[1] - ry + 240, {size:10, align:'right'}); txt('lateral', C[0] + rx + 10, C[1] - 10, {size:10});
+    txt('línea media', C[0] - 12, C[1] - ry + 240, {size:10, align:'right'}); txt('lateral', C[0] + rx + 10, C[1] - 10, {size:10});
     const hi = Math.min(parts.length - 1, Math.floor(smooth(0, 0.98, p)*parts.length));
     const pos = (u) => { // u 0..1 along medial wall then arc
       const med = 0.12; if (u < med){ const k = u/med; return {x:C[0], y:C[1] - ry + 220 - k*210, nx:-1, ny:0}; }
@@ -2667,9 +2669,9 @@ lab:[
     let acc = 0;
     parts.forEach((k, i)=>{ const u = (acc + W[k]/2)/tot; acc += W[k]; const P = pos(u), L = 30 + W[k]*16, on = i === hi;
       ln(P.x, P.y, P.x + P.nx*L, P.y + P.ny*L, on ? KC.sig : KC.soft2, on ? 9 : 7);
-      const LD = L + 14 + (i % 2)*26; txt(k, P.x + P.nx*LD, P.y + P.ny*LD + 4, {size:on ? 12 : 10.5, color:on ? KC.sig : KC.ink2, align:P.nx < -0.3 ? 'right' : 'left', weight:on ? 600 : 400, font:'body'});
+      const LD = L + 14 + (i % 2)*26; txt(PART_LABEL[k] || k, P.x + P.nx*LD, P.y + P.ny*LD + 4, {size:on ? 12 : 10.5, color:on ? KC.sig : KC.ink2, align:P.nx < -0.3 ? 'right' : 'left', weight:on ? 600 : 400, font:'body'});
       if (on){ circ(P.x, P.y, 10, KC.sig); circ(P.x, P.y, 18 + 6*Math.sin(t*8), 'rgba(0,80,255,.18)'); } });
-    head('Motor strip · one hemisphere, coronal', 60, 120);
+    head('Banda motora · un hemisferio, coronal', 60, 120);
   },
   (p, t, E)=>{
     if (!META){ placeholder(100, 200, 800, 600); return; }
@@ -2682,7 +2684,7 @@ lab:[
       const x = lerp(x0, x1, e), y = lerp(y0, y1, e), s = lerp(sz, 26, e), c = GROUP_COLORS[r.g].map(v=>Math.round(v*255));
       rr(x, y, s, s, 2, `rgb(${c})`); });
     fade(smooth(0.6, 0.85, p), ()=>groups.forEach((g, gi)=>txt(g, gx(gi), gy(gi) + 16, {size:11, color:KC.ink, font:'body', weight:600, maxW:280})));
-    txt(`${regs.length} atlas regions`, 70, 120, {size:12, color:KC.ink});
+    txt(`${regs.length} regiones del atlas`, 70, 120, {size:12, color:KC.ink});
   },
 ],
 };
@@ -2760,26 +2762,26 @@ function immMarkup(id){
       <div class="imm-labels" id="immLabels" aria-hidden="true"></div>
       <div class="imm-caps" id="immCaps">${D.caps.map(c=>`<p class="imm-cap" data-a="${c[0]}" data-b="${c[1]}"><b>${c[2]}</b>${c[3]}</p>`).join('')}</div>
       <div class="imm-hud"><span id="immStage">${D.caps[0][2]}</span></div>
-      <button type="button" class="imm-cue" id="immCue" title="Jump to the next stage" aria-label="${D.hud || 'Scroll to move through the scanner'}. Press to jump to the next stage.">
+      <button type="button" class="imm-cue" id="immCue" title="Saltar a la siguiente etapa" aria-label="${D.hud || 'Desplácese para avanzar por el escáner'}. Pulse para saltar a la siguiente etapa.">
         <span class="cue-ico" aria-hidden="true"><span class="cue-mouse"><i></i></span>
           <svg class="cue-ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" class="cr-bg"/><circle cx="18" cy="18" r="16" class="cr-fg" id="immCueRing"/></svg><span class="cue-mini"></span></span>
-        <span class="cue-txt">${D.hud || 'Scroll to move through the scanner'}</span>
+        <span class="cue-txt">${D.hud || 'Desplácese para avanzar por el escáner'}</span>
         <span class="cue-chev" aria-hidden="true"><i></i><i></i></span>
       </button>
       <div class="imm-msg" id="immMsg" hidden></div>
       <i class="imm-prog" id="immProg"></i>
     </div>
   </section>
-  <div class="deep-head"><p class="eb">The physics in detail</p><h2>${D.deepTitle}</h2></div>`;
+  <div class="deep-head"><p class="eb">La física en detalle</p><h2>${D.deepTitle}</h2></div>`;
 }
 function immStart(id){
   immStop();
   const D = IMMERSIVE[id], sec = $('#imm'); if (!D || !sec) return;
   const fail = msg => { const m = $('#immMsg'); m.textContent = msg; m.hidden = false; sec.classList.add('imm-off'); };
-  if (typeof THREE === 'undefined'){ fail('The 3D walkthrough needs the three.js library, which did not load. The step-by-step explanation below still works.'); return; }
+  if (typeof THREE === 'undefined'){ fail('El recorrido 3D necesita la biblioteca three.js, que no se cargó. La explicación paso a paso que figura abajo sigue funcionando.'); return; }
   let renderer;
   try { renderer = new THREE.WebGLRenderer({canvas:$('#immCv'), antialias:true, powerPreference:'high-performance'}); }
-  catch(e){ fail('This device could not start the 3D walkthrough. The step-by-step explanation below still works.'); return; }
+  catch(e){ fail('Este dispositivo no pudo iniciar el recorrido 3D. La explicación paso a paso que figura abajo sigue funcionando.'); return; }
   renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.95;
   renderer.setClearColor(0x0d1519, 1);
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(38, 1, 0.5, 5000);
@@ -2791,7 +2793,7 @@ function immStart(id){
   R.post = immPost(R);
   R.caps = [...sec.querySelectorAll('.imm-cap')];
   { const cue = $('#immCue');
-    if (cue){ if (matchMedia('(hover: none)').matches){ cue.classList.add('touch'); const tx = cue.querySelector('.cue-txt'); tx.textContent = tx.textContent.replace(/^Scroll/i, 'Swipe up'); }
+    if (cue){ if (matchMedia('(hover: none)').matches){ cue.classList.add('touch'); const tx = cue.querySelector('.cue-txt'); tx.textContent = tx.textContent.replace(/^Desplácese/i, 'Deslice hacia arriba'); }
       cue.addEventListener('click', immJump); } }
   IMM.r = R;
   R.io = new IntersectionObserver(es=>{ IMM.visible = es[0].isIntersecting; }); R.io.observe(sec);
@@ -2909,19 +2911,19 @@ function immLinearize(scene){
 }
 
 const IMMERSIVE = {
-  mri:{ label:'Walk-through of an MRI scanner', height:1100, build:buildMRI, deepTitle:'From magnet to image, step by step',
+  mri:{ label:'Recorrido por un escáner de RM', height:1100, build:buildMRI, deepTitle:'Del imán a la imagen, paso a paso',
     caps:[
-      [0.005, 0.10, 'A 3-tesla scanner', 'The magnet is superconducting and stays switched on day and night. The orange line on the floor marks where its field drops to 5 gauss.'],
-      [0.11, 0.225, 'Head first', 'The table slides the patient in until the head sits at the isocentre, where the field is most uniform.'],
-      [0.245, 0.385, 'Inside the shell', 'A quarter cut away. Niobium–titanium coils bathed in liquid helium at 4 K make the main field; the gradient coils and the radio-frequency coil sit closer to the bore.'],
-      [0.395, 0.52, 'B₀ = 3 tesla', 'The field runs straight along the bore and loops back outside the magnet. It is 60,000 times the Earth’s field.'],
-      [0.535, 0.655, 'Into the bore', 'The bore is about 70 cm across. A head coil close to the skull picks up the faint signal.'],
-      [0.67, 0.745, 'Hydrogen protons', 'Each proton is a tiny magnet. In B₀ they line up with the field and precess around it at 128 MHz.'],
-      [0.75, 0.79, 'Radio pulse', 'The RF coil transmits at exactly 128 MHz. The protons tip over and spin together, in phase.'],
-      [0.795, 0.845, 'The echo', 'As they relax and fall out of phase, the spinning magnetisation gives off a radio signal. The head coil records it.'],
-      [0.85, 0.9, 'Gradients pick a slice', 'Gradient coils make the field vary across the head, so only one slab resonates and the signal carries position.'],
-      [0.905, 0.962, 'k-space', 'Each echo fills one line of raw data, from the centre outwards. The centre holds the contrast; the outer lines hold the fine detail.'],
-      [0.966, 1.01, 'The image', 'An inverse 2D Fourier transform turns k-space into the slice: this brain, T1-weighted. Scroll on for the physics in detail.'],
+      [0.005, 0.10, 'Un escáner de 3 teslas', 'El imán es superconductor y permanece encendido día y noche. La línea naranja del suelo marca dónde su campo cae a 5 gauss.'],
+      [0.11, 0.225, 'Primero la cabeza', 'La camilla introduce al paciente hasta que la cabeza queda en el isocentro, donde el campo es más uniforme.'],
+      [0.245, 0.385, 'Dentro de la coraza', 'Con un cuarto seccionado. Las bobinas de niobio-titanio bañadas en helio líquido a 4 K generan el campo principal; las bobinas de gradiente y la bobina de radiofrecuencia quedan más cerca del orificio.'],
+      [0.395, 0.52, 'B₀ = 3 tesla', 'El campo recorre recto el orificio y retorna por fuera del imán. Es 60.000 veces el campo terrestre.'],
+      [0.535, 0.655, 'Hacia el orificio', 'El orificio mide unos 70 cm de diámetro. Una bobina de cabeza próxima al cráneo capta la señal tenue.'],
+      [0.67, 0.745, 'Protones de hidrógeno', 'Cada protón es un pequeño imán. En B₀ se alinean con el campo y precesan a su alrededor a 128 MHz.'],
+      [0.75, 0.79, 'Pulso de radiofrecuencia', 'La bobina de RF transmite exactamente a 128 MHz. Los protones se inclinan y giran juntos, en fase.'],
+      [0.795, 0.845, 'El eco', 'Al relajarse y perder la fase, la magnetización giratoria emite una señal de radio. La bobina de cabeza la registra.'],
+      [0.85, 0.9, 'Los gradientes seleccionan un corte', 'Las bobinas de gradiente hacen variar el campo a lo ancho de la cabeza, de modo que solo resuena una loseta y la señal codifica la posición.'],
+      [0.905, 0.962, 'espacio k', 'Cada eco llena una línea de datos crudos, desde el centro hacia fuera. El centro aporta el contraste; las líneas externas, el detalle fino.'],
+      [0.966, 1.01, 'La imagen', 'Una transformada de Fourier 2D inversa convierte el espacio k en el corte: este encéfalo, ponderado en T1. Siga desplazándose para ver la física en detalle.'],
     ]},
 };
 
@@ -3096,8 +3098,8 @@ function buildMRI(scene, renderer, R){
       halo.scale.set(175, 175, 1); halo.position.z = 22; g.add(halo); W.halo = halo;
       // two small glass touch panels beside the bore
       for (const sx of [-1, 1]){
-        const tex = immCanvasTex(512, 320, (x, w, h)=>{ x.fillStyle = '#0d1418'; x.fillRect(0, 0, w, h); x.fillStyle = '#5f8dff'; x.font = '500 30px monospace'; x.fillText(sx < 0 ? 'HEAD FIRST · SUPINE' : '3.0 T', 30, 62);
-          x.fillStyle = '#c8d4da'; x.font = '400 24px monospace'; x.fillText(sx < 0 ? 'Brain routine' : 'He 98 %  ·  4.2 K', 30, 120); x.fillText(sx < 0 ? 'T1 MPRAGE  04:12' : 'Table 0 mm', 30, 162);
+        const tex = immCanvasTex(512, 320, (x, w, h)=>{ x.fillStyle = '#0d1418'; x.fillRect(0, 0, w, h); x.fillStyle = '#5f8dff'; x.font = '500 30px monospace'; x.fillText(sx < 0 ? 'CABEZA PRIMERO · SUPINO' : '3.0 T', 30, 62);
+          x.fillStyle = '#c8d4da'; x.font = '400 24px monospace'; x.fillText(sx < 0 ? 'Rutina cerebral' : 'He 98 %  ·  4.2 K', 30, 120); x.fillText(sx < 0 ? 'T1 MPRAGE  04:12' : 'Camilla 0 mm', 30, 162);
           x.strokeStyle = '#2a63ff'; x.lineWidth = 4; x.beginPath(); x.moveTo(30, 250); x.lineTo(w - 30, 250); x.stroke(); x.strokeStyle = '#5f8dff'; x.beginPath(); x.moveTo(30, 250); x.lineTo(30 + (w - 60)*(sx < 0 ? 0.62 : 0.98), 250); x.stroke(); });
         const scr = new T.Mesh(new T.PlaneGeometry(26, 16.25), clipMat(new T.MeshBasicMaterial({map:tex, toneMapped:false})));
         scr.position.set(sx*86, 58, 21.4); scr.rotation.y = -sx*0.18; g.add(scr);
@@ -3238,7 +3240,7 @@ function buildMRI(scene, renderer, R){
     g.add(face, frame, lab); scene.add(g);
     return {g, cv, ctx:cv.getContext('2d'), tex, mats:[face.material, frame.material, lab.material]};
   };
-  W.kPanel = panel('K-SPACE · RAW DATA'); W.iPanel = panel('IMAGE · INVERSE 2D FFT');
+  W.kPanel = panel('ESPACIO K · DATOS CRUDOS'); W.iPanel = panel('IMAGEN · FFT 2D INVERSA');
   W.kspace = () => {
     if (W.K) return W.K; if (typeof grayOf !== 'function') return null;
     const g = grayOf('t1', 'normal', 256); if (!g) return null;
@@ -3375,14 +3377,14 @@ function buildMRI(scene, renderer, R){
     const c = ismooth(0.62, 0.645, p)*(1 - ismooth(0.665, 0.68, p));
     const at = (r, ang, z) => new T.Vector3(r*Math.cos(ang), r*Math.sin(ang), z);
     return [
-      {pos:at(68, Math.PI*0.62, 30), text:'Superconducting coils · NbTi at 4 K', a},
-      {pos:at(80, Math.PI*0.86, -20), text:'Liquid helium', a, left:true},
-      {pos:at(100, Math.PI*0.7, -60), text:'Vacuum vessel', a},
-      {pos:at(46, Math.PI*0.95, 50), text:'Gradient coils (x, y, z)', a, left:true},
-      {pos:at(40, Math.PI*0.75, 20), text:'RF body coil (birdcage)', a},
-      {pos:new T.Vector3(0, 0, 85), text:'Isocentre', a:b},
-      {pos:new T.Vector3(0, 6, 14), text:'Head coil', a:b, left:true},
-      {pos:new T.Vector3(0, 2, 0), text:'Colin 27 brain', a:c},
+      {pos:at(68, Math.PI*0.62, 30), text:'Bobinas superconductoras · NbTi a 4 K', a},
+      {pos:at(80, Math.PI*0.86, -20), text:'Helio líquido', a, left:true},
+      {pos:at(100, Math.PI*0.7, -60), text:'Vaso de vacío', a},
+      {pos:at(46, Math.PI*0.95, 50), text:'Bobinas de gradiente (x, y, z)', a, left:true},
+      {pos:at(40, Math.PI*0.75, 20), text:'Bobina corporal de RF (jaula de pájaros)', a},
+      {pos:new T.Vector3(0, 0, 85), text:'Isocentro', a:b},
+      {pos:new T.Vector3(0, 6, 14), text:'Bobina de cabeza', a:b, left:true},
+      {pos:new T.Vector3(0, 2, 0), text:'Encéfalo Colin 27', a:c},
     ];
   };
   immLinearize(scene);
@@ -3695,7 +3697,7 @@ function buildCT(scene, renderer, R){
   W.ringMat = new T.MeshStandardMaterial({color:SIG, emissive:SIG, emissiveIntensity:1.4, roughness:0.4});
   const ring = new T.Mesh(new T.TorusGeometry(BORE + 10.5, 0.7, 12, 200), W.ringMat); ring.position.z = GD/2 + 6.3; gan.add(ring);
   W.halo = new T.Sprite(new T.SpriteMaterial({map:S.glow, color:0x4d86ff, transparent:true, opacity:0.16, depthWrite:false, blending:T.AdditiveBlending})); W.halo.scale.set(120, 120, 1); W.halo.position.z = GD/2 + 7; gan.add(W.halo);
-  const scr = iscreen(['HEAD · HELICAL', 'Routine brain', '120 kV  250 mAs'], 22, 13.75, 0.4); scr.position.set(-62, 44, GD/2 + 6.4); scr.rotation.y = 0.16; gan.add(scr); shellParts.push(...scr.children);
+  const scr = iscreen(['CABEZA · HELICOIDAL', 'Rutina cerebral', '120 kV  250 mAs'], 22, 13.75, 0.4); scr.position.set(-62, 44, GD/2 + 6.4); scr.rotation.y = 0.16; gan.add(scr); shellParts.push(...scr.children);
   const plate = iplate('N E U R O · C T', 50, 8); plate.position.set(0, 78, GD/2 + 6.4); gan.add(plate); shellParts.push(plate);
   const stand = ishadow(new T.Mesh(new T.ExtrudeGeometry(immRoundRect(150, 40, 10), {depth:24, bevelEnabled:true, bevelThickness:3, bevelSize:3, bevelSegments:4}), M.plinth));
   stand.rotation.x = -Math.PI/2; stand.position.set(0, S.FLOOR, 12); scene.add(stand);
@@ -3742,9 +3744,9 @@ function buildCT(scene, renderer, R){
 
   /* ---------- panels: detector profile, sinogram, reconstruction ---------- */
   const PN = immPanels(scene);
-  W.prof = PN.make('DETECTOR READING · ONE ANGLE', 512, 256);
-  W.sino = PN.make('SINOGRAM · ANGLE ↓', 256, 256);
-  W.recon = PN.make('FILTERED BACK-PROJECTION', 256, 256);
+  W.prof = PN.make('LECTURA DEL DETECTOR · UN ÁNGULO', 512, 256);
+  W.sino = PN.make('SINOGRAMA · ÁNGULO ↓', 256, 256);
+  W.recon = PN.make('RETROPROYECCIÓN FILTRADA', 256, 256);
   W.env = {};
   W.T = () => { if (W.TT) return W.TT; const o = G.env; G.env = W.env; try { W.TT = tomo('ctb', 'normal'); } finally { G.env = o; } return W.TT; };
 
@@ -3836,12 +3838,12 @@ function buildCT(scene, renderer, R){
     const a = iwin(p, 0.3, 0.32, 0.37, 0.385), b = iwin(p, 0.12, 0.15, 0.21, 0.235), c = iwin(p, 0.54, 0.57, 0.62, 0.635);
     const wp = o => o.getWorldPosition(new T.Vector3());
     return [
-      {pos:wp(W.tube), text:'X-ray tube', a},
-      {pos:wp(W.detC), text:'Detector array', a, left:true},
-      {pos:new T.Vector3(-62, 62, 16), text:'Slip ring: power while spinning', a, left:true},
-      {pos:new T.Vector3(0, 0, 40), text:'Isocentre', a:b},
-      {pos:new T.Vector3(0, BORE + 10, GD/2 + 6), text:'Laser marks the first slice', a:b, left:true},
-      {pos:new T.Vector3(0, -12, 0), text:'Fan beam through the head', a:c},
+      {pos:wp(W.tube), text:'Tubo de rayos X', a},
+      {pos:wp(W.detC), text:'Matriz de detectores', a, left:true},
+      {pos:new T.Vector3(-62, 62, 16), text:'Anillo colector: alimentación en giro', a, left:true},
+      {pos:new T.Vector3(0, 0, 40), text:'Isocentro', a:b},
+      {pos:new T.Vector3(0, BORE + 10, GD/2 + 6), text:'El láser marca el primer corte', a:b, left:true},
+      {pos:new T.Vector3(0, -12, 0), text:'Haz en abanico a través de la cabeza', a:c},
     ];
   };
   immLinearize(scene);
@@ -3894,7 +3896,7 @@ function buildPET(scene, renderer, R){
   const T = THREE, W = {}, M = immScanMats();
   const S = immStudio(scene, renderer);
   const BORE = 36, RR = 44;
-  const GT = immBoreGantry(scene, S, {M, w:196, h:204, d:86, bore:BORE, screen:['PET · BRAIN', '¹⁸F-FDG  185 MBq', 'Uptake 45 min'], plate:'N E U R O · P E T'});
+  const GT = immBoreGantry(scene, S, {M, w:196, h:204, d:86, bore:BORE, screen:['PET · ENCÉFALO', '¹⁸F-FDG  185 MBq', 'Captación 45 min'], plate:'N E U R O · P E T'});
   /* ---------- detector ring: 4 rings × 48 blocks of LSO crystals, SiPMs and electronics behind ---------- */
   const inner = new T.Group(); GT.gan.add(inner); inner.visible = false;
   const nB = 48, nR = 4, cryTex = immCanvasTex(64, 64, (x, w)=>{ x.fillStyle = '#e9eef0'; x.fillRect(0, 0, w, w); x.strokeStyle = '#9aa6ad'; x.lineWidth = 2; for (let i = 0; i <= 8; i++){ x.beginPath(); x.moveTo(i*8, 0); x.lineTo(i*8, w); x.stroke(); x.beginPath(); x.moveTo(0, i*8); x.lineTo(w, i*8); x.stroke(); } });
@@ -3958,7 +3960,7 @@ function buildPET(scene, renderer, R){
       return W.P.mni.localToWorld(W.vtmp.set(Mr.pos[i*3]/64, Mr.pos[i*3 + 1]/64, Mr.pos[i*3 + 2]/64).clone()); } return null; };
 
   /* ---------- reconstruction panels ---------- */
-  const PN = immPanels(scene); W.lorP = PN.make('BACK-PROJECTED LINES'); W.imgP = PN.make('AFTER OSEM');
+  const PN = immPanels(scene); W.lorP = PN.make('LÍNEAS RETROPROYECTADAS'); W.imgP = PN.make('TRAS OSEM');
   W.env = {}; const withEnv = f => { const o = G_ENV_SWAP(W.env); try { return f(); } finally { G.env = o; } };
 
   const cam = immCamPath(R, [
@@ -4051,13 +4053,13 @@ function buildPET(scene, renderer, R){
     const tw = v => W.P.table.localToWorld(v.clone());
     const A0 = dec.localToWorld(W.A.clone());
     return [
-      {pos:onRing, text:'LSO crystal blocks · 4 rings', a},
-      {pos:new T.Vector3(-(RR + 8), 6, 11), text:'Silicon photomultipliers', a, left:true},
-      {pos:tw(W.syr.position), text:'¹⁸F-FDG in a tungsten shield', a:b},
-      {pos:tw(W.flow.getPoint(1)), text:'Tracer collects in the brain', a:b, left:true},
-      {pos:dec.localToWorld(new T.Vector3(0, 0, 0)), text:'¹⁸F nucleus', a:c, left:true},
-      {pos:dec.localToWorld(W.trackCurve.getPoint(0.45)), text:'positron · range ≈ 0.6 mm (magnified)', a:c},
-      {pos:A0.clone().add(new T.Vector3(0, 0, 0)), text:'annihilation → 2 × 511 keV', a:d},
+      {pos:onRing, text:'Bloques de cristal LSO · 4 anillos', a},
+      {pos:new T.Vector3(-(RR + 8), 6, 11), text:'Fotomultiplicadores de silicio', a, left:true},
+      {pos:tw(W.syr.position), text:'¹⁸F-FDG en un blindaje de tungsteno', a:b},
+      {pos:tw(W.flow.getPoint(1)), text:'El trazador se acumula en el encéfalo', a:b, left:true},
+      {pos:dec.localToWorld(new T.Vector3(0, 0, 0)), text:'núcleo de ¹⁸F', a:c, left:true},
+      {pos:dec.localToWorld(W.trackCurve.getPoint(0.45)), text:'positrón · alcance ≈ 0.6 mm (ampliado)', a:c},
+      {pos:A0.clone().add(new T.Vector3(0, 0, 0)), text:'aniquilación → 2 × 511 keV', a:d},
       {pos:new T.Vector3(0, RR + 2, -2), text:`${W.n.toLocaleString('en-GB')} coincidences`, a:e},
     ];
   };
@@ -4137,7 +4139,7 @@ function buildSPECT(scene, renderer, R){
   W.phs = []; W.rp = rnd(77); W.lastPh = 0; W.counts = {em:0, pass:0};
 
   /* ---------- panels ---------- */
-  const PN = immPanels(scene); W.sinoP = PN.make('PROJECTIONS · ONE ROW PER VIEW'); W.recP = PN.make('RECONSTRUCTED · HMPAO PERFUSION');
+  const PN = immPanels(scene); W.sinoP = PN.make('PROYECCIONES · UNA FILA POR VISTA'); W.recP = PN.make('RECONSTRUIDO · PERFUSIÓN HMPAO');
   W.env = {}; const withEnv = f => { const o = G.env; G.env = W.env; try { return f(); } finally { G.env = o; } };
 
   const cam = immCamPath(R, [
@@ -4211,12 +4213,12 @@ function buildSPECT(scene, renderer, R){
     const a = iwin(p, 0.465, 0.48, 0.55, 0.57), b = iwin(p, 0.34, 0.36, 0.4, 0.42), c = iwin(p, 0.15, 0.17, 0.23, 0.25), d = iwin(p, 0.52, 0.53, 0.6, 0.615);
     const L = v => ins.localToWorld(v.clone());
     return [
-      {pos:L(new T.Vector3(-6.8, 1.5, 3)), text:'Lead collimator · hexagonal holes', a, left:true},
-      {pos:L(new T.Vector3(7.2, 3.5, 2)), text:'Sodium iodide crystal', a},
-      {pos:L(new T.Vector3(5.6, 6.5, 1.7)), text:'Photomultiplier tubes', a},
-      {pos:W.top.getWorldPosition(new T.Vector3()), text:'Gamma camera head', a:b},
-      {pos:W.P.table.localToWorld(new T.Vector3(0, 22, 14)), text:'⁹⁹ᵐTc-HMPAO trapped by blood flow', a:c, left:true},
-      {pos:L(new T.Vector3(0, -8, 0)), text:`${W.counts.pass} of ${W.counts.em} photons counted`, a:d},
+      {pos:L(new T.Vector3(-6.8, 1.5, 3)), text:'Colimador de plomo · orificios hexagonales', a, left:true},
+      {pos:L(new T.Vector3(7.2, 3.5, 2)), text:'Cristal de yoduro de sodio', a},
+      {pos:L(new T.Vector3(5.6, 6.5, 1.7)), text:'Tubos fotomultiplicadores', a},
+      {pos:W.top.getWorldPosition(new T.Vector3()), text:'Cabezal de cámara gamma', a:b},
+      {pos:W.P.table.localToWorld(new T.Vector3(0, 22, 14)), text:'⁹⁹ᵐTc-HMPAO atrapado por el flujo sanguíneo', a:c, left:true},
+      {pos:L(new T.Vector3(0, -8, 0)), text:`${W.counts.pass} de ${W.counts.em} fotones contados`, a:d},
     ];
   };
   immLinearize(scene);
@@ -4251,7 +4253,7 @@ function buildFMRI(scene, renderer, R){
     const f = new T.Mesh(iflare(36.5, 57.5, 28), M.shell); f.scale.z = side; f.position.z = side > 0 ? 21 : -21; g.add(f);
     const trim = new T.Mesh(new T.TorusGeometry(60, 2.4, 24, 160), M.trim); trim.position.z = side > 0 ? 21.5 : -21.5; g.add(trim);
     if (side > 0){ W.ringMat = new T.MeshStandardMaterial({color:SIG, emissive:SIG, emissiveIntensity:1.4, roughness:0.4, transparent:true}); const ring = new T.Mesh(new T.TorusGeometry(64.5, 0.75, 12, 200), W.ringMat); ring.position.z = 21.6; g.add(ring);
-      W.scr = iscreen(['HEAD FIRST · SUPINE', 'Motor task · 15 s blocks', 'EPI BOLD  TR 2000'], 26, 16.25, 0.3); W.scr.position.set(-86, 58, 21.4); W.scr.rotation.y = 0.18; g.add(W.scr);
+      W.scr = iscreen(['CABEZA PRIMERO · SUPINO', 'Tarea motora · bloques de 15 s', 'EPI BOLD  TR 2000'], 26, 16.25, 0.3); W.scr.position.set(-86, 58, 21.4); W.scr.rotation.y = 0.18; g.add(W.scr);
       W.plate = iplate('N E U R O · 3 T'); W.plate.position.set(0, 96, 21.6); g.add(W.plate); } }
   const plinth = ishadow(new T.Mesh(new T.ExtrudeGeometry(immRoundRect(212, 150, 14), {depth:16, bevelEnabled:true, bevelThickness:2, bevelSize:2, bevelSegments:3}), M.plinth)); plinth.rotation.x = -Math.PI/2; plinth.position.set(0, S.FLOOR, 75); scene.add(plinth);
   const liner = new T.Mesh(new T.CylinderGeometry(36.5, 36.5, 176, 128, 1, true), M.liner); liner.rotation.x = Math.PI/2; mag.add(liner);
@@ -4312,7 +4314,7 @@ function buildFMRI(scene, renderer, R){
   W.slabs = []; for (let i = 0; i < 7; i++){ const m = new T.Mesh(new T.BoxGeometry(19, 22, 0.32), new T.MeshBasicMaterial({color:0x2f6bff, transparent:true, opacity:0, depthWrite:false})); m.renderOrder = 6; scene.add(m); W.slabs.push(m); }
   W.headC = W.P.mni.localToWorld(new T.Vector3(0, -18, 12));
   /* ---------- panels ---------- */
-  const PN = immPanels(scene); W.boldP = PN.make('BOLD SIGNAL · LEFT HAND KNOB', 512, 256); W.mapP = PN.make('Z-MAP ON ANATOMY'); W.mapP.keepLab = true;
+  const PN = immPanels(scene); W.boldP = PN.make('SEÑAL BOLD · ÁREA DE LA MANO IZQUIERDA', 512, 256); W.mapP = PN.make('MAPA Z SOBRE ANATOMÍA'); W.mapP.keepLab = true;
   // camera: computed around the magnified unit
   const k = (v) => [v.x, v.y, v.z], vS = C.clone().add(new T.Vector3(16, 3.5, 0)), vT = C.clone().add(new T.Vector3(0, -1, 0));
   const above = W.headC.clone().add(new T.Vector3(8, 16, -30)), beyond = W.headC.clone().addScaledVector(N, 34).add(new T.Vector3(0, 6, 0));
@@ -4333,9 +4335,9 @@ function buildFMRI(scene, renderer, R){
   ], {drift:0.08});
   W.drawTask = (on, t) => { const c = W.taskCv.getContext('2d'), w = 512, h = 384; c.fillStyle = '#0a0d10'; c.fillRect(0, 0, w, h);
     c.textAlign = 'center'; c.textBaseline = 'middle';
-    if (on){ c.fillStyle = '#ffffff'; c.font = '600 64px Archivo, Arial, sans-serif'; c.fillText('TAP', w/2, h/2 - 34); c.font = '400 26px Archivo, Arial, sans-serif'; c.fillStyle = '#9fb6ff'; c.fillText('right fingers, in time', w/2, h/2 + 30);
+    if (on){ c.fillStyle = '#ffffff'; c.font = '600 64px Archivo, Arial, sans-serif'; c.fillText('GOLPEE', w/2, h/2 - 34); c.font = '400 26px Archivo, Arial, sans-serif'; c.fillStyle = '#9fb6ff'; c.fillText('dedos derechos, a tiempo', w/2, h/2 + 30);
       const b = (Math.floor(t*3) % 2) ? 1 : 0.35; c.fillStyle = `rgba(95,141,255,${b})`; c.beginPath(); c.arc(w/2, h/2 + 92, 14, 0, Math.PI*2); c.fill(); }
-    else { c.fillStyle = '#c8d4da'; c.font = '300 90px Archivo, Arial, sans-serif'; c.fillText('+', w/2, h/2 - 6); c.font = '400 24px Archivo, Arial, sans-serif'; c.fillStyle = '#76858c'; c.fillText('rest', w/2, h/2 + 70); }
+    else { c.fillStyle = '#c8d4da'; c.font = '300 90px Archivo, Arial, sans-serif'; c.fillText('+', w/2, h/2 - 6); c.font = '400 24px Archivo, Arial, sans-serif'; c.fillStyle = '#76858c'; c.fillText('reposo', w/2, h/2 + 70); }
     W.taskTex.needsUpdate = true; W.mtex.needsUpdate = true; };
   const m4 = new T.Matrix4(), q0 = new T.Quaternion(), sc = new T.Vector3(1, 0.42, 1), col = new T.Color(), oxy = new T.Color(0xd9412b).convertSRGBToLinear(), deo = new T.Color(0x6b2a4f).convertSRGBToLinear();
   W.update = (p, t, dt) => {
@@ -4393,12 +4395,12 @@ function buildFMRI(scene, renderer, R){
     const a = iwin(p, 0.12, 0.14, 0.2, 0.22), b = iwin(p, 0.29, 0.31, 0.34, 0.35), c = iwin(p, 0.4, 0.42, 0.455, 0.47), d = iwin(p, 0.5, 0.52, 0.56, 0.575), e = iwin(p, 0.58, 0.6, 0.66, 0.675), f = iwin(p, 0.68, 0.7, 0.75, 0.765);
     const L = v => nvu.localToWorld(v.clone());
     return [
-      {pos:new T.Vector3(-24, 24, -132), text:'Screen behind the magnet', a, left:true},
-      {pos:W.P.table.localToWorld(new T.Vector3(0, 36.5, 20)), text:'Mirror on the head coil', a:b},
-      {pos:W.P.mni.localToWorld(new T.Vector3(-38, -22, 58)), text:'Left motor cortex: hand area', a:c},
-      {pos:L(new T.Vector3(-3.8, -3.1, -1.6)), text:'Pyramidal neurons firing', a:d, left:true},
-      {pos:L(new T.Vector3(3.5, 1.6, 0)), text:'Arteriole widens, flow rises', a:e},
-      {pos:L(new T.Vector3(-2, 1.8, 0)), text:'Deoxyhaemoglobin distorts the field', a:f, left:true},
+      {pos:new T.Vector3(-24, 24, -132), text:'Pantalla detrás del imán', a, left:true},
+      {pos:W.P.table.localToWorld(new T.Vector3(0, 36.5, 20)), text:'Espejo en la bobina de cabeza', a:b},
+      {pos:W.P.mni.localToWorld(new T.Vector3(-38, -22, 58)), text:'Corteza motora izquierda: área de la mano', a:c},
+      {pos:L(new T.Vector3(-3.8, -3.1, -1.6)), text:'Neuronas piramidales descargando', a:d, left:true},
+      {pos:L(new T.Vector3(3.5, 1.6, 0)), text:'La arteriola se dilata, el flujo aumenta', a:e},
+      {pos:L(new T.Vector3(-2, 1.8, 0)), text:'La desoxihemoglobina distorsiona el campo', a:f, left:true},
     ];
   };
   immLinearize(scene);
@@ -4501,7 +4503,7 @@ function buildEEG(scene, renderer, R){
     core.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), W.n3);
   };
   /* ---------- panel: the trace ---------- */
-  const PN = immPanels(scene); W.trP = PN.make('EEG · 8 CHANNELS · BIPOLAR', 512, 320); W.trP.keepLab = true;
+  const PN = immPanels(scene); W.trP = PN.make('EEG · 8 CANALES · BIPOLAR', 512, 320); W.trP.keepLab = true;
   W.trace = (ctx, w, h, t, nch, dark) => {
     const ch = [3, 7, 11, 15, 16, 17, 1, 5].slice(0, nch), rows = ch.length, rh = (h - 26)/rows, sc = rh/120, N = 260, win = 4;
     ctx.fillStyle = dark ? '#0a1016' : '#ffffff'; ctx.fillRect(0, 0, w, h);
@@ -4511,7 +4513,7 @@ function buildEEG(scene, renderer, R){
       ctx.strokeStyle = dark ? (c >= 16 ? '#7fa6ff' : '#c8d4da') : (c >= 16 ? '#0050ff' : '#0c161b'); ctx.lineWidth = 1.6; ctx.beginPath();
       for (let i = 0; i < N; i++){ const tt = t - win + win*i/N, V = eegElectrodes('alpha', tt), v = V[MONTAGE[c][0]] - V[MONTAGE[c][1]], x = 70 + (w - 70)*i/N, y = y0 - v*sc; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
       ctx.stroke(); });
-    ctx.fillStyle = dark ? '#8d9ba1' : '#76858c'; ctx.fillText('1 s', w - 40, h - 6); ctx.fillText('eyes closed · alpha ≈ 10 Hz', 72, h - 6);
+    ctx.fillStyle = dark ? '#8d9ba1' : '#76858c'; ctx.fillText('1 s', w - 40, h - 6); ctx.fillText('ojos cerrados · alfa ≈ 10 Hz', 72, h - 6);
   };
   const H = new T.Vector3(0, 122, 1.6);
   const cam = immCamPath(R, [
@@ -4571,10 +4573,10 @@ function buildEEG(scene, renderer, R){
     const out = W.elec.map(e=>({pos:L(e.pos), text:e.nm, a:a*(['C3','Cz','C4','Fz','Pz','O1','O2','F3','F4','P3','P4','T7','T8','Fp1','Fp2','F7','F8','P7','P8'].includes(e.nm) ? 1 : 0)}));
     const b = iwin(p, 0.31, 0.33, 0.38, 0.395), C = y => W.e3 ? core.localToWorld(new T.Vector3(9.5, y, 0)) : new T.Vector3();
     const c = iwin(p, 0.42, 0.45, 0.51, 0.53), d = iwin(p, 0.6, 0.62, 0.69, 0.72), e = iwin(p, 0.82, 0.84, 0.9, 0.92);
-    out.push({pos:C(1.1), text:'Gel', a:b}, {pos:C(-3), text:'Scalp', a:b}, {pos:C(-9.5), text:'Skull', a:b}, {pos:C(-14.5), text:'CSF', a:b}, {pos:C(-19.5), text:'Grey matter', a:b}, {pos:C(-27), text:'White matter', a:b});
-    out.push({pos:W.e3 ? core.localToWorld(new T.Vector3(6.8, -14, 0)) : new T.Vector3(), text:'Dipole: currents in step', a:c});
-    out.push({pos:L(new T.Vector3(0, -100, 14)), text:'Visual cortex, alpha generator', a:d, left:true});
-    out.push({pos:W.amp.getWorldPosition(new T.Vector3()).add(new T.Vector3(0, 4, 0)), text:'Differential amplifier', a:e, left:true});
+    out.push({pos:C(1.1), text:'Gel', a:b}, {pos:C(-3), text:'Cuero cabelludo', a:b}, {pos:C(-9.5), text:'Cráneo', a:b}, {pos:C(-14.5), text:'LCR', a:b}, {pos:C(-19.5), text:'Sustancia gris', a:b}, {pos:C(-27), text:'Sustancia blanca', a:b});
+    out.push({pos:W.e3 ? core.localToWorld(new T.Vector3(6.8, -14, 0)) : new T.Vector3(), text:'Dipolo: corrientes en fase', a:c});
+    out.push({pos:L(new T.Vector3(0, -100, 14)), text:'Corteza visual, generador alfa', a:d, left:true});
+    out.push({pos:W.amp.getWorldPosition(new T.Vector3()).add(new T.Vector3(0, 4, 0)), text:'Amplificador diferencial', a:e, left:true});
     return out;
   };
   immLinearize(scene);
@@ -4658,7 +4660,7 @@ function buildMEG(scene, renderer, R){
   for (let k = 0; k < 4; k++){ const r = 7 + k*7, m = new T.MeshBasicMaterial({color:0x2f6bff, alphaMap:dashT, transparent:true, opacity:0, depthWrite:false, side:T.DoubleSide});
     const ring = new T.Mesh(new T.TorusGeometry(r, 0.8, 6, 120), m); ring.rotation.x = Math.PI/2; ring.position.set(-38, -27, 54); W.F.add(ring); W.rings.push(ring); }
   /* ---------- panel: evoked field, all sensors ---------- */
-  const PN = immPanels(scene); W.bfP = PN.make('MEG · 102 SENSORS · RIGHT WRIST PULSE', 512, 300); W.bfP.keepLab = true;
+  const PN = immPanels(scene); W.bfP = PN.make('MEG · 102 SENSORES · PULSO EN MUÑECA DERECHA', 512, 300); W.bfP.keepLab = true;
   W.field = (dips, p, n) => { let b = 0; for (const d of dips){ const r = p.clone().sub(mniV(d.p)), L = r.length(); b += new T.Vector3().crossVectors(mniV(d.q), r).dot(n)/(L*L*L)*d.a; } return b; };
   W.butterfly = (ctx, w, h, tau) => {
     ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h); const X = ms => 30 + (w - 50)*ms/250, Y = v => h*0.48 - Math.max(-1.4, Math.min(1.4, v))*h*0.3;
@@ -4670,7 +4672,7 @@ function buildMEG(scene, renderer, R){
     ctx.strokeStyle = '#0050ff'; ctx.lineWidth = 2; ctx.setLineDash([5, 4]); ctx.beginPath(); ctx.moveTo(X(20), 10); ctx.lineTo(X(20), h - 40); ctx.stroke(); ctx.setLineDash([]);
     const cx = X(Math.min(250, tau*1000)); ctx.fillStyle = 'rgba(0,80,255,.12)'; ctx.fillRect(cx - 2, 10, 4, h - 50);
     ctx.fillStyle = '#76858c'; ctx.font = '16px monospace'; for (const ms of [0, 50, 100, 150, 200, 250]) ctx.fillText(ms + ' ms', X(ms) - 18, h - 14);
-    ctx.fillStyle = '#0050ff'; ctx.fillText('N20m', X(20) + 6, 26); ctx.fillStyle = '#965400'; ctx.fillText('pulse', X(0) + 6, h - 46);
+    ctx.fillStyle = '#0050ff'; ctx.fillText('N20m', X(20) + 6, 26); ctx.fillStyle = '#965400'; ctx.fillText('pulso', X(0) + 6, h - 46);
   };
   const cam = immCamPath(R, [
     [0.00, [-290, 200, 370], [0, 110, -30]],
@@ -4726,14 +4728,14 @@ function buildMEG(scene, renderer, R){
     const a = iwin(p, 0.02, 0.04, 0.09, 0.105), b = iwin(p, 0.27, 0.29, 0.35, 0.365), c = iwin(p, 0.4, 0.42, 0.465, 0.48), d = iwin(p, 0.53, 0.55, 0.6, 0.615), e = iwin(p, 0.88, 0.9, 0.98, 1.01);
     const L = v => trip.localToWorld(v.clone()), H = v => W.F.localToWorld(v.clone());
     return [
-      {pos:new T.Vector3(-100, 210, -147), text:'Mu-metal and aluminium walls', a},
-      {pos:new T.Vector3(0, 214, 2.4 - 28), text:'Liquid helium, 4 K', a:b, left:true},
-      {pos:H(new T.Vector3(-70, -10, 95)), text:'102 sensor positions · 306 channels', a:b},
-      {pos:L(new T.Vector3(9, 0.6, -9)), text:'Magnetometer loop', a:c},
-      {pos:L(new T.Vector3(-8, 1.1, 0)), text:'Two planar gradiometers', a:c, left:true},
-      {pos:L(new T.Vector3(0, 2.4, 11.6)), text:'SQUIDs', a:c},
-      {pos:H(new T.Vector3(-38, -14, 56)), text:'Current along the wall of the central sulcus', a:d},
-      {pos:H(new T.Vector3(-38, -27, 54)), text:'Fitted dipole: left hand area, 20 ms', a:e},
+      {pos:new T.Vector3(-100, 210, -147), text:'Paredes de mu-metal y aluminio', a},
+      {pos:new T.Vector3(0, 214, 2.4 - 28), text:'Helio líquido, 4 K', a:b, left:true},
+      {pos:H(new T.Vector3(-70, -10, 95)), text:'102 posiciones de sensores · 306 canales', a:b},
+      {pos:L(new T.Vector3(9, 0.6, -9)), text:'Bucle magnetómetro', a:c},
+      {pos:L(new T.Vector3(-8, 1.1, 0)), text:'Dos gradiómetros planares', a:c, left:true},
+      {pos:L(new T.Vector3(0, 2.4, 11.6)), text:'SQUID', a:c},
+      {pos:H(new T.Vector3(-38, -14, 56)), text:'Corriente por la pared del surco central', a:d},
+      {pos:H(new T.Vector3(-38, -27, 54)), text:'Dipolo ajustado: área de la mano izquierda, 20 ms', a:e},
     ];
   };
   immLinearize(scene);
@@ -4807,7 +4809,7 @@ function buildUS(scene, renderer, R){
   // waves at the vessel: sent (blue) and returned at a higher frequency (amber)
   W.wSent = iwiggle(T, 0x0050ff, 160); W.wBack = iwiggle(T, 0xe8962a, 160); F.add(W.wSent, W.wBack);
   /* ---------- panel: the Doppler spectrum ---------- */
-  const PN = immPanels(scene); W.spP = PN.make('SPECTRAL DOPPLER · LEFT MCA', 512, 280); W.spP.keepLab = true;
+  const PN = immPanels(scene); W.spP = PN.make('DOPPLER ESPECTRAL · ACM IZQUIERDA', 512, 280); W.spP.keepLab = true;
   W.spectrum = (ctx, w, h, t, dark) => {
     ctx.fillStyle = dark ? '#0a1016' : '#ffffff'; ctx.fillRect(0, 0, w, h);
     const base = h*0.74, sc = (h*0.62)/140;
@@ -4818,7 +4820,7 @@ function buildUS(scene, renderer, R){
     ctx.fillStyle = dark ? '#8d9ba1' : '#76858c'; ctx.font = '16px monospace'; ctx.fillText('100 cm/s', 6, base - 100*sc - 6); ctx.fillText('PSV 100  EDV 45  MFV 63 cm/s  PI 0.87', 6, h - 10);
   };
   W.drawMon = (t) => { const c = W.monCv.getContext('2d'); c.fillStyle = '#05080b'; c.fillRect(0, 0, 640, 420); const img = immScanImage('tcd', 'normal'); if (img) c.drawImage(img, 192, 4, 256, 256);
-    c.save(); c.translate(0, 262); W.spectrum(c, 640, 158, t, true); c.restore(); c.fillStyle = '#5f8dff'; c.font = '16px monospace'; c.fillText('TCD · L temporal · 2 MHz', 10, 22); W.monTex.needsUpdate = true; };
+    c.save(); c.translate(0, 262); W.spectrum(c, 640, 158, t, true); c.restore(); c.fillStyle = '#5f8dff'; c.font = '16px monospace'; c.fillText('TCD · temporal izq. · 2 MHz', 10, 22); W.monTex.needsUpdate = true; };
   W.revealImg = f => {
     const img = immScanImage('tcd', 'normal'); if (!img) return;
     if (!W.imgDrawn){ W.imgDrawn = true; W.imgCv.getContext('2d').drawImage(img, 0, 0, 256, 256); W.imgTex.needsUpdate = true;
@@ -4894,13 +4896,13 @@ function buildUS(scene, renderer, R){
     const a = iwin(p, 0.02, 0.04, 0.09, 0.105), b = iwin(p, 0.18, 0.2, 0.25, 0.265), c = iwin(p, 0.3, 0.32, 0.38, 0.395), d = iwin(p, 0.43, 0.45, 0.52, 0.535), e = iwin(p, 0.7, 0.72, 0.79, 0.81);
     const L = v => F.localToWorld(v.clone()), PR = v => probe.localToWorld(v.clone());
     return [
-      {pos:W.mon.getWorldPosition(new T.Vector3()).add(new T.Vector3(0, 22, 0)), text:'Ultrasound machine', a},
-      {pos:PR(new T.Vector3(7.5, 4.2, 0)), text:'Piezoelectric elements', a:b},
-      {pos:PR(new T.Vector3(-8, 11.6, 0)), text:'Backing block', a:b, left:true},
-      {pos:PR(new T.Vector3(0, 0, 0)), text:'Gel: no air between probe and skin', a:b, left:true},
-      {pos:L(new T.Vector3(-70, -4, 6)), text:'Temporal window: thin bone', a:c},
-      {pos:L(new T.Vector3(-30, 40, -12)), text:'Pulses out (blue), echoes back (amber)', a:d},
-      {pos:L(W.mcaC.getPoint(0.4)), text:'Middle cerebral artery: flow toward the probe', a:e},
+      {pos:W.mon.getWorldPosition(new T.Vector3()).add(new T.Vector3(0, 22, 0)), text:'Ecógrafo', a},
+      {pos:PR(new T.Vector3(7.5, 4.2, 0)), text:'Elementos piezoeléctricos', a:b},
+      {pos:PR(new T.Vector3(-8, 11.6, 0)), text:'Bloque de respaldo', a:b, left:true},
+      {pos:PR(new T.Vector3(0, 0, 0)), text:'Gel: sin aire entre sonda y piel', a:b, left:true},
+      {pos:L(new T.Vector3(-70, -4, 6)), text:'Ventana temporal: hueso delgado', a:c},
+      {pos:L(new T.Vector3(-30, 40, -12)), text:'Pulsos emitidos (azul), ecos de vuelta (ámbar)', a:d},
+      {pos:L(W.mcaC.getPoint(0.4)), text:'Arteria cerebral media: flujo hacia la sonda', a:e},
     ];
   };
   immLinearize(scene);
@@ -4992,7 +4994,7 @@ function buildDSA(scene, renderer, R){
     }
   };
   /* ---------- panels: mask, live frame, subtracted ---------- */
-  const PN = immPanels(scene); W.maskP = PN.make('MASK · BEFORE CONTRAST'); W.liveP = PN.make('CONTRAST FRAME'); W.subP = PN.make('SUBTRACTED'); W.subP.keepLab = true;
+  const PN = immPanels(scene); W.maskP = PN.make('MÁSCARA · ANTES DEL CONTRASTE'); W.liveP = PN.make('IMAGEN CON CONTRASTE'); W.subP = PN.make('SUSTRAÍDA'); W.subP.keepLab = true;
   W.skull = (c, s, ox = 0, oy = 0) => {   // a stylised skull in the frontal (AP) projection
     const X = x => ox + (90 - x)/180*s, Y = z => oy + (100 - z)/200*s;
     c.save(); c.fillStyle = '#d7dcdf'; c.fillRect(ox, oy, s, s);
@@ -5057,7 +5059,7 @@ function buildDSA(scene, renderer, R){
     // monitors: live fluoroscopy and the subtracted run
     if (!W.monT || t - W.monT > 1/10){ W.monT = t; const c = W.monCv.getContext('2d'); c.fillStyle = '#05080b'; c.fillRect(0, 0, 1024, 512);
       W.skull(c, 480, 16, 16); W.vessels2D(c, 480, ph, 16, 16); c.fillStyle = '#ffffff'; c.fillRect(528, 16, 480, 480); W.vessels2D(c, 480, ph, 528, 16);
-      c.fillStyle = '#5f8dff'; c.font = '20px monospace'; c.fillText('LIVE', 28, 44); c.fillText('DSA · L ICA', 540, 44); W.monTex.needsUpdate = true; }
+      c.fillStyle = '#5f8dff'; c.font = '20px monospace'; c.fillText('EN VIVO', 28, 44); c.fillText('ASD · ACI IZQUIERDA', 540, 44); W.monTex.needsUpdate = true; }
     // panels
     const camO = R.camera, pA = ismooth(0.83, 0.86, p), hand = ismooth(0.93, 0.97, p);
     if (pA > 0.002){ const key = Math.round(ph*200); if (W.pk !== key){ W.pk = key;
@@ -5074,16 +5076,16 @@ function buildDSA(scene, renderer, R){
     const a = iwin(p, 0.02, 0.04, 0.09, 0.105), b = iwin(p, 0.15, 0.17, 0.21, 0.225), c = iwin(p, 0.33, 0.35, 0.36, 0.37), d = iwin(p, 0.42, 0.44, 0.47, 0.49), e = iwin(p, 0.54, 0.56, 0.6, 0.61), f = iwin(p, 0.66, 0.68, 0.71, 0.72), g = iwin(p, 0.75, 0.77, 0.81, 0.83);
     const RW = v => root.localToWorld(new T.Vector3(...v)), H = v => HF.localToWorld(new T.Vector3(...v));
     return [
-      {pos:new T.Vector3(0, 0, -RC - 6), text:'C-arm', a, left:true},
-      {pos:W.mons.getWorldPosition(new T.Vector3()).add(new T.Vector3(0, 36, 0)), text:'Live images on the ceiling monitors', a},
-      {pos:RW([-9.8, 78, 5.2]), text:'Right femoral artery', a:b, left:true},
-      {pos:RW([0, 146.6, 1.2]), text:'Aortic arch', a:c, left:true},
-      {pos:RW([2.6, 153, 1.9]), text:'Left common carotid artery', a:d},
-      {pos:H([-34, 4, -9]), text:'Middle cerebral artery', a:e},
-      {pos:H([-3, 36, 24]), text:'Anterior cerebral artery', a:e, left:true},
-      {pos:H([0, -60, 72]), text:'Superior sagittal sinus', a:f},
-      {pos:W.tubeH.getWorldPosition(new T.Vector3()), text:'X-ray tube under the table', a:g, left:true},
-      {pos:W.det.getWorldPosition(new T.Vector3()), text:'Flat-panel detector', a:g},
+      {pos:new T.Vector3(0, 0, -RC - 6), text:'Brazo en C', a, left:true},
+      {pos:W.mons.getWorldPosition(new T.Vector3()).add(new T.Vector3(0, 36, 0)), text:'Imágenes en directo en los monitores del techo', a},
+      {pos:RW([-9.8, 78, 5.2]), text:'Arteria femoral derecha', a:b, left:true},
+      {pos:RW([0, 146.6, 1.2]), text:'Arco aórtico', a:c, left:true},
+      {pos:RW([2.6, 153, 1.9]), text:'Arteria carótida común izquierda', a:d},
+      {pos:H([-34, 4, -9]), text:'Arteria cerebral media', a:e},
+      {pos:H([-3, 36, 24]), text:'Arteria cerebral anterior', a:e, left:true},
+      {pos:H([0, -60, 72]), text:'Seno sagital superior', a:f},
+      {pos:W.tubeH.getWorldPosition(new T.Vector3()), text:'Tubo de rayos X bajo la mesa', a:g, left:true},
+      {pos:W.det.getWorldPosition(new T.Vector3()), text:'Detector de panel plano', a:g},
     ];
   };
   immLinearize(scene);
@@ -5108,7 +5110,7 @@ const LB_PART = {
 };
 const LB_MID = new Set(['spine', 'neck', 'head', 'tongue', 'nose']);
 const LB_FACEKEYS = ['browL', 'browR', 'eyeL', 'eyeR', 'lidL', 'lidR', 'cheekL', 'cheekR', 'lipsL', 'lipsR', 'tongue', 'nose', 'earL', 'earR'];
-const LB_KIND = {move:'Motor response', feel:'Sensation', see:'Visual', hear:'Auditory', speech:'Language', eyes:'Eye movement', memory:'Experiential', self:'Experiential', emotion:'Limbic', gut:'Visceral', quiet:'No visible movement'};
+const LB_KIND = {move:'Respuesta motora', feel:'Sensación', see:'Visual', hear:'Auditiva', speech:'Lenguaje', eyes:'Movimiento ocular', memory:'Experiencial', self:'Experiencial', emotion:'Límbico', gut:'Visceral', quiet:'Sin movimiento visible'};
 const LB_COL = {move:0x2f6bff, feel:0x00a389, see:0xe0a01c, hear:0x00a389, speech:0x2f6bff, eyes:0x2f6bff, memory:0x8a5cf6, self:0x8a5cf6, emotion:0xe8962a, gut:0xe8962a, quiet:0x00a389};
 
 // what lights up, what moves, what floats above the body
@@ -5120,25 +5122,25 @@ function lbPlan(e){
   if ((k === 'move' || k === 'feel') && LB_PART[e.part]){ const d = LB_PART[e.part]; P.lit = J(d.lit); P.mv = k === 'move' ? d.mv : 'feel'; P.glow = d.face ? [] : J([d.lit[0]]); P.face = !!d.face; }
   else if (e.part === 'posture'){ P.sides = ['L', 'R']; P.lit = ['shoulderL', 'shoulderR', 'elbowL', 'elbowR', 'neck']; P.mv = 'posture'; P.glow = ['shoulderL', 'shoulderR']; }
   else if (k === 'eyes'){ P.lit = ['eyeL', 'eyeR']; P.mv = 'eyes'; P.face = true; }
-  else if (k === 'speech'){ P.lit = ['lipsL', 'lipsR', 'tongue']; P.mv = 'speech'; P.face = true; P.bubble = e.title.startsWith('Speech') ? 'one, two, th…' : 'a… pencil? no…'; }
+  else if (k === 'speech'){ P.lit = ['lipsL', 'lipsR', 'tongue']; P.mv = 'speech'; P.face = true; P.bubble = /habla/i.test(e.title) ? 'uno, dos, tre…' : 'a… ¿lápiz? no…'; }
   else if (k === 'hear'){ P.lit = sides.map(s=>'ear' + s); P.mv = 'hear'; P.face = true; P.glow = sides.map(s=>'ear' + s); }
   else if (k === 'see'){ P.lit = ['eyeL', 'eyeR']; P.mv = 'see'; P.face = true; P.glow = ['eyes']; }
   else if (k === 'memory'){ P.lit = ['head']; P.mv = 'dream'; P.face = true; P.bubble = 'déjà vu'; }
   else if (k === 'self'){ P.lit = ['head']; P.mv = 'dream'; P.ghost = true; }
   else if (k === 'emotion'){
-    if (/stomach/.test(e.title)){ P.lit = ['head', 'spine']; P.glow = ['gut']; P.mv = 'fear'; }
-    else { P.face = true; P.lit = ['head']; P.mv = /smile/i.test(e.title) ? 'smile' : /[Mm]ood/.test(e.title) ? 'mood' : /urge/.test(e.title) ? 'urge' : 'fear'; } }
+    if (/epigástric|náusea/i.test(e.title)){ P.lit = ['head', 'spine']; P.glow = ['gut']; P.mv = 'fear'; }
+    else { P.face = true; P.lit = ['head']; P.mv = /sonrisa/i.test(e.title) ? 'smile' : /ánimo/i.test(e.title) ? 'mood' : /impulso/i.test(e.title) ? 'urge' : 'fear'; } }
   else if (k === 'gut'){ P.lit = ['spine', 'neck']; P.glow = ['gut']; P.mv = 'nausea'; }
-  else if (k === 'quiet' && /^Tremor/.test(e.title)){ P.lit = J(['wrist', 'fingers', 'thumb']); P.mv = 'tremor'; }
+  else if (k === 'quiet' && /temblor/i.test(e.title)){ P.lit = J(['wrist', 'fingers', 'thumb']); P.mv = 'tremor'; }
   if (P.lit.includes('head')) P.lit.push(...LB_FACEKEYS);
   return P;
 }
 function lbTag(e){
   const nm = {toes:'toes', foot:'foot', leg:'leg', hip:'hip', trunk:'trunk', shoulder:'shoulder', arm:'arm', hand:'hand', fingers:'fingers', thumb:'thumb', neck:'neck', face:'face', lips:'lips', tongue:'tongue', throat:'throat'}[e.part];
-  const side = e.side === 'both' ? 'both sides' : e.side;
-  if ((e.kind === 'move' || e.kind === 'feel') && nm) return `${LB_KIND[e.kind]} · ${e.side === 'both' ? nm + ', both sides' : side + ' ' + nm}`;
-  if (e.kind === 'eyes') return `${LB_KIND.eyes} · to the ${side}`;
-  return LB_KIND[e.kind] || 'Response';
+  const side = e.side === 'both' ? 'ambos lados' : (e.side === 'right' ? 'derecho' : e.side === 'left' ? 'izquierdo' : e.side);
+  if ((e.kind === 'move' || e.kind === 'feel') && nm) return `${LB_KIND[e.kind]} · ${e.side === 'both' ? PART_LABEL[nm] + ', ambos lados' : side + ' ' + PART_LABEL[nm]}`;
+  if (e.kind === 'eyes') return `${LB_KIND.eyes} · hacia el lado ${side}`;
+  return LB_KIND[e.kind] || 'Respuesta';
 }
 
 function lbBuild(){
@@ -5146,7 +5148,7 @@ function lbBuild(){
   if (typeof THREE === 'undefined' || typeof buildMannequin !== 'function'){ LB.failed = true; return null; }
   try {
     const T = THREE, cv = document.createElement('canvas');
-    cv.className = 'lb-cv'; cv.setAttribute('role', 'img'); cv.setAttribute('aria-label', '3D body showing the response to stimulation. Drag to turn it, click to replay.');
+    cv.className = 'lb-cv'; cv.setAttribute('role', 'img'); cv.setAttribute('aria-label', 'Cuerpo 3D que muestra la respuesta a la estimulación. Arrástrelo para girarlo; pulse para repetir.');
     const r = new T.WebGLRenderer({canvas:cv, antialias:true, alpha:true, powerPreference:'high-performance'});
     r.outputEncoding = T.sRGBEncoding; r.toneMapping = T.ACESFilmicToneMapping; r.toneMappingExposure = 0.8; r.setClearColor(0xffffff, 0);
     const sc = new T.Scene(); sc.environment = immStudioEnv(r, {top:0.7, floor:0.32, horizon:0.3, panel:1.1});
@@ -5184,13 +5186,13 @@ function lbBuild(){
     const up = () => { const d = LB.drag; if (!d) return; LB.drag = null; cv.classList.remove('dragging'); if (!d.moved && LB.plan) LB.evT0 = performance.now(); };
     cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
     cv.addEventListener('dblclick', ()=>{ LB.yawHome = true; });
-  } catch(err){ console.warn('3D body unavailable', err); LB.failed = true; LB.r = null; }
+  } catch(err){ console.warn('Cuerpo 3D no disponible', err); LB.failed = true; LB.r = null; }
   return LB.r;
 }
 
 function lbMount(host, s){
   if (!lbBuild() || !host) return false;
-  host.innerHTML = `<span class="lb-tag"></span><span class="lb-side" data-s="R" title="Patient's right">R</span><span class="lb-side" data-s="L" title="Patient's left">L</span><span class="lb-bub" hidden></span><span class="lb-hint">Facing you · drag to turn · click to replay</span><button type="button" class="lb-view">Face</button>`;
+  host.innerHTML = `<span class="lb-tag"></span><span class="lb-side" data-s="R" title="Derecha del paciente">R</span><span class="lb-side" data-s="L" title="Izquierda del paciente">L</span><span class="lb-bub" hidden></span><span class="lb-hint">De frente · arrastre para girar · pulse para repetir</span><button type="button" class="lb-view">Cara</button>`;
   host.prepend(LB.cv); LB.host = host;
   LB.sideR = host.querySelector('[data-s="R"]'); LB.sideL = host.querySelector('[data-s="L"]'); LB.bub = host.querySelector('.lb-bub');
   const tag = host.querySelector('.lb-tag');
@@ -5200,7 +5202,7 @@ function lbMount(host, s){
     if (LB.evKey !== s.t0){ LB.evKey = s.t0; LB.evT0 = performance.now(); LB.plan = lbPlan(s.effect); LB.yawHome = true; LB.view = null; }
     tag.textContent = lbTag(s.effect); tag.style.setProperty('--c', '#' + new THREE.Color(LB.plan.col).getHexString());
     if (LB.plan.bubble){ LB.bub.textContent = LB.plan.bubble; LB.bub.hidden = false; }
-  } else { LB.plan = null; LB.evKey = null; tag.textContent = 'Awaiting stimulation'; tag.classList.add('idle'); }
+  } else { LB.plan = null; LB.evKey = null; tag.textContent = 'Esperando estimulación'; tag.classList.add('idle'); }
   if (!LB.raf) LB.raf = requestAnimationFrame(lbFrame);
   return true;
 }
@@ -5366,7 +5368,7 @@ function lbFrame(now){
   cam.aspect = w/h; cam.near = Math.max(1, LB.dist*0.2); cam.updateProjectionMatrix();
   const tz = ilerp(0, 3, fz);
   cam.position.set(Math.sin(LB.yaw)*Math.cos(LB.pitch)*LB.dist, cy + Math.sin(LB.pitch)*LB.dist, tz + Math.cos(LB.yaw)*Math.cos(LB.pitch)*LB.dist); cam.lookAt(0, cy, tz);
-  if (LB.viewBtn){ const lab = fz > 0.5 ? 'Full body' : 'Face'; if (LB.viewBtn.textContent !== lab) LB.viewBtn.textContent = lab; }
+  if (LB.viewBtn){ const lab = fz > 0.5 ? 'Cuerpo completo' : 'Cara'; if (LB.viewBtn.textContent !== lab) LB.viewBtn.textContent = lab; }
   lbPose(t, k);
   LB.scene.updateMatrixWorld(true);
   // light the responding segments, fade the rest back to clinical grey
@@ -5390,99 +5392,99 @@ function lbFrame(now){
 
 /* ---------- register the walkthroughs ---------- */
 Object.assign(IMMERSIVE, {
-  ct:{ label:'Walk-through of a CT scanner', height:1000, build:buildCT, deepTitle:'From X-rays to a slice, step by step',
+  ct:{ label:'Recorrido por un escáner de TC', height:1000, build:buildCT, deepTitle:'De los rayos X al corte, paso a paso',
     caps:[
-      [0.005, 0.10, 'A CT scanner', 'A short ring, about 70 cm across. Inside it an X-ray tube and a curved row of detectors face each other across the patient.'],
-      [0.11, 0.225, 'Head first', 'The table slides the head into the ring. A laser line marks where the first slice will be taken.'],
-      [0.245, 0.375, 'Inside the cover', 'The tube, the detectors and their electronics ride on one drum. A slip ring carries power across, so the drum can spin without cables winding up.'],
-      [0.39, 0.515, 'A helix through the head', 'The drum turns about three times a second while the table moves, so the beam traces a spiral from the skull base to the top of the head. Slowed down here.'],
-      [0.53, 0.625, 'A fan of X-rays', 'The tube fires a thin fan of X-rays, 120 kV, through the head. Skull and brain absorb part of it on the way to the detectors.'],
-      [0.635, 0.72, 'What gets through', 'Each detector measures how much of its ray survived: I = I₀·e^(−μx). Rays that cross more bone arrive weaker, so the reading dips.'],
-      [0.73, 0.83, 'Every angle', 'One reading per angle. Stacked from 0° to 180° they make a sinogram, in which each point of the head traces a sine wave.'],
-      [0.84, 0.935, 'Back-projection', 'Each filtered profile is smeared back across the image along the direction it was measured. Angle by angle, the slice appears.'],
-      [0.945, 1.01, 'The slice', 'Every pixel is a Hounsfield unit, shown here in a brain window: grey and white matter, dark CSF, bright skull. Scroll on for the physics in detail.'],
+      [0.005, 0.10, 'Un escáner de TC', 'Un anillo corto, de unos 70 cm de diámetro. En su interior, un tubo de rayos X y una fila curva de detectores se enfrentan a través del paciente.'],
+      [0.11, 0.225, 'Primero la cabeza', 'La camilla introduce la cabeza en el anillo. Una línea láser marca dónde se tomará el primer corte.'],
+      [0.245, 0.375, 'Dentro de la carcasa', 'El tubo, los detectores y su electrónica giran sobre un mismo tambor. Un anillo colector transmite la alimentación, de modo que el tambor puede girar sin que los cables se enrollen.'],
+      [0.39, 0.515, 'Una hélice a través de la cabeza', 'El tambor gira unas tres veces por segundo mientras la camilla avanza, de forma que el haz traza una espiral desde la base del cráneo hasta la cima de la cabeza. Aquí, ralentizado.'],
+      [0.53, 0.625, 'Un abanico de rayos X', 'El tubo emite un abanico fino de rayos X, 120 kV, a través de la cabeza. El cráneo y el encéfalo absorben parte de ellos camino de los detectores.'],
+      [0.635, 0.72, 'Lo que logra atravesar', 'Cada detector mide cuánto sobrevivió de su rayo: I = I₀·e^(−μx). Los rayos que cruzan más hueso llegan más atenuados, por lo que la lectura cae.'],
+      [0.73, 0.83, 'Cada ángulo', 'Una lectura por ángulo. Apiladas de 0° a 180° forman un sinograma, en el que cada punto de la cabeza traza una sinusoide.'],
+      [0.84, 0.935, 'Retroproyección', 'Cada perfil filtrado se proyecta de vuelta sobre la imagen en la dirección en que se midió. Ángulo a ángulo, aparece el corte.'],
+      [0.945, 1.01, 'El corte', 'Cada píxel es una unidad Hounsfield, mostrada aquí en ventana cerebral: sustancia gris y blanca, LCR oscuro, cráneo brillante. Siga desplazándose para ver la física en detalle.'],
     ]},
-  pet:{ label:'Walk-through of a PET scanner', height:1050, build:buildPET, deepTitle:'From tracer to image, step by step',
+  pet:{ label:'Recorrido por un escáner de PET', height:1050, build:buildPET, deepTitle:'Del trazador a la imagen, paso a paso',
     caps:[
-      [0.005, 0.10, 'A PET scanner', 'Behind the cover is a ring of detector crystals. The scanner itself sends nothing into the body: everything it records comes from the patient.'],
-      [0.11, 0.245, 'A glucose tracer', 'FDG, glucose tagged with fluorine-18, is injected into a vein. For 45 minutes the patient rests quietly while active cells, above all in the brain, take it up and trap it.'],
-      [0.26, 0.345, 'Into the ring', 'The table moves the head into the middle of the detector ring.'],
-      [0.36, 0.475, 'Rings of crystals', 'Thousands of small LSO crystals, in blocks, line the ring. A gamma photon that hits one makes it flash; light sensors behind turn the flash into a pulse.'],
-      [0.49, 0.585, 'One decay', 'Inside a brain cell, an ¹⁸F nucleus emits a positron. It travels about half a millimetre (magnified here) before it meets an electron.'],
-      [0.595, 0.66, 'Two photons, back to back', 'Positron and electron annihilate. Their mass becomes two 511 keV gamma photons that fly apart in opposite directions.'],
-      [0.67, 0.735, 'Coincidence', 'Two crystals flash within a few nanoseconds. The decay happened somewhere on the line between them: a line of response.'],
-      [0.745, 0.83, 'Millions of lines', 'Every coincidence adds a line. Where tracer is concentrated, lines cross more often.'],
-      [0.84, 0.935, 'Reconstruction', 'Back-projecting the lines gives a blurred map of the tracer. Iterative reconstruction (OSEM), with corrections for attenuation and scatter, sharpens it.'],
-      [0.945, 1.01, 'The image', 'Glucose use across the brain: high in cortex and deep grey matter, low in white matter. Scroll on for the physics in detail.'],
+      [0.005, 0.10, 'Un escáner de PET', 'Tras la carcasa hay un anillo de cristales detectores. El escáner no introduce nada en el cuerpo: todo lo que registra procede del paciente.'],
+      [0.11, 0.245, 'Un trazador de glucosa', 'Se inyecta FDG, glucosa marcada con flúor-18, en una vena. Durante 45 minutos el paciente reposa mientras las células activas, sobre todo las del encéfalo, la captan y la retienen.'],
+      [0.26, 0.345, 'Hacia el anillo', 'La camilla sitúa la cabeza en el centro del anillo de detectores.'],
+      [0.36, 0.475, 'Anillos de cristales', 'Miles de pequeños cristales de LSO, agrupados en bloques, recubren el anillo. Un fotón gamma que impacta en uno lo hace destellar; los sensores de luz situados detrás convierten el destello en un pulso.'],
+      [0.49, 0.585, 'Una desintegración', 'Dentro de una célula cerebral, un núcleo de ¹⁸F emite un positrón. Recorre aproximadamente medio milímetro (aquí ampliado) antes de encontrarse con un electrón.'],
+      [0.595, 0.66, 'Dos fotones, espalda con espalda', 'El positrón y el electrón se aniquilan. Su masa se convierte en dos fotones gamma de 511 keV que salen despedidos en direcciones opuestas.'],
+      [0.67, 0.735, 'Coincidencia', 'Dos cristales destellan en pocos nanosegundos. La desintegración ocurrió en algún punto de la línea que los une: una línea de respuesta.'],
+      [0.745, 0.83, 'Millones de líneas', 'Cada coincidencia añade una línea. Donde el trazador se concentra, las líneas se cruzan con más frecuencia.'],
+      [0.84, 0.935, 'Reconstrucción', 'La retroproyección de las líneas produce un mapa borroso del trazador. La reconstrucción iterativa (OSEM), con correcciones de atenuación y dispersión, lo nitidiza.'],
+      [0.945, 1.01, 'La imagen', 'Consumo de glucosa en todo el encéfalo: alto en la corteza y la sustancia gris profunda, bajo en la sustancia blanca. Siga desplazándose para ver la física en detalle.'],
     ]},
-  spect:{ label:'Walk-through of a SPECT gamma camera', height:950, build:buildSPECT, deepTitle:'From gamma photon to image, step by step',
+  spect:{ label:'Recorrido por una cámara gamma SPECT', height:950, build:buildSPECT, deepTitle:'Del fotón gamma a la imagen, paso a paso',
     caps:[
-      [0.005, 0.10, 'A SPECT camera', 'Two or three gamma cameras on a ring. Each is a flat detector the size of a large book, pointing at the patient.'],
-      [0.11, 0.25, 'A tracer frozen in place', '⁹⁹ᵐTc-HMPAO is injected into a vein and is trapped in brain tissue within a minute or two, in proportion to blood flow at that moment.'],
-      [0.265, 0.375, 'The heads close in', 'The table brings the head into the ring and the camera heads move in as close as they can. Closer means sharper.'],
-      [0.39, 0.485, 'Inside a camera head', 'A lead collimator, a sodium iodide crystal and a row of photomultiplier tubes, shown magnified.'],
-      [0.495, 0.61, 'Only straight photons count', 'A gamma photon flies off in any direction. The lead holes let through only photons travelling straight in; the rest stop in the lead. Roughly 1 in 10,000 is counted.'],
-      [0.625, 0.755, 'Step and shoot', 'The heads turn 3° at a time and record a projection at each stop: 120 views in about 20 minutes. Stacked, the views make a sinogram.'],
-      [0.77, 0.935, 'Reconstruction', 'The projections are back-projected as in CT. With 8–10 mm resolution, readers judge the overall pattern rather than sharp edges.'],
-      [0.945, 1.01, 'The image', 'Blood flow at the moment of injection: even across the cortex, highest in the cerebellum. Scroll on for the physics in detail.'],
+      [0.005, 0.10, 'Una cámara SPECT', 'Dos o tres cámaras gamma sobre un anillo. Cada una es un detector plano del tamaño de un libro grande, orientado hacia el paciente.'],
+      [0.11, 0.25, 'Un trazador congelado en el tiempo', 'Se inyecta ⁹⁹ᵐTc-HMPAO en una vena y queda atrapado en el tejido cerebral en uno o dos minutos, en proporción al flujo sanguíneo de ese momento.'],
+      [0.265, 0.375, 'Los cabezales se acercan', 'La camilla introduce la cabeza en el anillo y los cabezales se aproximan todo lo posible. Más cerca significa más nitidez.'],
+      [0.39, 0.485, 'Dentro de un cabezal de cámara', 'Un colimador de plomo, un cristal de yoduro de sodio y una fila de tubos fotomultiplicadores, mostrados ampliados.'],
+      [0.495, 0.61, 'Solo cuentan los fotones rectos', 'Un fotón gamma sale en cualquier dirección. Los orificios de plomo solo dejan pasar los fotones que viajan en línea recta; el resto se detiene en el plomo. Se cuenta aproximadamente 1 de cada 10.000.'],
+      [0.625, 0.755, 'Paso a paso', 'Los cabezales giran 3° cada vez y registran una proyección en cada parada: 120 vistas en unos 20 minutos. Apiladas, las vistas forman un sinograma.'],
+      [0.77, 0.935, 'Reconstrucción', 'Las proyecciones se retroproyectan como en la TC. Con una resolución de 8–10 mm, los lectores interpretan el patrón global más que los bordes nítidos.'],
+      [0.945, 1.01, 'La imagen', 'Flujo sanguíneo en el momento de la inyección: homogéneo en la corteza, máximo en el cerebelo. Siga desplazándose para ver la física en detalle.'],
     ]},
-  fmri:{ label:'Walk-through of an fMRI experiment', height:1000, build:buildFMRI, deepTitle:'From neurons to a map, step by step', hud:'Scroll to follow the signal',
+  fmri:{ label:'Recorrido por un experimento de RMf', height:1000, build:buildFMRI, deepTitle:'De las neuronas al mapa, paso a paso', hud:'Desplácese para seguir la señal',
     caps:[
-      [0.005, 0.10, 'The same scanner', 'fMRI uses an ordinary MRI scanner. What changes is the sequence, and a task for the person inside.'],
-      [0.11, 0.225, 'A task on a screen', 'A projector shows instructions on a screen behind the magnet: tap the right fingers for 15 seconds, then rest for 15.'],
-      [0.235, 0.345, 'A mirror on the head coil', 'Lying in the bore, the volunteer sees the screen in a small mirror fixed to the head coil, and taps a button box.'],
-      [0.355, 0.46, 'The hand area lights up', 'During tapping, the left motor cortex (hand area), the supplementary motor area and the right cerebellum become active.'],
-      [0.47, 0.56, 'Neurons fire', 'In the active patch, pyramidal neurons fire faster. fMRI cannot see this directly. It sees what the blood does next.'],
-      [0.57, 0.66, 'Blood rushes in', 'Within a second or two, nearby arterioles widen. Blood flow rises by 30–50 %, far more than the extra oxygen the neurons use.'],
-      [0.67, 0.755, 'Deoxyhaemoglobin washed out', 'Deoxyhaemoglobin is magnetic and blurs the field around vessels, dimming the MR signal. Flushed with oxygenated blood, the patch gets slightly brighter.'],
-      [0.765, 0.85, 'A small, slow signal', 'The BOLD signal rises only 1–3 % and peaks 5–6 s after the neurons fire. It follows the task blocks.'],
-      [0.86, 0.935, 'A whole brain every 2 seconds', 'Fast echo-planar imaging takes about 36 slices per volume, one volume every 2 seconds, for several minutes. That is the rapid knocking you hear.'],
-      [0.945, 1.01, 'Statistics draw the map', 'For each voxel, a model tests how well its signal follows the task. Voxels that pass are coloured over the anatomy. Scroll on for the physics in detail.'],
+      [0.005, 0.10, 'El mismo escáner', 'La RMf utiliza un escáner de RM convencional. Lo que cambia es la secuencia y la tarea que realiza la persona en su interior.'],
+      [0.11, 0.225, 'Una tarea en una pantalla', 'Un proyector muestra las instrucciones en una pantalla situada detrás del imán: golpear con los dedos derechos durante 15 segundos y luego descansar 15.'],
+      [0.235, 0.345, 'Un espejo en la bobina de cabeza', 'Tumbado en el orificio, el voluntario ve la pantalla en un pequeño espejo fijado a la bobina de cabeza y pulsa una caja de botones.'],
+      [0.355, 0.46, 'Se activa el área de la mano', 'Durante el golpeteo se activan la corteza motora izquierda (área de la mano), el área motora suplementaria y el cerebelo derecho.'],
+      [0.47, 0.56, 'Las neuronas descargan', 'En la zona activa, las neuronas piramidales descargan más rápido. La RMf no lo ve directamente: ve lo que hace la sangre después.'],
+      [0.57, 0.66, 'La sangre afluye', 'En uno o dos segundos, las arteriolas cercanas se dilatan. El flujo sanguíneo aumenta un 30–50 %, mucho más que el oxígeno adicional que consumen las neuronas.'],
+      [0.67, 0.755, 'Desoxihemoglobina arrastrada', 'La desoxihemoglobina es magnética y distorsiona el campo alrededor de los vasos, atenuando la señal de RM. Al inundarse de sangre oxigenada, la zona se vuelve algo más brillante.'],
+      [0.765, 0.85, 'Una señal pequeña y lenta', 'La señal BOLD solo aumenta un 1–3 % y alcanza su pico 5–6 s después de la descarga neuronal. Sigue los bloques de la tarea.'],
+      [0.86, 0.935, 'Un encéfalo completo cada 2 segundos', 'La imagen eco-planar rápida adquiere unos 36 cortes por volumen, un volumen cada 2 segundos, durante varios minutos. Ese es el golpeteo rápido que se oye.'],
+      [0.945, 1.01, 'La estadística dibuja el mapa', 'Para cada vóxel, un modelo evalúa en qué medida su señal sigue la tarea. Los vóxeles que superan la prueba se colorean sobre la anatomía. Siga desplazándose para ver la física en detalle.'],
     ]},
-  eeg:{ label:'Walk-through of an EEG recording', height:950, build:buildEEG, deepTitle:'From neurons to a trace, step by step', hud:'Scroll to follow the signal',
+  eeg:{ label:'Recorrido por un registro de EEG', height:950, build:buildEEG, deepTitle:'De las neuronas al trazado, paso a paso', hud:'Desplácese para seguir la señal',
     caps:[
-      [0.005, 0.11, 'No scanner at all', 'EEG needs a cap of electrodes, a little gel and an amplifier. The volunteer can sit in a chair, or lie in bed for days.'],
-      [0.12, 0.255, 'The 10–20 system', 'Electrodes sit at 10 % and 20 % steps between fixed landmarks on the skull. Odd numbers are on the left, even on the right, z on the midline.'],
-      [0.265, 0.38, 'From electrode to cortex', 'A plug of tissue under C3, magnified: gel, scalp, skull, CSF, then grey and white matter. The signal has to cross all of it.'],
-      [0.39, 0.52, 'Pyramidal cells in step', 'In the cortex, pyramidal cells stand side by side. When synaptic currents run along thousands of them at once, their tiny fields add up to a dipole.'],
-      [0.535, 0.665, 'Millions together', 'A rhythm needs several square centimetres of cortex working in step. With the eyes closed, the visual cortex at the back produces the alpha rhythm.'],
-      [0.675, 0.79, 'Smeared by the skull', 'Bone conducts poorly, so the potential spreads out on its way to the scalp. EEG timing is exact to the millisecond; its sense of place is centimetres.'],
-      [0.80, 0.91, 'Amplify the difference', 'Each channel is the difference between two electrodes, amplified about 10,000 times. Mains hum, which reaches both, cancels out.'],
-      [0.92, 1.01, 'The rhythm on the screen', 'Alpha at about 10 Hz over the back of the head, strongest at O1 and O2 (slowed down on the head above). Scroll on for the physics in detail.'],
+      [0.005, 0.11, 'Sin escáner alguno', 'El EEG necesita un gorro de electrodos, un poco de gel y un amplificador. El voluntario puede estar sentado en una silla o encamado durante días.'],
+      [0.12, 0.255, 'El sistema 10–20', 'Los electrodos se sitúan en pasos del 10 % y del 20 % entre puntos de referencia fijos del cráneo. Los números impares van a la izquierda, los pares a la derecha y la z en la línea media.'],
+      [0.265, 0.38, 'Del electrodo a la corteza', 'Un cilindro de tejido bajo C3, ampliado: gel, cuero cabelludo, cráneo, LCR y después sustancia gris y blanca. La señal debe atravesarlo todo.'],
+      [0.39, 0.52, 'Células piramidales en fase', 'En la corteza, las células piramidales se disponen unas junto a otras. Cuando las corrientes sinápticas recorren miles de ellas a la vez, sus diminutos campos se suman en un dipolo.'],
+      [0.535, 0.665, 'Millones a la vez', 'Un ritmo requiere varios centímetros cuadrados de corteza trabajando en fase. Con los ojos cerrados, la corteza visual posterior genera el ritmo alfa.'],
+      [0.675, 0.79, 'Difuminado por el cráneo', 'El hueso conduce mal, así que el potencial se dispersa camino del cuero cabelludo. La cronología del EEG es exacta al milisegundo; su localización espacial es de centímetros.'],
+      [0.80, 0.91, 'Amplificar la diferencia', 'Cada canal es la diferencia entre dos electrodos, amplificada unas 10.000 veces. El zumbido de la red, que llega a ambos, se cancela.'],
+      [0.92, 1.01, 'El ritmo en la pantalla', 'Alfa en torno a 10 Hz en la parte posterior de la cabeza, máximo en O1 y O2 (ralentizado en la cabeza de arriba). Siga desplazándose para ver la física en detalle.'],
     ]},
-  meg:{ label:'Walk-through of an MEG recording', height:950, build:buildMEG, deepTitle:'From currents to a source, step by step',
+  meg:{ label:'Recorrido por un registro de MEG', height:950, build:buildMEG, deepTitle:'De las corrientes a la fuente, paso a paso',
     caps:[
-      [0.005, 0.11, 'A shielded room', 'Brain fields are a billion times weaker than the Earth’s. MEG works inside a room walled with aluminium and mu-metal that keeps outside fields out.'],
-      [0.12, 0.235, 'Head in the helmet', 'The volunteer sits with the head inside a helmet-shaped recess at the bottom of a large dewar. Nothing touches the head.'],
-      [0.245, 0.36, 'Inside the dewar', 'Liquid helium at −269 °C keeps about 300 sensors superconducting. They sit in a shell just a couple of centimetres from the scalp.'],
-      [0.37, 0.475, 'SQUID sensors', 'Each position has a magnetometer loop and two figure-of-eight gradiometers, read out by SQUIDs: superconducting rings that sense femtotesla fields.'],
-      [0.485, 0.605, 'A current in a sulcus', 'A pulse at the right wrist activates the left hand area. Current flows along the wall of the central sulcus, and a magnetic field circles it.'],
-      [0.615, 0.735, 'Out on one side, in on the other', 'The field leaves the head on one side of the source and re-enters on the other. The skull does not smear it, so the two poles stay sharp.'],
-      [0.745, 0.86, 'Millisecond timing', 'Averaged over many pulses, the response peaks 20 ms after the stimulus (N20m), slowed down here about twelve times.'],
-      [0.87, 1.01, 'Finding the source', 'The source lies midway between the poles, at right angles to the line joining them. A dipole fit puts it in the hand area within millimetres. Scroll on for the physics in detail.'],
+      [0.005, 0.11, 'Una sala blindada', 'Los campos cerebrales son mil millones de veces más débiles que el terrestre. La MEG funciona en una sala revestida de aluminio y mu-metal que mantiene fuera los campos externos.'],
+      [0.12, 0.235, 'La cabeza en el casco', 'El voluntario se sienta con la cabeza dentro de un hueco en forma de casco en la base de un gran criostato. Nada toca la cabeza.'],
+      [0.245, 0.36, 'Dentro del criostato', 'El helio líquido a −269 °C mantiene unos 300 sensores superconductores. Están en una envoltura a solo un par de centímetros del cuero cabelludo.'],
+      [0.37, 0.475, 'Sensores SQUID', 'Cada posición tiene un bucle magnetómetro y dos gradiómetros en forma de ocho, leídos por SQUID: anillos superconductores que detectan campos de femtoteslas.'],
+      [0.485, 0.605, 'Una corriente en un surco', 'Un pulso en la muñeca derecha activa el área de la mano izquierda. La corriente fluye por la pared del surco central y un campo magnético la rodea.'],
+      [0.615, 0.735, 'Sale por un lado, entra por el otro', 'El campo sale de la cabeza por un lado de la fuente y vuelve a entrar por el otro. El cráneo no lo difumina, así que ambos polos permanecen nítidos.'],
+      [0.745, 0.86, 'Cronología de milisegundos', 'Promediada sobre muchos pulsos, la respuesta alcanza su pico 20 ms después del estímulo (N20m), ralentizada aquí unas doce veces.'],
+      [0.87, 1.01, 'Localizar la fuente', 'La fuente se sitúa a mitad de camino entre los polos, perpendicular a la línea que los une. Un ajuste dipolar la sitúa en el área de la mano con precisión milimétrica. Siga desplazándose para ver la física en detalle.'],
     ]},
-  us:{ label:'Walk-through of a transcranial Doppler scan', height:950, build:buildUS, deepTitle:'From echoes to blood flow, step by step', hud:'Scroll to follow the sound',
+  us:{ label:'Recorrido por un Doppler transcraneal', height:950, build:buildUS, deepTitle:'De los ecos al flujo sanguíneo, paso a paso', hud:'Desplácese para seguir el sonido',
     caps:[
-      [0.005, 0.11, 'At the bedside', 'No tunnel, no radiation: a cart with a screen and a hand-held probe. The scan happens wherever the patient is.'],
-      [0.12, 0.26, 'The probe', 'Inside the probe, a row of piezoelectric crystals vibrates when pulsed with voltage, sending a burst of sound. The same crystals listen for the echoes.'],
-      [0.27, 0.39, 'A window in the skull', 'Bone blocks sound, but above the ear the temporal bone is thin enough to let a 2 MHz beam through. In newborns, the open fontanelle is a far larger window.'],
-      [0.40, 0.53, 'Pulse out, echo back', 'Sound travels through tissue at about 1540 m/s. At every boundary, part of it reflects back to the probe.'],
-      [0.54, 0.665, 'Echo time becomes depth', 'Depth = speed × time ÷ 2. Firing lines across a fan and plotting echo strength as brightness builds the image, about 30 times a second.'],
-      [0.675, 0.80, 'Moving blood shifts the pitch', 'Red cells in the middle cerebral artery flow toward the probe, so their echo returns at a slightly higher frequency: the Doppler shift.'],
-      [0.81, 0.92, 'The spectrum', 'The shift gives the speed of the blood, plotted beat by beat: fast in systole, slower in diastole.'],
-      [0.93, 1.01, 'Beat by beat', 'Mean velocity in the MCA is about 60 cm/s. Vasospasm, raised pressure and a blocked artery each change the waveform. Scroll on for the physics in detail.'],
+      [0.005, 0.11, 'A pie de cama', 'Sin túnel ni radiación: un carro con pantalla y una sonda manual. La exploración se realiza donde esté el paciente.'],
+      [0.12, 0.26, 'La sonda', 'Dentro de la sonda, una fila de cristales piezoeléctricos vibra al recibir un pulso de tensión y emite un tren de sonido. Los mismos cristales escuchan los ecos.'],
+      [0.27, 0.39, 'Una ventana en el cráneo', 'El hueso bloquea el sonido, pero sobre la oreja el hueso temporal es lo bastante fino para dejar pasar un haz de 2 MHz. En los recién nacidos, la fontanela abierta es una ventana mucho mayor.'],
+      [0.40, 0.53, 'Pulso emitido, eco de vuelta', 'El sonido viaja por el tejido a unos 1540 m/s. En cada interfase, parte se refleja de vuelta a la sonda.'],
+      [0.54, 0.665, 'El tiempo del eco se convierte en profundidad', 'Profundidad = velocidad × tiempo ÷ 2. Emitiendo líneas en abanico y representando la intensidad del eco como brillo se construye la imagen, unas 30 veces por segundo.'],
+      [0.675, 0.80, 'La sangre en movimiento cambia el tono', 'Los hematíes de la arteria cerebral media fluyen hacia la sonda, por lo que su eco regresa con una frecuencia ligeramente mayor: el desplazamiento Doppler.'],
+      [0.81, 0.92, 'El espectro', 'El desplazamiento proporciona la velocidad de la sangre, representada latido a latido: rápida en sístole, más lenta en diástole.'],
+      [0.93, 1.01, 'Latido a latido', 'La velocidad media en la ACM es de unos 60 cm/s. El vasoespasmo, la presión elevada y una arteria ocluida modifican la onda. Siga desplazándose para ver la física en detalle.'],
     ]},
-  dsa:{ label:'Walk-through of a cerebral angiogram', height:1000, build:buildDSA, deepTitle:'From catheter to angiogram, step by step', hud:'Scroll to follow the catheter',
+  dsa:{ label:'Recorrido por una angiografía cerebral', height:1000, build:buildDSA, deepTitle:'Del catéter a la angiografía, paso a paso', hud:'Desplácese para seguir el catéter',
     caps:[
-      [0.005, 0.10, 'An angiography suite', 'An X-ray tube and a flat detector on a C-shaped arm that swings around the patient, with screens to watch live.'],
-      [0.11, 0.22, 'In at the groin', 'Under local anaesthetic, a thin catheter enters the femoral artery at the groin (or the radial artery at the wrist).'],
-      [0.23, 0.36, 'Up the aorta', 'Watched on live X-ray, the catheter is pushed up the aorta to the arch, the curve where the neck arteries branch off.'],
-      [0.37, 0.475, 'Into the carotid', 'The tip is steered into the left common carotid artery and up the neck.'],
-      [0.49, 0.60, 'Contrast in', 'A few millilitres of iodine contrast are injected. It fills the internal carotid, then the middle and anterior cerebral arteries, in under two seconds.'],
-      [0.61, 0.71, 'Capillaries, then veins', 'The arteries empty, the brain blushes as contrast crosses the capillaries, then the veins and the venous sinuses fill. The whole run lasts about eight seconds.'],
-      [0.72, 0.82, 'Frames, several a second', 'The C-arm takes 2–6 X-ray frames a second throughout the run.'],
-      [0.83, 0.935, 'Subtract the mask', 'A frame taken before the contrast arrives is subtracted from every later frame. The skull is identical in both, so it cancels and only the vessels remain.'],
-      [0.945, 1.01, 'The angiogram', 'An arterial-phase run of the left internal carotid: the reference standard for aneurysms, AVMs and blocked arteries. Scroll on for the physics in detail.'],
+      [0.005, 0.10, 'Una sala de angiografía', 'Un tubo de rayos X y un detector plano sobre un brazo en C que gira alrededor del paciente, con pantallas para observar en directo.'],
+      [0.11, 0.22, 'Entrada por la ingle', 'Con anestesia local, un catéter fino entra en la arteria femoral por la ingle (o en la arteria radial en la muñeca).'],
+      [0.23, 0.36, 'Ascenso por la aorta', 'Guiado por radioscopia en directo, el catéter asciende por la aorta hasta el arco, la curva donde nacen las arterias del cuello.'],
+      [0.37, 0.475, 'Hacia la carótida', 'La punta se dirige a la arteria carótida común izquierda y asciende por el cuello.'],
+      [0.49, 0.60, 'Entrada del contraste', 'Se inyectan unos mililitros de contraste yodado. Rellena la carótida interna y después las arterias cerebrales media y anterior en menos de dos segundos.'],
+      [0.61, 0.71, 'Capilares y después venas', 'Las arterias se vacían, el encéfalo se ruboriza al cruzar el contraste los capilares y luego se llenan las venas y los senos venosos. La serie completa dura unos ocho segundos.'],
+      [0.72, 0.82, 'Imágenes, varias por segundo', 'El brazo en C adquiere 2–6 imágenes de rayos X por segundo durante toda la serie.'],
+      [0.83, 0.935, 'Sustraer la máscara', 'A cada imagen posterior se le resta una tomada antes de que llegue el contraste. El cráneo es idéntico en ambas, así que se cancela y solo quedan los vasos.'],
+      [0.945, 1.01, 'La angiografía', 'Una serie en fase arterial de la carótida interna izquierda: el estándar de referencia para aneurismas, MAV y arterias ocluidas. Siga desplazándose para ver la física en detalle.'],
     ]},
 });
 
@@ -5699,7 +5701,7 @@ const easeOut = t => 1 - Math.pow(1 - t, 3);
 let curToken = null, pendingSub = null, skipHash = null;
 
 /* ---------- nav tabs ---------- */
-tabsEl.innerHTML = ORDER.map(id=>`<button type="button" class="tab" data-go="${id}">${TAB_NAMES[id]}</button>`).join('') + `<button type="button" class="tab lab" data-go="lab">Brain Lab</button>`;
+tabsEl.innerHTML = ORDER.map(id=>`<button type="button" class="tab" data-go="${id}">${TAB_NAMES[id]}</button>`).join('') + `<button type="button" class="tab lab" data-go="lab">Laboratorio cerebral</button>`;
 function markTab(id){ tabsEl.querySelectorAll('.tab').forEach(b=>{ const on = b.dataset.go === id; b.setAttribute('aria-current', on ? 'true' : 'false'); if (on && b.scrollIntoView) b.scrollIntoView({block:'nearest', inline:'nearest'}); }); }
 function updateNav(){ navEl.dataset.show = (VIEW !== 'home' || window.scrollY > innerHeight*0.55) ? 'true' : 'false'; }
 document.addEventListener('click', e=>{
@@ -5765,7 +5767,7 @@ function showViewer(id){
   VIEW = id === 'lab' ? 'lab' : 'scans'; showViews(VIEW); markTab(id); updateNav();
   TAN = 0.28; HERO.glass = false; S.glass.placed = false;
   mountCanvas(stageEl);
-  $('#rail .crumb').textContent = 'How ' + TAB_NAMES[id === 'lab' ? S.mod : id] + ' works';
+  $('#rail .crumb').textContent = 'Cómo funciona ' + TAB_NAMES[id === 'lab' ? S.mod : id];
   if (ready) enterViewer(id);
 }
 function enterViewer(id){
@@ -5775,7 +5777,7 @@ function enterViewer(id){
     const m = modObj(id), sub = pendingSub && m.subs.find(s=>s.id === pendingSub) ? pendingSub : (S.lastSub[id] || m.subs[0].id);
     S.state = 'normal';
     selectSub(id, sub, {rotate:true});
-    $('#rail .crumb').textContent = 'How ' + TAB_NAMES[id] + ' works';
+    $('#rail .crumb').textContent = 'Cómo funciona ' + TAB_NAMES[id];
   }
   pendingSub = null; resize(); dirty = true;
   if (id !== 'lab' && typeof practiceEnterViewer === 'function') practiceEnterViewer();
@@ -5784,7 +5786,7 @@ function enterViewer(id){
 /* ---------- loading hooks (called from app.js) ---------- */
 function onLoadProgress(f){ $('#heroLoadBar').style.width = (f*100).toFixed(1) + '%'; }
 function onReady(){
-  $('#heroLoad').classList.add('done'); $('#heroLoadMsg').textContent = fallbackReady ? 'Reference preview ready' : 'Ready';
+  $('#heroLoad').classList.add('done'); $('#heroLoadMsg').textContent = fallbackReady ? 'Vista previa de referencia lista' : 'Listo';
   queueMethodThumbs();
   if (VIEW === 'scans' || VIEW === 'lab') enterViewer(lastViewerId);
   if (VIEW === 'home'){ heroLast = -1; heroTick(); }
@@ -5842,7 +5844,7 @@ $('#mGrid').innerHTML = ORDER.map(id=>{
   const m = modObj(id), c = METHOD_CARD[id], [sid, st] = c.thumb;
   return `<button type="button" class="m-card" data-go="${id}"><canvas width="${TH}" height="${TH}" data-key="${sid}|${st}" aria-hidden="true"></canvas>
     <span class="t"><span class="ab">${TAB_NAMES[id]}</span><span class="nm">${m.name}</span><span class="ds">${c.ds}</span>
-    <span class="tg"><span class="pill ${c.kind === 'Function' ? 'fn' : ''}">${c.kind}</span><span class="pill">${c.res}</span><span class="pill">${c.time}</span></span></span></button>`;
+    <span class="tg"><span class="pill ${c.kind === 'Función' ? 'fn' : ''}">${c.kind}</span><span class="pill">${c.res}</span><span class="pill">${c.time}</span></span></span></button>`;
 }).join('');
 function queueMethodThumbs(){
   for (const id of ORDER){ const [sid, st] = METHOD_CARD[id].thumb, key = sid + '|' + st; if (thumbCache.has(key)) paintThumb(key); else thumbQueue.push({key, sub:subById(sid), state:st}); }
@@ -5852,22 +5854,22 @@ function queueMethodThumbs(){
   const tx = v => L + (Math.log10(v) + 3)/(Math.log10(3600) + 3)*(W - L - R);
   const sy = v => H - B - (Math.log10(v) + 1)/3*(H - T - B);
   const boxes = [
-    ['EEG','eeg',0.001,0.1,10,80,1],['MEG','meg',0.001,0.1,3,25,1],['Ultrasound','us',0.01,0.05,0.3,2,0],['DSA','dsa',0.15,0.5,0.15,0.4,0],
+    ['EEG','eeg',0.001,0.1,10,80,1],['MEG','meg',0.001,0.1,3,25,1],['Ecografía','us',0.01,0.05,0.3,2,0],['DSA','dsa',0.15,0.5,0.15,0.4,0],
     ['CT','ct',0.3,10,0.4,1,0],['fMRI','fmri',1,10,1.5,4,1],['MRI','mri',120,600,0.5,1.5,0],['SPECT','spect',60,1800,7,15,1],['PET','pet',600,3600,3.5,6.5,1]];
   let g = '';
   const xt = [[0.001,'1 ms'],[0.01,'10 ms'],[0.1,'100 ms'],[1,'1 s'],[10,'10 s'],[60,'1 min'],[600,'10 min'],[3600,'1 h']];
   const yt = [[0.1,'0.1 mm'],[1,'1 mm'],[10,'1 cm'],[100,'10 cm']];
   for (const [v, l] of xt) g += `<line x1="${tx(v)}" x2="${tx(v)}" y1="${T}" y2="${H - B}" stroke="#e2e7e9"/><text x="${tx(v)}" y="${H - B + 20}" text-anchor="middle" fill="#76858c" font-size="11" font-family="Azeret Mono, monospace">${l}</text>`;
   for (const [v, l] of yt) g += `<line x1="${L}" x2="${W - R}" y1="${sy(v)}" y2="${sy(v)}" stroke="#e2e7e9"/><text x="${L - 10}" y="${sy(v) + 4}" text-anchor="end" fill="#76858c" font-size="11" font-family="Azeret Mono, monospace">${l}</text>`;
-  g += `<text x="${(L + W - R)/2}" y="${H - 10}" text-anchor="middle" fill="#3d4c53" font-size="12" font-family="Instrument Sans, sans-serif">Time resolution</text>`;
-  g += `<text transform="translate(16 ${(T + H - B)/2}) rotate(-90)" text-anchor="middle" fill="#3d4c53" font-size="12" font-family="Instrument Sans, sans-serif">Spatial resolution</text>`;
+  g += `<text x="${(L + W - R)/2}" y="${H - 10}" text-anchor="middle" fill="#3d4c53" font-size="12" font-family="Instrument Sans, sans-serif">Resolución temporal</text>`;
+  g += `<text transform="translate(16 ${(T + H - B)/2}) rotate(-90)" text-anchor="middle" fill="#3d4c53" font-size="12" font-family="Instrument Sans, sans-serif">Resolución espacial</text>`;
   for (const [n, id, t0, t1, s0, s1, fn] of boxes){
     const x0 = tx(t0), x1 = tx(t1), y0 = sy(s1), y1 = sy(s0), wide = x1 - x0 > 60;
     g += `<g class="rbox" data-go="${id}" style="cursor:pointer"><rect x="${x0}" y="${y0}" width="${Math.max(8, x1 - x0)}" height="${y1 - y0}" rx="2" fill="${fn ? 'rgba(0,80,255,.12)' : 'rgba(12,22,27,.07)'}" stroke="${fn ? '#0050ff' : '#3d4c53'}" stroke-width="1"/>
       <text x="${wide ? (x0 + x1)/2 : x1 + 6}" y="${wide ? (y0 + y1)/2 + 4 : (y0 + y1)/2 + 4}" text-anchor="${wide ? 'middle' : 'start'}" fill="${fn ? '#0040cc' : '#0c161b'}" font-size="12.5" font-weight="600" font-family="Instrument Sans, sans-serif">${n}</text></g>`;
   }
-  g += `<g font-size="11" font-family="Instrument Sans, sans-serif"><rect x="${W - R - 190}" y="${T + 6}" width="10" height="10" fill="rgba(12,22,27,.07)" stroke="#3d4c53"/><text x="${W - R - 174}" y="${T + 15}" fill="#3d4c53">Structure</text>
-    <rect x="${W - R - 100}" y="${T + 6}" width="10" height="10" fill="rgba(0,80,255,.12)" stroke="#0050ff"/><text x="${W - R - 84}" y="${T + 15}" fill="#3d4c53">Function</text></g>`;
+  g += `<g font-size="11" font-family="Instrument Sans, sans-serif"><rect x="${W - R - 190}" y="${T + 6}" width="10" height="10" fill="rgba(12,22,27,.07)" stroke="#3d4c53"/><text x="${W - R - 174}" y="${T + 15}" fill="#3d4c53">Estructura</text>
+    <rect x="${W - R - 100}" y="${T + 6}" width="10" height="10" fill="rgba(0,80,255,.12)" stroke="#0050ff"/><text x="${W - R - 84}" y="${T + 15}" fill="#3d4c53">Función</text></g>`;
   const svg = $('#resSvg'); svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.innerHTML = g;
 })();
 
@@ -5879,54 +5881,54 @@ function buildChapter(id){
   const subs = isLab ? '' : `<div class="cta-subs">${modObj(id).subs.map(s=>`<button type="button" data-go="${id}-scans" data-sub="${s.id}"><b>${s.name}</b><span>${s.seq}</span></button>`).join('')}</div>`;
   chapEl.innerHTML = `
   <header class="chap-head">
-    <p class="eb">How it works · ${C.full}</p>
+    <p class="eb">Cómo funciona · ${C.full}</p>
     <h1 class="chap-title ${C.long ? 'long' : ''}">${C.title}</h1>
     <p class="chap-lede">${C.lede}</p>
     <dl class="chap-meta">${C.meta.map(([k, v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
-    <button type="button" class="chap-skip" data-go="${id}-${isLab ? 'open' : 'scans'}">${isLab ? 'Go straight to the lab' : 'Skip to the scans'} →</button>
+    <button type="button" class="chap-skip" data-go="${id}-${isLab ? 'open' : 'scans'}">${isLab ? 'Ir directo al laboratorio' : 'Saltar a las exploraciones'} →</button>
   </header>
   ${typeof immMarkup === 'function' ? immMarkup(id) : ''}
   <div class="chap-body">
     <div class="chap-pin"><canvas id="sceneCv" aria-hidden="true"></canvas>
-      <div class="pin-hud"><span id="pinStep">Step 01 / ${pad2(n)}</span><span id="pinTag">${C.steps[0].tag}</span></div><i class="pin-prog" id="pinProg"></i></div>
+      <div class="pin-hud"><span id="pinStep">Paso 01 / ${pad2(n)}</span><span id="pinTag">${C.steps[0].tag}</span></div><i class="pin-prog" id="pinProg"></i></div>
     <ol class="steps">${C.steps.map((s, i)=>`<li class="step${i ? '' : ' on'}" data-i="${i}"><div class="stc">
-      <span class="n">Step ${pad2(i + 1)} / ${pad2(n)} · ${s.tag}</span><h3>${s.h}</h3><p>${s.p}</p>
+      <span class="n">Paso ${pad2(i + 1)} / ${pad2(n)} · ${s.tag}</span><h3>${s.h}</h3><p>${s.p}</p>
       ${s.facts ? `<dl class="facts">${s.facts.map(([k, v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : ''}${ctlMarkup(id, i)}</div></li>`).join('')}</ol>
   </div>
   <section class="chap-cta">
-    <p class="eb">${isLab ? 'Brain Lab' : TAB_NAMES[id] + ' viewer'}</p>
+    <p class="eb">${isLab ? 'Laboratorio cerebral' : 'Visor de ' + TAB_NAMES[id]}</p>
     <h2>${C.ctaTitle}</h2>
     <p>${C.ctaText}</p>
     ${subs}
-    <div class="cta-row"><button type="button" class="btn-big" data-go="${id}-${isLab ? 'open' : 'scans'}">${isLab ? 'Open Brain Lab' : 'View ' + TAB_NAMES[id] + ' scans'}</button>
-      <button type="button" class="next-link" data-go="${next}">Next: how ${TAB_NAMES[next] === 'Brain Lab' ? 'Brain Lab works' : TAB_NAMES[next] + ' works'} →</button></div>
+    <div class="cta-row"><button type="button" class="btn-big" data-go="${id}-${isLab ? 'open' : 'scans'}">${isLab ? 'Abrir el Laboratorio cerebral' : 'Ver exploraciones de ' + TAB_NAMES[id]}</button>
+      <button type="button" class="next-link" data-go="${next}">Siguiente: cómo funciona ${TAB_NAMES[next] === 'Laboratorio cerebral' ? 'el Laboratorio cerebral' : TAB_NAMES[next]} →</button></div>
   </section>`;
 }
 
 /* ---------- hands-on controls: the reader drives the physics on the pinned scene ---------- */
 const SCENE_CTRL = {
   mri:{
-    2:{note:'Set the flip angle yourself', inputs:[{k:'flip', l:'Flip angle α', min:0, max:180, step:1, f:v=>v + '°'}],
-       presets:[['30° · fast gradient echo', {flip:30}], ['90° · spin echo', {flip:90}], ['180° · inversion', {flip:180}]]},
-    3:{note:'Choose TR and TE. The slice is recomputed from this brain with the spin-echo equation.', inputs:[
-        {k:'tr', l:'TR · repetition time', min:100, max:5000, step:10, f:v=>v + ' ms'},
-        {k:'te', l:'TE · echo time', min:5, max:150, step:1, f:v=>v + ' ms'}],
-       presets:[['T1', {tr:500, te:15}], ['Proton density', {tr:3000, te:20}], ['T2', {tr:4000, te:100}]]}
+    2:{note:'Ajuste usted mismo el ángulo de inclinación', inputs:[{k:'flip', l:'Ángulo de inclinación α', min:0, max:180, step:1, f:v=>v + '°'}],
+       presets:[['30° · eco de gradiente rápido', {flip:30}], ['90° · eco de espín', {flip:90}], ['180° · inversión', {flip:180}]]},
+    3:{note:'Elija TR y TE. El corte se recalcula a partir de este encéfalo con la ecuación del eco de espín.', inputs:[
+        {k:'tr', l:'TR · tiempo de repetición', min:100, max:5000, step:10, f:v=>v + ' ms'},
+        {k:'te', l:'TE · tiempo de eco', min:5, max:150, step:1, f:v=>v + ' ms'}],
+       presets:[['T1', {tr:500, te:15}], ['Densidad protónica', {tr:3000, te:20}], ['T2', {tr:4000, te:100}]]}
   },
   ct:{
-    4:{note:'Window the same CT slice the way a radiologist does', inputs:[
-        {k:'ww', l:'Window width', min:1, max:4000, log:true, f:v=>Math.round(v) + ' HU'},
-        {k:'wl', l:'Window level', min:-600, max:1200, step:1, f:v=>Math.round(v) + ' HU'}],
-       presets:[['Brain', {ww:80, wl:40}], ['Subdural', {ww:200, wl:75}], ['Stroke', {ww:40, wl:35}], ['Soft tissue', {ww:400, wl:40}], ['Bone', {ww:2000, wl:500}]]}
+    4:{note:'Ventane el mismo corte de TC como lo haría un radiólogo', inputs:[
+        {k:'ww', l:'Anchura de ventana', min:1, max:4000, log:true, f:v=>Math.round(v) + ' HU'},
+        {k:'wl', l:'Nivel de ventana', min:-600, max:1200, step:1, f:v=>Math.round(v) + ' HU'}],
+       presets:[['Encéfalo', {ww:80, wl:40}], ['Subdural', {ww:200, wl:75}], ['Ictus', {ww:40, wl:35}], ['Tejido blando', {ww:400, wl:40}], ['Hueso', {ww:2000, wl:500}]]}
   },
   meg:{
-    2:{note:'Drag the source on the map, or turn it here', drag:true, inputs:[
-        {k:'ori', l:'Current direction', min:0, max:359, step:1, f:v=>v + '°'},
-        {k:'depth', l:'Source depth', min:15, max:80, step:1, f:v=>Math.round(v*0.9) + ' mm'}]}
+    2:{note:'Arrastre la fuente en el mapa o gírela aquí', drag:true, inputs:[
+        {k:'ori', l:'Dirección de la corriente', min:0, max:359, step:1, f:v=>v + '°'},
+        {k:'depth', l:'Profundidad de la fuente', min:15, max:80, step:1, f:v=>Math.round(v*0.9) + ' mm'}]}
   },
   us:{
-    3:{note:'Tilt the probe: only the part of the flow along the beam shifts the frequency', inputs:[
-        {k:'theta', l:'Insonation angle θ', min:30, max:90, step:1, f:v=>v + '°'}],
+    3:{note:'Incline la sonda: solo la parte del flujo paralela al haz desplaza la frecuencia', inputs:[
+        {k:'theta', l:'Ángulo de insonación θ', min:30, max:90, step:1, f:v=>v + '°'}],
        presets:[['60°', {theta:60}], ['30°', {theta:30}], ['90°', {theta:90}]]}
   }
 };
@@ -5935,7 +5937,7 @@ const LOGR = (inp, v) => inp.log ? Math.log(v/inp.min)/Math.log(inp.max/inp.min)
 const LOGV = (inp, r) => inp.log ? inp.min*Math.pow(inp.max/inp.min, r/1000) : r;
 function ctlMarkup(id, i){
   const c = ctlSpec(id, i); if (!c) return '';
-  return `<div class="ctl" data-step="${i}"><p class="ctl-h"><span>Try it</span><button type="button" class="ctl-reset" data-ctl-reset="${i}">Follow scroll</button></p><p class="ctl-note">${c.note}</p>
+  return `<div class="ctl" data-step="${i}"><p class="ctl-h"><span>Pruébelo</span><button type="button" class="ctl-reset" data-ctl-reset="${i}">Seguir el desplazamiento</button></p><p class="ctl-note">${c.note}</p>
     ${c.inputs.map(inp=>`<label class="ctl-row"><span class="ctl-l">${inp.l}</span><output data-out="${inp.k}">–</output>
       <input type="range" data-k="${inp.k}" min="${inp.log ? 0 : inp.min}" max="${inp.log ? 1000 : inp.max}" step="${inp.log ? 1 : inp.step}"></label>`).join('')}
     ${c.presets ? `<div class="ctl-pre">${c.presets.map(([nm], j)=>`<button type="button" data-pre="${j}">${nm}</button>`).join('')}</div>` : ''}</div>`;
@@ -5997,7 +5999,7 @@ function chapTick(){
   if (i !== SC.i){ SC.prevI = SC.i; SC.switchT = performance.now()/1000; SC.i = i; }
   SC.p = p;
   SC.steps.forEach((el, k)=>el.classList.toggle('on', k === i));
-  { const a = `Step ${pad2(i + 1)} / ${pad2(SC.steps.length)}`, b = CHAPTERS[SC.id].steps[i].tag, ea = $('#pinStep'), eb = $('#pinTag');
+  { const a = `Paso ${pad2(i + 1)} / ${pad2(SC.steps.length)}`, b = CHAPTERS[SC.id].steps[i].tag, ea = $('#pinStep'), eb = $('#pinTag');
     if (ea.textContent !== a) ea.textContent = a; if (eb.textContent !== b) eb.textContent = b; }
   const last = SC.steps[SC.steps.length - 1].getBoundingClientRect(), tot = (last.bottom - first.top) || 1;
   $('#pinProg').style.setProperty('--p', clamp((anchor - first.top)/tot, 0, 1).toFixed(4));
@@ -6037,27 +6039,32 @@ function sceneStep(ctx, w, h, dpr, sc, i, p, t){
 /* ---------------- content ---------------- */
 
 const MOD_LABEL = id => TAB_NAMES[id] || id.toUpperCase();
+/* case progress: declared before the first route may run on load */
+let pendingView = null, pendingCase = null;
+const PRAC = {done:{}};
+try { PRAC.done = JSON.parse(localStorage.getItem('nl-cases') || '{}') || {}; } catch(e){ PRAC.done = {}; }
+function pracSave(){ try { localStorage.setItem('nl-cases', JSON.stringify(PRAC.done)); } catch(e){} }
 function showPractice(){
   stopScene(); if (S.tab === 'lab' && ready) setTab('scans');
   VIEW = 'learn'; showViews('learn'); markTab('practice'); updateNav();
   const done = Object.keys(PRAC.done).length, right = Object.values(PRAC.done).filter(v=>v === 'right').length;
   chapEl.innerHTML = `
   <header class="chap-head prac-head">
-    <p class="eb">Practice</p>
-    <h1 class="chap-title long">Read it.<br>Order it.</h1>
-    <p class="chap-lede">Unknown cases to read on the brain, and step-by-step choices about which scan to order next. Everything opens in the same viewer, so you can scroll, turn the brain and compare sequences as you would on a real workstation.</p>
+    <p class="eb">Práctica</p>
+    <h1 class="chap-title long">Léalo.<br>Pídelo.</h1>
+    <p class="chap-lede">Casos desconocidos para interpretar en el encéfalo y decisiones paso a paso sobre qué exploración solicitar a continuación. Todo se abre en el mismo visor, de modo que puede desplazarse, girar el encéfalo y comparar secuencias como en una estación de trabajo real.</p>
   </header>
   <section class="prac-sec">
-    <div class="prac-sh"><div><p class="eb">Read the scan</p><h2>Unknown cases</h2><p>Each case gives a short history. Find the abnormality on the slide, choose a diagnosis, then compare your answer with the report.</p></div>
-      <p class="prac-score">${done ? `${right} of ${done} answered correctly` : `${CASES.length} cases`}</p></div>
+    <div class="prac-sh"><div><p class="eb">Lea la exploración</p><h2>Casos desconocidos</h2><p>Cada caso ofrece una historia breve. Localice la anomalía en el corte, elija un diagnóstico y compare su respuesta con el informe.</p></div>
+      <p class="prac-score">${done ? `${right} de ${done} respondidos correctamente` : `${CASES.length} casos`}</p></div>
     <div class="prac-grid">${CASES.map(c=>{ const st = PRAC.done[c.id];
-      return `<button type="button" class="pcase" data-go="case-${c.id}"><span class="pc-top"><span class="pc-n">Case ${String(c.id).padStart(2, '0')}</span><span class="pc-m">${c.subs.map(s=>subById(s).name).slice(0, 2).join(' · ')}</span>${st ? `<span class="pc-st ${st}">${st === 'right' ? 'Correct' : 'Reviewed'}</span>` : ''}</span>
+      return `<button type="button" class="pcase" data-go="case-${c.id}"><span class="pc-top"><span class="pc-n">Caso ${String(c.id).padStart(2, '0')}</span><span class="pc-m">${c.subs.map(s=>subById(s).name).slice(0, 2).join(' · ')}</span>${st ? `<span class="pc-st ${st}">${st === 'right' ? 'Correcto' : 'Revisado'}</span>` : ''}</span>
         <span class="pc-hx">${c.hx}</span><span class="pc-lvl">${c.lvl}</span></button>`; }).join('')}</div>
   </section>
   <section class="prac-sec">
-    <div class="prac-sh"><div><p class="eb">Which scan first?</p><h2>Clinical pathways</h2><p>Start from the patient in front of you. At each step, choose what to order and see why, then look at what that scan shows.</p></div></div>
-    <div class="prac-grid paths">${PATHWAYS.map(P=>`<button type="button" class="ppath" data-go="path-${P.id}"><canvas width="${TH}" height="${TH}" data-key="${P.steps[0].res.sub}|${P.steps[0].res.state}" aria-hidden="true"></canvas>
-      <span class="pp-t"><span class="pp-h">${P.title}</span><span class="pp-v">${P.vignette}</span><span class="pp-n">${P.steps.length} steps</span></span></button>`).join('')}</div>
+    <div class="prac-sh"><div><p class="eb">¿Qué exploración primero?</p><h2>Itinerarios clínicos</h2><p>Parta del paciente que tiene delante. En cada paso, elija qué solicitar y vea por qué, y después observe lo que muestra esa exploración.</p></div></div>
+    <div class="prac-grid paths">${(typeof PATHWAYS === 'undefined' ? [] : PATHWAYS).map(P=>`<button type="button" class="ppath" data-go="path-${P.id}"><canvas width="${TH}" height="${TH}" data-key="${P.steps[0].res.sub}|${P.steps[0].res.state}" aria-hidden="true"></canvas>
+      <span class="pp-t"><span class="pp-h">${P.title}</span><span class="pp-v">${P.vignette}</span><span class="pp-n">${P.steps.length} pasos</span></span></button>`).join('')}</div>
   </section>`;
   window.scrollTo(0, 0);
   queueCanvasThumbs(chapEl);
@@ -6073,20 +6080,20 @@ function showPathway(P){
   VIEW = 'learn'; showViews('learn'); markTab('practice'); updateNav();
   chapEl.innerHTML = `
   <header class="chap-head path-head">
-    <button type="button" class="crumb2" data-go="practice">← Practice</button>
-    <p class="eb">Which scan first? · ${P.tag}</p>
+    <button type="button" class="crumb2" data-go="practice">← Práctica</button>
+    <p class="eb">¿Qué exploración primero? · ${P.tag}</p>
     <h1 class="chap-title long">${P.title}</h1>
-    <div class="vignette"><b>The patient</b><p>${P.vignette}</p></div>
+    <div class="vignette"><b>El paciente</b><p>${P.vignette}</p></div>
   </header>
   <ol class="path-steps" id="pathSteps"></ol>
-  <section class="path-end" id="pathEnd" hidden><p class="eb">Key points</p><ul>${P.key.map(k=>`<li>${k}</li>`).join('')}</ul>
-    <div class="cta-row"><button type="button" class="btn-big" data-go="practice">More practice</button></div></section>`;
+  <section class="path-end" id="pathEnd" hidden><p class="eb">Puntos clave</p><ul>${P.key.map(k=>`<li>${k}</li>`).join('')}</ul>
+    <div class="cta-row"><button type="button" class="btn-big" data-go="practice">Más práctica</button></div></section>`;
   window.scrollTo(0, 0);
   const list = $('#pathSteps');
   const addStep = i => {
     const s = P.steps[i], li = document.createElement('li'); li.className = 'pstep';
     const opts = s.opts.map((o, k)=>({...o, k})).sort((a, b)=>hashf(a.k*7 + i*3 + P.id.length) - hashf(b.k*7 + i*3 + P.id.length));
-    li.innerHTML = `<span class="ps-n">Step ${i + 1} of ${P.steps.length}</span><h3>${s.q}</h3>
+    li.innerHTML = `<span class="ps-n">Paso ${i + 1} de ${P.steps.length}</span><h3>${s.q}</h3>
       <div class="ps-opts">${opts.map(o=>`<button type="button" class="ps-opt" data-k="${o.k}">${o.t}</button>`).join('')}</div>
       <p class="ps-why" hidden></p><div class="ps-res" hidden></div>`;
     list.appendChild(li);
@@ -6094,13 +6101,13 @@ function showPathway(P){
       if (li.classList.contains('solved')) return;
       const o = s.opts[+b.dataset.k], why = li.querySelector('.ps-why');
       b.classList.add(o.ok ? 'right' : 'wrong'); why.hidden = false; why.className = 'ps-why ' + (o.ok ? 'right' : 'wrong');
-      why.innerHTML = `<b>${o.ok ? 'Yes.' : 'Not first.'}</b> ${o.why}`;
+      why.innerHTML = `<b>${o.ok ? 'Sí.' : 'No es la primera.'}</b> ${o.why}`;
       if (!o.ok) return;
       li.classList.add('solved');
       const r = s.res, sub = subById(r.sub), res = li.querySelector('.ps-res'), key = r.sub + '|' + r.state;
       res.innerHTML = `<canvas width="${TH}" height="${TH}" data-key="${key}" aria-hidden="true"></canvas>
         <div class="pr-t"><span class="pr-k">${sub.name} · ${STATES[r.state].name}</span><p class="pr-cap">${r.cap}</p><p class="pr-note">${r.note}</p>
-        <button type="button" class="btn primary" data-open="1">Open this scan in the viewer →</button></div>`;
+        <button type="button" class="btn primary" data-open="1">Abrir esta exploración en el visor →</button></div>`;
       res.hidden = false; queueCanvasThumbs(res);
       res.querySelector('[data-open]').addEventListener('click', ()=>go(`${sub.mod}-scans/` + new URLSearchParams({s:r.sub, st:r.state}).toString()));
       if (i + 1 < P.steps.length) setTimeout(()=>{ addStep(i + 1); }, 250);
@@ -6135,19 +6142,19 @@ function caseRender(){
   const idx = CASES.indexOf(c), next = CASES[(idx + 1) % CASES.length];
   const st = STATES[c.state];
   el.innerHTML = `
-    <div class="cp-h"><button type="button" class="crumb2" data-go="practice">← All cases</button><span class="cp-n">Case ${String(c.id).padStart(2, '0')} of ${CASES.length}</span></div>
+    <div class="cp-h"><button type="button" class="crumb2" data-go="practice">← Todos los casos</button><span class="cp-n">Caso ${String(c.id).padStart(2, '0')} de ${CASES.length}</span></div>
     <div class="cp-b">
-      <div class="vignette"><b>History</b><p>${c.hx}</p></div>
-      ${c.subs.length > 1 ? `<div class="cp-seq"><span>Sequences</span>${c.subs.map(s=>`<button type="button" class="chip" data-sub="${s}" aria-pressed="${s === S.sub}">${subById(s).name}</button>`).join('')}</div>` : ''}
-      ${c.find ? `<section class="cp-step ${M.found || M.revealed ? 'done' : ''}"><h3><i>1</i>Find it</h3>
-        <p>${M.found ? 'Found. That is the abnormality.' : M.revealed ? 'Shown on the slide in amber.' : M.tries ? `Not there${M.tries >= 3 ? '' : ', try again'}. Scroll through slices and turn the brain if you need to.` : 'Click the abnormality on the slide. Scroll to move through slices.'}</p>
-        ${!M.found && !M.revealed && M.tries >= 3 ? '<button type="button" class="mini" data-act="show">Show me</button>' : ''}</section>` : ''}
-      <section class="cp-step ${M.pick >= 0 ? 'done' : ''}"><h3><i>${c.find ? 2 : 1}</i>Diagnosis</h3>
+      <div class="vignette"><b>Anamnesis</b><p>${c.hx}</p></div>
+      ${c.subs.length > 1 ? `<div class="cp-seq"><span>Secuencias</span>${c.subs.map(s=>`<button type="button" class="chip" data-sub="${s}" aria-pressed="${s === S.sub}">${subById(s).name}</button>`).join('')}</div>` : ''}
+      ${c.find ? `<section class="cp-step ${M.found || M.revealed ? 'done' : ''}"><h3><i>1</i>Localícela</h3>
+        <p>${M.found ? 'Encontrada. Esa es la anomalía.' : M.revealed ? 'Mostrada en el corte en ámbar.' : M.tries ? `Ahí no está${M.tries >= 3 ? '' : ', inténtelo de nuevo'}. Recorra los cortes y gire el encéfalo si lo necesita.` : 'Pulse la anomalía en el corte. Desplácese para recorrer los cortes.'}</p>
+        ${!M.found && !M.revealed && M.tries >= 3 ? '<button type="button" class="mini" data-act="show">Muéstremela</button>' : ''}</section>` : ''}
+      <section class="cp-step ${M.pick >= 0 ? 'done' : ''}"><h3><i>${c.find ? 2 : 1}</i>Diagnóstico</h3>
         <div class="cp-dx">${order.map(o=>`<button type="button" class="ps-opt ${M.pick === o.k ? (o.k === 0 ? 'right' : 'wrong') : (M.pick >= 0 && o.k === 0 ? 'right' : '')}" data-dx="${o.k}" ${M.pick >= 0 ? 'disabled' : ''}>${o.t}</button>`).join('')}</div></section>
-      ${M.revealed ? `<section class="cp-ans"><p class="eb">${M.pick === 0 ? 'Correct' : 'Answer'}</p><h3>${st.name}</h3>
-        <div class="cp-rep"><b>Report</b><p>${c.report}</p></div>
+      ${M.revealed ? `<section class="cp-ans"><p class="eb">${M.pick === 0 ? 'Correcto' : 'Respuesta'}</p><h3>${st.name}</h3>
+        <div class="cp-rep"><b>Informe</b><p>${c.report}</p></div>
         <ul>${c.teach.map(t=>`<li>${t}</li>`).join('')}</ul>
-        <div class="cta-row"><button type="button" class="btn primary" data-go="case-${next.id}">Next case →</button><button type="button" class="btn" data-act="states">Compare with other patients</button></div></section>` : ''}
+        <div class="cta-row"><button type="button" class="btn primary" data-go="case-${next.id}">Caso siguiente →</button><button type="button" class="btn" data-act="states">Comparar con otros pacientes</button></div></section>` : ''}
     </div>`;
   el.querySelectorAll('[data-sub]').forEach(b=>b.addEventListener('click', ()=>{ const s = subById(b.dataset.sub); S.state = c.state; selectSub(s.mod, s.id, {rotate:true}); S.state = c.state; caseRender(); syncHud(); }));
   el.querySelectorAll('[data-dx]').forEach(b=>b.addEventListener('click', ()=>{ if (M.pick >= 0) return; M.pick = +b.dataset.dx; caseReveal(); }));
@@ -6183,7 +6190,7 @@ markTab(null);
 var chartTucked = false, chartHinted = false;
 function chartShown(){
   if (!chart.querySelector('.chart-tab')){
-    const tab = document.createElement('button'); tab.type = 'button'; tab.className = 'chart-tab'; tab.setAttribute('aria-label', 'Show the signal panel');
+    const tab = document.createElement('button'); tab.type = 'button'; tab.className = 'chart-tab'; tab.setAttribute('aria-label', 'Mostrar el panel de señal');
     tab.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M2 12h3l2-6 3 12 3-9 2 5 2-2h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><i aria-hidden="true"></i>';
     tab.addEventListener('click', e=>{ e.stopPropagation(); chartTuck(0); });
     const grip = document.createElement('div'); grip.className = 'chart-grip'; grip.setAttribute('aria-hidden', 'true'); grip.innerHTML = '<i></i><b></b><i></i>';
@@ -6316,7 +6323,7 @@ function sndInit(){
 }
 function sndSet(on){
   SND.on = on;
-  const btn = $('#sndBtn'); if (btn){ btn.setAttribute('aria-pressed', on ? 'true' : 'false'); btn.querySelector('span').textContent = on ? 'Sound on' : 'Sound'; }
+  const btn = $('#sndBtn'); if (btn){ btn.setAttribute('aria-pressed', on ? 'true' : 'false'); btn.querySelector('span').textContent = on ? 'Sonido activado' : 'Sonido'; }
   if (on){ const c = sndInit(); if (!c){ SND.on = false; return; } c.resume && c.resume(); SND.master.gain.setTargetAtTime(0.9, c.currentTime, 0.05); if (!SND.raf) SND.raf = requestAnimationFrame(sndFrame); }
   else if (SND.ctx){ SND.master.gain.setTargetAtTime(0.0001, SND.ctx.currentTime, 0.04); sndDoppler(0, 0); }
 }
@@ -6386,8 +6393,8 @@ function sndFrame(){
 function sndWire(){
   const tabs = $('#tabs'); if (!tabs || $('#sndBtn')) return;
   const b = document.createElement('button'); b.type = 'button'; b.className = 'snd'; b.id = 'sndBtn'; b.setAttribute('aria-pressed', 'false');
-  b.title = 'Scanner sounds: MRI knocking, Doppler, PET detector clicks';
-  b.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3.5v11L6 12H3z" fill="currentColor"/><path class="w1" d="M13 7.5a3.5 3.5 0 0 1 0 5" /><path class="w2" d="M15.2 5.2a6.6 6.6 0 0 1 0 9.6" /></svg><span>Sound</span>';
+  b.title = 'Sonidos del escáner: golpeteo de la RM, Doppler y clics del detector de PET';
+  b.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h3l4-3.5v11L6 12H3z" fill="currentColor"/><path class="w1" d="M13 7.5a3.5 3.5 0 0 1 0 5" /><path class="w2" d="M15.2 5.2a6.6 6.6 0 0 1 0 9.6" /></svg><span>Sonido</span>';
   tabs.after(b);
   b.addEventListener('click', ()=>sndSet(!SND.on));
 }
@@ -6396,21 +6403,17 @@ sndWire();
 
 
 /* ---------------- progress (per viewer, best effort) ---------------- */
-const PRAC = {done:{}};
-try { PRAC.done = JSON.parse(localStorage.getItem('nl-cases') || '{}') || {}; } catch(e){ PRAC.done = {}; }
-function pracSave(){ try { localStorage.setItem('nl-cases', JSON.stringify(PRAC.done)); } catch(e){} }
 
 /* ---------------- nav tab ---------------- */
-(function(){ const lab = tabsEl.querySelector('.tab.lab'); const b = document.createElement('button'); b.type = 'button'; b.className = 'tab prac'; b.dataset.go = 'practice'; b.textContent = 'Practice'; tabsEl.insertBefore(b, lab); })();
+(function(){ const lab = tabsEl.querySelector('.tab.lab'); const b = document.createElement('button'); b.type = 'button'; b.className = 'tab prac'; b.dataset.go = 'practice'; b.textContent = 'Práctica'; tabsEl.insertBefore(b, lab); })();
 
 /* ---------------- routing hook (called from story.js applyRoute) ---------------- */
-let pendingView = null, pendingCase = null;
 function practiceRoute(token){
   const [base, qs] = token.split('/');
   if (S.caseMode && base !== 'case-' + S.caseMode.c.id) caseExit();
   if (base === 'practice'){ showPractice(); return true; }
   const m = base.match(/^(case|path)-(\w+)$/);
-  if (m && m[1] === 'path'){ const P = PATHWAYS.find(p=>p.id === m[2]); if (P){ showPathway(P); return true; } }
+  if (m && m[1] === 'path'){ const P = (typeof PATHWAYS === 'undefined' ? [] : PATHWAYS).find(p=>p.id === m[2]); if (P){ showPathway(P); return true; } }
   if (m && m[1] === 'case'){ const c = CASES.find(x=>String(x.id) === m[2]); if (c){ pendingCase = c; pendingSub = c.sub; showViewer(c.mod); return true; } }
   if (qs){ const [id, mode] = base.split('-'); if (ORDER.includes(id) && (mode === 'scans' || mode === 'open')){ pendingView = viewDecode(qs); pendingSub = pendingView.s || null; showViewer(id); return true; } }
   return false;
@@ -6454,11 +6457,11 @@ function shareLink(token){
   return location.href.split('#')[0] + '#' + token;
 }
 (function(){
-  const b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.id = 'shareBtn'; b.title = 'Copy a link to exactly this view';
-  b.innerHTML = '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" style="vertical-align:-2px;margin-right:5px"><path d="M6.5 9.5l3-3M7 4.5l1.2-1.2a2.6 2.6 0 0 1 3.7 3.7L10.7 8.2M9 11.5l-1.2 1.2a2.6 2.6 0 0 1-3.7-3.7L5.3 7.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Share view';
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.id = 'shareBtn'; b.title = 'Copiar un enlace a esta vista exacta';
+  b.innerHTML = '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" style="vertical-align:-2px;margin-right:5px"><path d="M6.5 9.5l3-3M7 4.5l1.2-1.2a2.6 2.6 0 0 1 3.7 3.7L10.7 8.2M9 11.5l-1.2 1.2a2.6 2.6 0 0 1-3.7-3.7L5.3 7.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Compartir vista';
   $('#statesBtn').before(b);
   const pop = document.createElement('div'); pop.className = 'sharepop'; pop.hidden = true;
-  pop.innerHTML = `<b>Link to this exact view</b><span>Scan, brain state, plane, slice, angle and slide position.</span><div class="sp-row"><input type="text" readonly aria-label="Link to this view"><button type="button" class="btn primary">Copy</button></div><i class="sp-ok" hidden>Copied</i>`;
+  pop.innerHTML = `<b>Enlace a esta vista exacta</b><span>Exploración, estado cerebral, plano, corte, ángulo y posición del corte.</span><div class="sp-row"><input type="text" readonly aria-label="Enlace a esta vista"><button type="button" class="btn primary">Copiar</button></div><i class="sp-ok" hidden>Copiado</i>`;
   $('#stage').appendChild(pop);
   const inp = pop.querySelector('input'), ok = pop.querySelector('.sp-ok');
   b.addEventListener('click', e=>{

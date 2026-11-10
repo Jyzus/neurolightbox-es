@@ -1,7 +1,7 @@
 const MODS = window.MODS = [
   {
     "id": "mri",
-    "abbr": "MRI",
+    "abbr": "RM",
     "name": "Resonancia magnética (RM)",
     "how": "Un imán de 3 teslas alinea los núcleos de hidrógeno del agua y de la grasa. Los pulsos de radiofrecuencia los inclinan y el escáner registra su relajación. La sincronización de los pulsos (TR, TE, TI) determina qué tejido aparece brillante en la imagen.",
     "subs": [
@@ -16,7 +16,7 @@ const MODS = window.MODS = [
         "params": "TR 2300  TE 2.98  TI 900",
         "vox": "1.0 mm iso",
         "win": "W 512 L 256",
-        "note": "The anatomy sequence: white matter bright, grey matter mid-grey, CSF dark. Acquired as a 3D block and reformatted in any plane.",
+        "note": "La secuencia anatómica: sustancia blanca hiperintensa, sustancia gris en tono intermedio y LCR hipointenso. Se adquiere como un bloque 3D y se reformatea en cualquier plano.",
         "states": [
           "normal",
           "stroke",
@@ -42,7 +42,7 @@ const MODS = window.MODS = [
         "params": "Gadobutrol 0.1 mmol/kg",
         "vox": "1.0 mm iso",
         "win": "W 512 L 256",
-        "note": "Gadolinium leaks wherever the blood–brain barrier is broken, so active disease enhances. Vessels and dural sinuses enhance normally.",
+        "note": "El gadolinio se extravasa donde la barrera hematoencefálica está alterada, de modo que la enfermedad activa realza. Los vasos y los senos durales realzan de forma normal.",
         "states": [
           "normal",
           "stroke",
@@ -65,7 +65,7 @@ const MODS = window.MODS = [
         "params": "TR 4000  TE 90",
         "vox": "0.9 × 0.9 × 4 mm",
         "win": "W 600 L 300",
-        "note": "Water-sensitive: CSF and oedema are bright. Fast-flowing arteries leave black flow voids.",
+        "note": "Sensible al agua: el LCR y el edema son hiperintensos. Las arterias de flujo rápido dejan vacíos de flujo negros.",
         "states": [
           "normal",
           "stroke",
@@ -93,7 +93,7 @@ const MODS = window.MODS = [
         "params": "TR 9000  TE 81  TI 2500",
         "vox": "0.9 × 0.9 × 4 mm",
         "win": "W 600 L 300",
-        "note": "T2 with the CSF signal nulled, so lesions next to ventricles and sulci stand out. The workhorse for MS and subarachnoid blood.",
+        "note": "T2 con la señal del LCR anulada, de modo que destacan las lesiones junto a los ventrículos y los surcos. Es la secuencia básica para la esclerosis múltiple y la sangre subaracnoidea.",
         "states": [
           "normal",
           "stroke",
@@ -120,7 +120,7 @@ const MODS = window.MODS = [
         "params": "b = 1000 s/mm²",
         "vox": "1.8 × 1.8 × 5 mm",
         "win": "W 800 L 400",
-        "note": "Measures how freely water moves. Acute infarcts, pus and very cellular tumours restrict diffusion and turn bright within minutes.",
+        "note": "Mide la libertad de movimiento del agua. Los infartos agudos, el pus y los tumores muy celulares restringen la difusión y se vuelven hiperintensos en cuestión de minutos.",
         "states": [
           "normal",
           "stroke",
@@ -142,7 +142,7 @@ const MODS = window.MODS = [
         "params": "TR 28  TE 20  FA 15°",
         "vox": "0.7 × 0.7 × 2 mm",
         "win": "W 500 L 250",
-        "note": "Sensitive to iron, blood and calcium. Veins and microbleeds go black; shown as an 8 mm minimum-intensity slab.",
+        "note": "Sensible al hierro, la sangre y el calcio. Las venas y las microhemorragias se ven negras; se muestra como un bloque de intensidad mínima de 8 mm.",
         "states": [
           "normal",
           "stroke",
@@ -163,7 +163,7 @@ const MODS = window.MODS = [
         "params": "64 directions  b 1000",
         "vox": "2.0 mm iso",
         "win": "FA 0–1",
-        "note": "Real fractional anisotropy from the HCP-1065 template. Colour encodes fibre direction: red left–right, green front–back, blue up–down.",
+        "note": "Anisotropía fraccional real de la plantilla HCP-1065. El color codifica la dirección de las fibras: rojo izquierda–derecha, verde anteroposterior y azul arriba–abajo.",
         "states": [
           "normal",
           "stroke",
@@ -185,7 +185,7 @@ const MODS = window.MODS = [
         "params": "TR 22  TE 3.6  FA 18°",
         "vox": "0.5 × 0.5 × 0.8 mm",
         "win": "MIP",
-        "note": "Time-of-flight: fresh inflowing blood is bright and still tissue is suppressed. A maximum-intensity projection, so turning the brain spins the vessel tree.",
+        "note": "Tiempo de vuelo: la sangre que entra es hiperintensa y el tejido estático queda suprimido. Es una proyección de máxima intensidad, de modo que al girar el encéfalo gira también el árbol vascular.",
         "states": [
           "normal",
           "stroke",
@@ -205,7 +205,7 @@ const MODS = window.MODS = [
         "params": "PLD 1800 ms  label 1800 ms",
         "vox": "2.5 mm",
         "win": "CBF 0–80",
-        "note": "Arterial spin labelling magnetically tags blood in the neck and images it arriving in the brain, giving cerebral blood flow without contrast.",
+        "note": "El marcaje de espín arterial marca magnéticamente la sangre del cuello y la capta al llegar al encéfalo, lo que permite medir el flujo sanguíneo cerebral sin contraste.",
         "states": [
           "normal",
           "stroke",
@@ -227,7 +227,7 @@ const MODS = window.MODS = [
         "vox": "8 mL voxel",
         "win": "ppm 0.5–4.2",
         "spectrum": true,
-        "note": "Instead of an image, a single voxel gives a chemical spectrum: NAA (neurons), choline (membranes), creatine (energy), myo-inositol (glia), lactate (anaerobic metabolism).",
+        "note": "En lugar de una imagen, un único vóxel proporciona un espectro químico: NAA (neuronas), colina (membranas), creatina (energía), mioinositol (glía) y lactato (metabolismo anaerobio).",
         "states": [
           "normal",
           "gbm",
@@ -241,7 +241,7 @@ const MODS = window.MODS = [
   },
   {
     "id": "ct",
-    "abbr": "CT",
+    "abbr": "TC",
     "name": "Tomografía computarizada (TC)",
     "how": "Un tubo de rayos X gira alrededor de la cabeza mientras un anillo de detectores mide cuánto se atenúa cada trayectoria. Cada vóxel se expresa en unidades Hounsfield: aire −1000, agua 0, hueso en torno a +1000. La ventana determina qué parte de ese rango se representa del negro al blanco.",
     "subs": [
@@ -256,7 +256,7 @@ const MODS = window.MODS = [
         "params": "120 kVp  250 mAs",
         "vox": "0.5 × 0.5 × 5 mm",
         "win": "W 80 L 40",
-        "note": "The fast first-line scan for trauma and stroke. Fresh blood is bright; early infarcts are subtle.",
+        "note": "La prueba rápida de primera línea en traumatismos e ictus. La sangre reciente es hiperdensa; los infartos incipientes son sutiles.",
         "states": [
           "normal",
           "stroke",
@@ -281,7 +281,7 @@ const MODS = window.MODS = [
         "params": "120 kVp  sharp kernel",
         "vox": "0.5 × 0.5 × 1 mm",
         "win": "W 2800 L 600",
-        "note": "A wide window for reading the skull: fractures, sutures, sinuses and the skull base. Brain detail disappears.",
+        "note": "Ventana amplia para valorar el cráneo: fracturas, suturas, senos y base del cráneo. El detalle del encéfalo desaparece.",
         "states": [
           "normal",
           "edh"
@@ -298,7 +298,7 @@ const MODS = window.MODS = [
         "params": "Iohexol 350  80 mL",
         "vox": "0.5 mm iso",
         "win": "W 700 L 200",
-        "note": "Contrast is timed to the arterial phase. A 20 mm maximum-intensity slab shows the circle of Willis.",
+        "note": "El contraste se sincroniza con la fase arterial. Un bloque de máxima intensidad de 20 mm muestra el polígono de Willis.",
         "states": [
           "normal",
           "stroke",
@@ -328,7 +328,7 @@ const MODS = window.MODS = [
         "params": "185 MBq  45 min uptake",
         "vox": "2.0 mm · 4 mm FWHM",
         "win": "SUV 0–12",
-        "note": "Grey matter burns the most glucose. Patterns of low uptake point to dementia type, a seizure focus or dead tissue; consciousness and sleep change the whole map.",
+        "note": "La sustancia gris es la que más glucosa consume. Los patrones de hipocaptación orientan al tipo de demencia, a un foco epiléptico o a tejido necrosado; la conciencia y el sueño modifican todo el mapa.",
         "states": [
           "normal",
           "eyes_open",
@@ -353,7 +353,7 @@ const MODS = window.MODS = [
         "params": "370 MBq  50 min",
         "vox": "2.0 mm · 5 mm FWHM",
         "win": "SUVR 0–2.5",
-        "note": "A negative scan shows tracer only in white matter. Tracer in the cortex means amyloid plaques.",
+        "note": "Un estudio negativo muestra el trazador solo en la sustancia blanca. El trazador en la corteza indica placas de amiloide.",
         "states": [
           "normal",
           "ad"
@@ -378,7 +378,7 @@ const MODS = window.MODS = [
         "params": "740 MBq  LEHR",
         "vox": "3.0 mm · 8 mm FWHM",
         "win": "Max 100%",
-        "note": "Trapped in proportion to blood flow at injection, so an injection during a seizure freezes the ictal pattern. Also an ancillary test for brain death.",
+        "note": "Queda atrapado en proporción al flujo sanguíneo en el momento de la inyección, por lo que una inyección durante la crisis fija el patrón ictal. También es una prueba complementaria de muerte encefálica.",
         "states": [
           "normal",
           "stroke",
@@ -398,7 +398,7 @@ const MODS = window.MODS = [
         "params": "185 MBq  4 h uptake",
         "vox": "3.0 mm · 8 mm FWHM",
         "win": "Max 100%",
-        "note": "Binds dopamine transporters in the striatum. A normal scan shows two commas; Parkinsonism wears them down to full stops.",
+        "note": "Se une a los transportadores de dopamina del cuerpo estriado. Un estudio normal muestra dos comas; el parkinsonismo las reduce hasta convertirlas en puntos finales.",
         "states": [
           "normal",
           "pd"
@@ -408,7 +408,7 @@ const MODS = window.MODS = [
   },
   {
     "id": "fmri",
-    "abbr": "fMRI",
+    "abbr": "RMf",
     "name": "Resonancia magnética funcional (RMf)",
     "how": "Adquisiciones eco-planares rápidas cada 2 segundos registran la señal BOLD. Las neuronas activas atraen sangre oxigenada, lo que eleva la señal de RM en torno a un 1–3% unos 5 segundos después. El análisis estadístico la convierte en un mapa de color superpuesto a una imagen anatómica.",
     "subs": [
@@ -423,7 +423,7 @@ const MODS = window.MODS = [
         "params": "TR 2000  TE 30",
         "vox": "3.0 mm iso",
         "win": "z > 3.1",
-        "note": "Warm colours mark voxels whose signal follows the task. Resting-state maps show networks whose slow fluctuations rise and fall together.",
+        "note": "Los colores cálidos marcan los vóxeles cuya señal sigue la tarea. Los mapas en reposo muestran redes cuyas fluctuaciones lentas suben y bajan a la vez.",
         "states": [
           "motor",
           "visual",
@@ -459,7 +459,7 @@ const MODS = window.MODS = [
         "params": "256 Hz  0.5–70 Hz",
         "vox": "19 electrodes",
         "win": "±100 µV",
-        "note": "The slide shows the scalp potential map at this instant with the 10–20 electrodes; the trace panel shows the channels over time. Sleep, anaesthesia and seizures each have a signature rhythm.",
+        "note": "La lámina muestra el mapa de potencial del cuero cabelludo en ese instante con los electrodos 10–20; el panel de trazados muestra los canales a lo largo del tiempo. El sueño, la anestesia y las crisis tienen cada uno su ritmo característico.",
         "states": [
           "eyes_closed",
           "eyes_open",
@@ -496,7 +496,7 @@ const MODS = window.MODS = [
         "params": "1000 Hz  0.1–330 Hz",
         "vox": "306 sensors",
         "win": "±300 fT",
-        "note": "Red is field leaving the head, blue entering. A current dipole produces one of each on either side of it; the fitted dipole sits between them.",
+        "note": "El rojo es el campo que sale de la cabeza y el azul el que entra. Un dipolo de corriente genera uno de cada a ambos lados; el dipolo ajustado queda entre ellos.",
         "states": [
           "eyes_closed",
           "aep",
@@ -509,7 +509,7 @@ const MODS = window.MODS = [
   },
   {
     "id": "us",
-    "abbr": "US",
+    "abbr": "ECO",
     "name": "Ecografía (ultrasonido)",
     "how": "Un transductor emite pulsos de ultrasonido de 2–7 MHz y cronometra los ecos. El hueso bloquea el sonido, por lo que el cerebro se estudia a través de ventanas: la fontanela abierta en los bebés o el hueso temporal adelgazado en los adultos para el Doppler.",
     "subs": [
@@ -524,7 +524,7 @@ const MODS = window.MODS = [
         "params": "7.5 MHz  sector",
         "vox": "0.3 mm axial",
         "win": "Gain 55%",
-        "note": "Neonatal scan through the anterior fontanelle. This phantom uses adult anatomy, so sizes are larger than a newborn’s, but the echo pattern is the same: fluid black, interfaces bright.",
+        "note": "Ecografía neonatal a través de la fontanela anterior. Este fantoma utiliza anatomía adulta, por lo que los tamaños son mayores que los de un recién nacido, pero el patrón de ecos es el mismo: el líquido se ve negro y las interfases, hiperecogénicas.",
         "states": [
           "normal",
           "ivh",
@@ -544,7 +544,7 @@ const MODS = window.MODS = [
         "vox": "sample 10 mm",
         "win": "cm/s",
         "spectrum": true,
-        "note": "Colour Doppler through the temporal bone shows flow toward the probe in red, away in blue. The spectral trace measures velocity in the middle cerebral artery.",
+        "note": "El Doppler color a través del hueso temporal muestra el flujo hacia la sonda en rojo y el que se aleja en azul. El trazado espectral mide la velocidad en la arteria cerebral media.",
         "states": [
           "normal",
           "vasospasm",
@@ -557,7 +557,7 @@ const MODS = window.MODS = [
   },
   {
     "id": "dsa",
-    "abbr": "DSA",
+    "abbr": "ASD",
     "name": "Angiografía por cateterismo",
     "how": "Un catéter se guía desde la ingle hasta una arteria del cuello y se inyecta contraste mientras se adquieren imágenes de rayos X varias veces por segundo. Se resta una máscara previa al contraste para que solo permanezcan visibles los vasos.",
     "subs": [
@@ -573,7 +573,7 @@ const MODS = window.MODS = [
         "params": "Iohexol 300  8 mL/s",
         "vox": "0.2 mm",
         "win": "Subtracted",
-        "note": "Coronal gives the AP projection, sagittal the lateral. Frames run from arterial to capillary to venous phase.",
+        "note": "La proyección coronal ofrece la visión anteroposterior y la sagital, la lateral. Las imágenes avanzan de la fase arterial a la capilar y a la venosa.",
         "states": [
           "normal",
           "aneurysm",

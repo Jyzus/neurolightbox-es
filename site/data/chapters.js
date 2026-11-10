@@ -1,7 +1,7 @@
 const CHAPTERS = window.CHAPTERS = {
   "mri": {
     "full": "Resonancia magnética",
-    "title": "MRI",
+    "title": "RM",
     "lede": "Un escáner de RM nunca utiliza rayos X. Emplea un campo magnético potente y ondas de radiofrecuencia para inducir a los núcleos de hidrógeno a emitir señales, localizando con precisión el origen de cada emisión.",
     "meta": [
       [
@@ -23,7 +23,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Magnet",
+        "tag": "Imán",
         "h": "Un electroimán más potente que una grúa industrial",
         "p": "Bobinas de hilo superconductor de niobio-titanio, refrigeradas por helio líquido a −269 °C (4 K), conducen una corriente eléctrica permanente sin resistencia. El campo magnético resultante alinea una fracción de los protones del organismo.",
         "facts": [
@@ -46,7 +46,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Protons",
+        "tag": "Protones",
         "h": "Los protones se alinean y precesan",
         "p": "Cada núcleo de hidrógeno actúa como un diminuto imán giroscópico. En presencia de B₀, precesan (oscilan) a la frecuencia de Larmor, proporcional a la fuerza del campo.",
         "facts": [
@@ -65,7 +65,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "RF pulse",
+        "tag": "Pulso de RF",
         "h": "Un pulso de radiofrecuencia inclina su magnetización",
         "p": "La bobina corporal emite un pulso de radio sintonizado exactamente a la frecuencia de Larmor. Esto inclina el vector de magnetización neta hacia el plano transversal. Al cesar el pulso, los protones inducen un voltaje medible en las antenas receptoras.",
         "facts": [
@@ -84,7 +84,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Contrast",
+        "tag": "Contraste",
         "h": "La relajación tisular genera el contraste",
         "p": "Tras el pulso, la magnetización longitudinal se recupera (T1) mientras la magnetización transversal decae (T2). Como el agua libre, el tejido glial y la mielina tienen microambientes distintos, sus velocidades de relajación varían sustancialmente.",
         "facts": [
@@ -103,7 +103,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "k-space",
+        "tag": "Espacio k",
         "h": "Los gradientes codifican la posición espacial",
         "p": "Tres juegos de bobinas de gradiente superponen pequeñas pendientes magnéticas lineales en los ejes x, y, z. Esto hace que cada vóxel del encéfalo resuene a una frecuencia ligeramente diferente, permitiendo reconstruir la imagen mediante la transformada de Fourier.",
         "facts": [
@@ -127,7 +127,7 @@ const CHAPTERS = window.CHAPTERS = {
   },
   "ct": {
     "full": "Tomografía computarizada",
-    "title": "CT",
+    "title": "TC",
     "lede": "La TC mide el grado de atenuación de rayos X en cada vóxel de tejido. Registra múltiples proyecciones angulares y reconstruye matemáticamente cortes anatómicos axiales transversales.",
     "meta": [
       [
@@ -149,7 +149,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Gantry",
+        "tag": "Pórtico",
         "h": "Tubo y detectores giran a gran velocidad",
         "p": "Dentro del gantry, un tubo de rayos X y una corona de detectores cerámicos rotan continuamente a varias revoluciones por segundo, emitiendo un haz en abanico mientras la camilla avanza.",
         "facts": [
@@ -168,7 +168,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Attenuation",
+        "tag": "Atenuación",
         "h": "El tejido atenúa el haz de fotones",
         "p": "Las estructuras densas absorben más fotones según la ley de Beer-Lambert. Los fotones supervivientes excitan los detectores de centelleo, que convierten la radiación en fotocorrientes eléctricas.",
         "facts": [
@@ -187,7 +187,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Sinogram",
+        "tag": "Sinograma",
         "h": "La retroproyección reconstruye el mapa",
         "p": "Cientos de miles de proyecciones angulares se combinan mediante retroproyección filtrada o reconstrucción iterativa para resolver el coeficiente de atenuación lineal µ de cada vóxel en una matriz matricial.",
         "facts": [
@@ -206,7 +206,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Back-projection",
+        "tag": "Retroproyección",
         "h": "La escala Hounsfield calibra la imagen",
         "p": "Los valores de atenuación se escalan en unidades Hounsfield (HU), donde el agua es 0 HU y el aire −1000 HU. El hueso cortical alcanza +1000 a +3000 HU, mientras que la hemorragia aguda mide entre +50 y +80 HU.",
         "facts": [
@@ -237,7 +237,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Windows",
+        "tag": "Ventanas",
         "h": "El ventaneo resalta la patología",
         "p": "Dado que el ojo humano solo distingue unos 30 tonos de gris simultáneos, el operador ajusta el nivel (centro) y el ancho de ventana. La ventana de parénquima cerebral separa la sustancia gris y blanca, mientras que la ventana de fosa posterior y de hueso detectan fracturas y hematomas subdurales.",
         "facts": [
@@ -287,7 +287,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Tracer",
+        "tag": "Trazador",
         "h": "Inyección del radiotrazador metabólico",
         "p": "Se inyecta por vía endovenosa ¹⁸F-fluorodesoxiglucosa (FDG). Las neuronas activas la captan mediante transportadores GLUT. Una vez fosforilada por la hexocinasa, queda atrapada intracelularmente sin poder seguir la glucólisis.",
         "facts": [
@@ -306,7 +306,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Annihilation",
+        "tag": "Desintegración",
         "h": "Desintegración radiactiva y emisión del positrón",
         "p": "El núcleo inestable de ¹⁸F transmuta un protón en neutrón emitiendo un positrón (β⁺) y un neutrino. El positrón viaja una fracción de milímetro en el tejido antes de encontrarse con un electrón.",
         "facts": [
@@ -325,7 +325,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Coincidence",
+        "tag": "Coincidencia",
         "h": "Aniquilación y fotones en coincidencia",
         "p": "Al colisionar el positrón con un electrón, sus masas se aniquilan mutuamente según E = mc², produciendo dos fotones gamma de 511 keV que viajan en direcciones casi exactamente opuestas (180°).",
         "facts": [
@@ -344,7 +344,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Image",
+        "tag": "Imagen",
         "h": "Detección temporal en anillo y reconstrucción",
         "p": "Una corona circular de detectores BGO o LSO identifica impactos simultáneos en nanosegundos (detección por coincidencia). La tomografía calcula de qué punto de cada línea provino la emisión, revelando zonas hipometabólicas en demencias y epilepsia.",
         "facts": [
@@ -390,7 +390,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Tracer",
+        "tag": "Trazador",
         "h": "Fármacos emisores de fotón único",
         "p": "A diferencia de la PET, el radioisótopo (como el tecnecio-99m o el yodo-123) emite directamente un único fotón gamma por cada desintegración nuclear, sin proceso de aniquilación de pares.",
         "facts": [
@@ -409,7 +409,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Collimator",
+        "tag": "Colimador",
         "h": "Los colimadores de plomo filtran la dirección",
         "p": "Como no hay fotones opuestos en coincidencia, se interpone una placa de plomo con miles de orificios paralelos (colimador). Solo los fotones que inciden perpendicularmente alcanzan el cristal de yoduro de sodio, descartando la radiación oblicua.",
         "facts": [
@@ -428,7 +428,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Rotation",
+        "tag": "Rotación",
         "h": "Cámaras gamma en rotación orbital",
         "p": "Uno o dos cabezales detectores rotan en torno al cráneo del paciente recopilando proyecciones planares angulares cada 3 o 6 grados.",
         "facts": [
@@ -443,7 +443,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Image",
+        "tag": "Imagen",
         "h": "Evaluación de DaTscan y perfusión ictal",
         "p": "En la enfermedad de Parkinson y demencia por cuerpos de Lewy, el DaTscan revela una pérdida asimétrica de transportadores de dopamina en el putamen. En epilepsia, la inyección durante una crisis fija el flujo en el foco epileptógeno.",
         "facts": [
@@ -467,7 +467,7 @@ const CHAPTERS = window.CHAPTERS = {
   },
   "fmri": {
     "full": "Resonancia magnética funcional",
-    "title": "fMRI",
+    "title": "RMf",
     "lede": "La RMf detecta variaciones locales en la oxigenación sanguínea capilar secundarias a la actividad neuronal mediante el efecto hemodinámico dependiente del nivel de oxígeno en sangre (BOLD).",
     "meta": [
       [
@@ -489,7 +489,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Coupling",
+        "tag": "Acoplamiento",
         "h": "Acoplamiento neurovascular",
         "p": "Cuando un grupo neuronal dispara potenciales de acción, consume glucosa y oxígeno. En respuesta, los astrocitos y el endotelio dilatan las arteriolas locales, provocando un aumento masivo del flujo sanguíneo que sobrepasa el consumo de O₂.",
         "facts": [
@@ -542,7 +542,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Statistics",
+        "tag": "Estadística",
         "h": "Análisis estadístico y mapas funcionales",
         "p": "Se correlaciona la serie temporal de cada vóxel con el paradigma de estímulo mediante el Modelo Lineal General (GLM), superponiendo los vóxeles estadísticamente significativos (mapas T o Z) sobre la anatomía T1 del paciente.",
         "facts": [
@@ -584,7 +584,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Source",
+        "tag": "Fuente",
         "h": "Dipolos de corriente en neuronas piramidales",
         "p": "Las corrientes postsinápticas excitatorias en las dendritas apicales de las células piramidales, orientadas perpendicularmente a la superficie de la corteza, crean pequeños dipolos de corriente intracelulares y extracelulares.",
         "facts": [
@@ -618,7 +618,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Amplifier",
+        "tag": "Amplificador",
         "h": "El sistema internacional 10–20",
         "p": "Los electrodos se disponen a intervalos proporcionales del 10% y 20% respecto a puntos anatómicos de referencia (nasión, inión y puntos preauriculares), identificados con letras según el lóbulo (F, C, T, P, O) y números pares a la derecha e impares a la izquierda.",
         "facts": [
@@ -633,7 +633,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Rhythms",
+        "tag": "Ritmos",
         "h": "Ritmos oscilatorios y grafoelementos",
         "p": "La actividad cerebral oscila en bandas de frecuencia características: delta (< 4 Hz), theta (4–8 Hz), alfa (8–12 Hz, dominante en reposo occipital con ojos cerrados), beta (13–30 Hz) y gamma (> 30 Hz). En epilepsia se identifican espigas y ondas agudas paroxísticas.",
         "facts": [
@@ -653,7 +653,7 @@ const CHAPTERS = window.CHAPTERS = {
       }
     ],
     "ctaTitle": "Interpretar trazados de EEG",
-    "ctaText": "An 18-channel bipolar montage with a live scalp map: wakefulness, sleep stages, anaesthesia, seizures and brain death."
+    "ctaText": "Montaje bipolar de 18 canales con un mapa del cuero cabelludo en vivo: vigilia, fases del sueño, anestesia, crisis epilépticas y muerte encefálica."
   },
   "meg": {
     "full": "Magnetoencefalografía",
@@ -679,7 +679,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Fields",
+        "tag": "Campos",
         "h": "Campos magnéticos según la ley de Biot-Savart",
         "p": "Toda corriente eléctrica engendra un campo magnético perpendicular. Las corrientes intracelulares longitudinales en las neuronas piramidales de los surcos corticales generan campos magnéticos externos del orden de los femtoteslas (10⁻¹⁵ T).",
         "facts": [
@@ -698,7 +698,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Helmet",
+        "tag": "Casco",
         "h": "Sala blindada magnéticamente",
         "p": "Para aislar los femtoteslas cerebrales del ruido ambiente (líneas eléctricas, tráfico, ascensores), el sistema se aloja dentro de una cámara aislada con múltiples capas de mu-metal (aleación de níquel-hierro de alta permeabilidad) y aluminio.",
         "facts": [
@@ -713,7 +713,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Field map",
+        "tag": "Mapa de campo",
         "h": "Sensores SQUID y gradiómetros superconductores",
         "p": "Los sensores cuánticos SQUID operan sumergidos en helio líquido a −269 °C. Convierten la variación de flujo magnético en un voltaje mediante el efecto Josephson, combinando magnetómetros y pares de gradiómetros para cancelar el ruido lejano.",
         "facts": [
@@ -728,7 +728,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Timing",
+        "tag": "Cronometría",
         "h": "Localización de fuentes y fusión con RM",
         "p": "A diferencia del campo eléctrico del EEG, los campos magnéticos no sufren distorsión ni resistencia al cruzar el cráneo o el cuero cabelludo. Esto permite calcular la localización del dipolo equivalente con precisión milimétrica (campo magnético de fuente o MSI) antes de una resección quirúrgica.",
         "facts": [
@@ -748,7 +748,7 @@ const CHAPTERS = window.CHAPTERS = {
   },
   "us": {
     "full": "Ecografía y Doppler transcraneal",
-    "title": "Ultrasound",
+    "title": "Ecografía",
     "long": true,
     "lede": "La ecografía utiliza ondas acústicas mecánicas de alta frecuencia para producir imágenes de ecogenicidad en tiempo real y cuantificar la velocidad del flujo sanguíneo cerebral mediante el efecto Doppler.",
     "meta": [
@@ -771,7 +771,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Probe",
+        "tag": "Sonda",
         "h": "Transductores y efecto piezoeléctrico",
         "p": "Cristales piezoeléctricos de titanato zirconato de plomo (PZT) vibran al recibir pulsos eléctricos, emitiendo ráfagas de ultrasonido de 1 a 10 MHz. Al recibir los ecos reflejados, generan señales eléctricas análogas.",
         "facts": [
@@ -786,7 +786,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Echoes",
+        "tag": "Ecos",
         "h": "Reflexión en interfases de impedancia acústica",
         "p": "Cuando el haz acústico viaja entre dos tejidos con diferente impedancia (Z = densidad × velocidad del sonido), una fracción de la onda se refleja como eco y otra se transmite. Los límites de gran diferencia (como tejido y hueso) generan reflexiones hiperecogénicas intensas.",
         "facts": [
@@ -805,7 +805,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Windows",
+        "tag": "Ventanas",
         "h": "Ventanas acústicas transcraneales",
         "p": "Dado que el cráneo adulto absorbe y dispersa fuertemente el ultrasonido, se insona a través de ventanas óseas naturales de menor espesor: ventana transtemporal (para polígono de Willis), transorbitaria (para arteria oftálmica y carótida interna) y suboccipital (para arterias vertebrales y basilar).",
         "facts": [
@@ -844,7 +844,7 @@ const CHAPTERS = window.CHAPTERS = {
   },
   "dsa": {
     "full": "Angiografía por sustracción digital",
-    "title": "DSA",
+    "title": "ASD",
     "lede": "La ASD es el patrón oro vascular. Inyecta medio de contraste yodado directamente en los vasos cerebrales mediante cateterismo selectivo, sustrayendo computacionalmente las densidades óseas estáticas.",
     "meta": [
       [
@@ -866,7 +866,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Catheter",
+        "tag": "Catéter",
         "h": "Cateterismo intraarterial supraselectivo",
         "p": "Bajo guía fluoroscópica continua, se avanza un microcatéter por vía femoral o radial hasta la arteria carótida interna, carótida común o vertebral que irriga el territorio de interés.",
         "facts": [
@@ -881,7 +881,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Run",
+        "tag": "Adquisición",
         "h": "Sustracción fotograma a fotograma",
         "p": "Se adquiere una radiografía inicial sin contraste (imagen máscara). Se inyecta un bolo de contraste yodado a través del catéter y se toman radiografías seriadas continuas. La computadora resta la máscara a cada fotograma: los huesos y tejidos fijos se anulan matemáticamente, dejando visible únicamente el mapa vascular teñido de negro.",
         "facts": [
@@ -896,7 +896,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Subtraction",
+        "tag": "Sustracción",
         "h": "Fases circulatorias: arterial, capilar y venosa",
         "p": "El registro a 3 a 6 fotogramas por segundo captura la dinámica completa del tránsito sanguíneo cerebral: la fase arterial temprana (0 a 2.5 s), la fase capilar o tinción parenquimatosa (3 a 5 s) y el retorno venoso a través de los senos durales (6 a 10 s).",
         "facts": [
@@ -911,7 +911,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Treat",
+        "tag": "Tratamiento",
         "h": "Intervencionismo endovascular terapéutico",
         "p": "Permite no solo el diagnóstico definitivo de aneurismas, malformaciones arteriovenosas y fístulas durales, sino su tratamiento inmediato mediante microcoils de platino desmontables, stents diversores de flujo o trombectomía mecánica con stent-retriever en ictus agudo.",
         "facts": [
@@ -931,7 +931,7 @@ const CHAPTERS = window.CHAPTERS = {
   },
   "lab": {
     "full": "Laboratorio Cerebral",
-    "title": "Brain Lab",
+    "title": "Laboratorio Cerebral",
     "long": true,
     "lede": "Mucho de lo que conocemos sobre los mapas cerebrales proviene de neurocirujanos que estimularon la corteza en pacientes despiertos. En el Laboratorio Cerebral puede replicar estos experimentos y diseccionar las estructuras profundas.",
     "meta": [
@@ -950,7 +950,7 @@ const CHAPTERS = window.CHAPTERS = {
     ],
     "steps": [
       {
-        "tag": "Homunculus",
+        "tag": "Homúnculo",
         "h": "Mapeo cortical y homúnculo de Penfield",
         "p": "Haga clic sobre cualquier región de la circunvolución precentral (área motora primaria) o poscentral (área somatosensitiva) para observar cómo el homúnculo corporal responde con movimientos o sensaciones somatotópicas precisas.",
         "facts": [
@@ -965,7 +965,7 @@ const CHAPTERS = window.CHAPTERS = {
         ]
       },
       {
-        "tag": "Dissection",
+        "tag": "Disección",
         "h": "Disección lobar y planos anatómicos profundos",
         "p": "Oculte lóbulos específicos para estudiar el tálamo, los ganglios basales y el hipocampo. Realice cortes transversales, coronales y sagitales sobre la malla tridimensional continua.",
         "facts": [

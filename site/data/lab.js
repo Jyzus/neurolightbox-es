@@ -4,7 +4,7 @@ const LAB = window.LAB = {
   scanSub(){ return subById(this.scan === 'fmri' ? 'bold' : this.scan === 'fdg' ? 'fdg' : this.scan === 'dti' ? 'dti' : 't1'); },
   stateKey(){ return 'lab'; },
   state(){
-    const s = this.stim; const base = {name:'Brain Lab', tag:'stimulation', lesions:[], text:{_:''}};
+    const s = this.stim; const base = {name:'Laboratorio Cerebral', tag:'estimulación', lesions:[], text:{_:''}};
     if (!s) return base;
     const p = s.p, sx = Math.sign(p[0]) || 1, act = [{c:p, s:7, a:1.25}];
     const k = s.effect.kind;
@@ -13,7 +13,7 @@ const LAB = window.LAB = {
     if (k === 'see'){ act.push({c:[22*sx,-26,-4], s:4, a:0.5}); }
     if (k === 'hear'){ act.push({c:[-p[0],p[1],p[2]], s:7, a:0.45}); }
     if (k === 'speech'){ act.push({c:[-48,22,12], s:8, a:0.6}, {c:[-55,-45,8], s:8, a:0.6}); }
-    return {...base, name:'Stimulated: ' + s.region.name, act, met:{fdg:[{c:p, s:9, g:0.7}]}};
+    return {...base, name:'Estimulado: ' + s.region.name, act, met:{fdg:[{c:p, s:9, g:0.7}]}};
   },
   actOnSurface(){ return this.scan === 'fmri' && !!this.stim; },
   animating(){ return !!this.stim && performance.now() - this.stim.t0 < 6000 || this.selR > 0 || this.scan === 'fmri'; },
@@ -24,7 +24,7 @@ const LAB = window.LAB = {
     const n = this.cut.flip ? v3.mul(ax, -1) : ax;
     return [n[0], n[1], n[2], -v3.dot(n, v3.mul(ax, this.cut.pos))];
   },
-  subtitle(){ return this.tool === 'stim' ? 'Stimulate the cortex' : 'Dissect the brain'; },
+  subtitle(){ return this.tool === 'stim' ? 'Estimular la corteza' : 'Diseccionar el encéfalo'; },
   snap(){ animateTo(S.plane === 'free' ? 'sagittal' : S.plane, S.slice); return true; },
 };
 

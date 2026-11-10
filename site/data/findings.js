@@ -742,35 +742,35 @@ const PLAQUES = window.PLAQUES = [
 const STATES = window.STATES = {
   "normal": {
     "name": "Normal",
-    "tag": "Reference adult",
+    "tag": "Adulto de referencia",
     "cat": "disease",
     "text": {
-      "_": "Healthy adult appearance for this scan.",
-      "t1": "White matter bright, grey matter mid-grey, CSF dark. Corpus callosum and cerebellar folia are sharp.",
-      "t1gd": "Vessels and dural sinuses enhance; brain tissue does not.",
-      "t2": "CSF bright, grey matter brighter than white; arteries are black flow voids.",
-      "flair": "CSF nulled to black; cortex a little brighter than white matter.",
-      "dwi": "Even low-to-mid signal; CSF dark.",
-      "swi": "Veins and the iron-rich globus pallidus are dark.",
-      "dti": "Corpus callosum red, corticospinal tracts blue, long association bundles green.",
-      "mra": "Complete circle of Willis: carotids, middle, anterior and posterior cerebral arteries.",
-      "asl": "Grey matter flow ~60 mL/100 g/min, white matter ~20.",
-      "mrs": "NAA is the tallest peak; choline below creatine (Hunter’s angle rises to the left).",
-      "ctb": "Grey ~38 HU, white ~28 HU, CSF ~5 HU.",
-      "ctbone": "Intact inner and outer tables with marrow between.",
-      "cta": "Arterial phase: the circle of Willis fills with no cut-off.",
-      "fdg": "Cortex, deep grey nuclei and cerebellum take up glucose; white matter is low.",
-      "amy": "Negative scan: tracer stays in white matter and the grey–white border is crisp.",
-      "hmpao": "Even cortical perfusion; cerebellum highest.",
-      "dat": "Two symmetric commas: caudate and putamen fully lit.",
-      "cus": "Echo-free ventricles, bright choroid plexus and sulcal lines.",
-      "tcd": "MCA mean velocity ~60 cm/s, pulsatility index ~0.9.",
-      "dsa": "Normal left ICA run: ACA and MCA territories fill, then drain to the sinuses."
+      "_": "Aspecto de adulto sano para este estudio.",
+      "t1": "Sustancia blanca hiperintensa, sustancia gris en tono intermedio y LCR hipointenso. El cuerpo calloso y las folias cerebelosas se perfilan con nitidez.",
+      "t1gd": "Realzan los vasos y los senos durales; el tejido encefálico no.",
+      "t2": "LCR hiperintenso y sustancia gris más intensa que la blanca; las arterias aparecen como vacíos de flujo negros.",
+      "flair": "LCR anulado en negro; la corteza, algo más intensa que la sustancia blanca.",
+      "dwi": "Señal uniforme, de baja a intermedia; LCR hipointenso.",
+      "swi": "Hipointensos los vasos y el globo pálido, rico en hierro.",
+      "dti": "Cuerpo calloso en rojo, tractos corticospinales en azul y fascículos de asociación largos en verde.",
+      "mra": "Polígono de Willis completo: carótidas y arterias cerebrales media, anterior y posterior.",
+      "asl": "Flujo de la sustancia gris ~60 mL/100 g/min y de la sustancia blanca ~20.",
+      "mrs": "La NAA es el pico más alto; la colina queda por debajo de la creatina (el ángulo de Hunter se abre hacia la izquierda).",
+      "ctb": "Sustancia gris ~38 HU, sustancia blanca ~28 HU y LCR ~5 HU.",
+      "ctbone": "Tablas interna y externa íntegras, con médula ósea entre ambas.",
+      "cta": "Fase arterial: el polígono de Willis se rellena sin interrupciones.",
+      "fdg": "Captan glucosa la corteza, los núcleos grises profundos y el cerebelo; la sustancia blanca presenta captación baja.",
+      "amy": "Estudio negativo: el trazador permanece en la sustancia blanca y el límite sustancia gris–sustancia blanca es nítido.",
+      "hmpao": "Perfusión cortical homogénea; máxima en el cerebelo.",
+      "dat": "Dos comas simétricas: el núcleo caudado y el putamen captan por completo.",
+      "cus": "Ventrículos anecoicos, plexo coroideo hiperecogénico y líneas de los surcos.",
+      "tcd": "Velocidad media de la ACM ~60 cm/s, índice de pulsatilidad ~0.9.",
+      "dsa": "Serie normal de la ACI izquierda: se rellenan los territorios de la ACA y la ACM y después drena a los senos."
     }
   },
   "stroke": {
-    "name": "Acute ischaemic stroke",
-    "tag": "Left MCA occlusion",
+    "name": "Ictus isquémico agudo",
+    "tag": "Oclusión de la ACM izquierda",
     "cat": "disease",
     "pos": {
       "axial": 14,
@@ -843,28 +843,28 @@ const STATES = window.STATES = {
     ],
     "tcd": "occl",
     "text": {
-      "_": "Infarct in the left middle cerebral artery territory.",
-      "t1": "Subtle low signal and gyral swelling; T1 lags behind DWI.",
-      "t1gd": "Little enhancement in the first days; gyral enhancement at 1–2 weeks.",
-      "t2": "Cortex and white matter turn bright after about 6 hours.",
-      "flair": "Bright territory, plus bright vessels distal to the clot.",
-      "dwi": "Restricted diffusion makes the core bright within minutes.",
-      "swi": "Clot blooms dark in the left M1 segment.",
-      "dti": "Fractional anisotropy falls in the infarcted white matter.",
-      "mra": "Abrupt cut-off of the left M1; distal MCA branches missing.",
-      "asl": "Absent flow in the left MCA territory.",
-      "mrs": "Lactate doublet at 1.33 ppm; NAA falling.",
-      "ctb": "Hypodense territory with loss of grey–white contrast and a hyperdense MCA sign.",
-      "cta": "Left M1 cut-off.",
-      "fdg": "No metabolism in the infarct; the right cerebellum dims too.",
-      "hmpao": "Perfusion defect with crossed cerebellar diaschisis.",
-      "tcd": "No signal from the left MCA; anterior cerebral flow may rise as collateral.",
-      "dsa": "Contrast stops in the left M1 (“meniscus”); the MCA territory stays blank."
+      "_": "Infarto en el territorio de la arteria cerebral media izquierda.",
+      "t1": "Hiposeñal sutil y tumefacción de los giros; la T1 va por detrás de la DWI.",
+      "t1gd": "Escaso realce en los primeros días; realce giroide a las 1–2 semanas.",
+      "t2": "La corteza y la sustancia blanca se vuelven hiperintensas a partir de unas 6 horas.",
+      "flair": "Territorio hiperintenso, con vasos hiperintensos distales al coágulo.",
+      "dwi": "La restricción de la difusión hace hiperintenso el núcleo en cuestión de minutos.",
+      "swi": "El coágulo produce un artefacto de blooming hipointenso en el segmento M1 izquierdo.",
+      "dti": "La anisotropía fraccional disminuye en la sustancia blanca infartada.",
+      "mra": "Interrupción brusca del segmento M1 izquierdo; faltan las ramas distales de la ACM.",
+      "asl": "Ausencia de flujo en el territorio de la ACM izquierda.",
+      "mrs": "Doblete de lactato a 1.33 ppm; la NAA desciende.",
+      "ctb": "Territorio hipodenso con pérdida del contraste sustancia gris–sustancia blanca y signo de la ACM hiperdensa.",
+      "cta": "Oclusión del segmento M1 izquierdo.",
+      "fdg": "Sin metabolismo en el infarto; el cerebelo derecho también reduce su captación.",
+      "hmpao": "Defecto de perfusión con diasquisis cerebelosa cruzada.",
+      "tcd": "Ausencia de señal en la ACM izquierda; el flujo cerebral anterior puede aumentar como circulación colateral.",
+      "dsa": "El contraste se detiene en el segmento M1 izquierdo («menisco»); el territorio de la ACM queda sin relleno."
     }
   },
   "ich": {
-    "name": "Intracerebral haemorrhage",
-    "tag": "Right putamen",
+    "name": "Hemorragia intracerebral",
+    "tag": "Putamen derecho",
     "cat": "disease",
     "pos": {
       "axial": 3,
@@ -895,21 +895,21 @@ const STATES = window.STATES = {
       ]
     },
     "text": {
-      "_": "Hypertensive bleed in the right basal ganglia.",
-      "t1": "Acute blood is iso- to slightly dark; it turns bright from about day 3.",
-      "t1gd": "The clot itself does not enhance.",
-      "t2": "Acute deoxyhaemoglobin is dark, ringed by bright oedema.",
-      "flair": "Dark clot inside a rim of bright oedema.",
-      "dwi": "Dark and heterogeneous: blood products distort the signal.",
-      "swi": "Marked blooming: blood looks larger and black.",
-      "dti": "Internal capsule fibres are displaced or cut.",
-      "ctb": "Hyperdense (60–80 HU) clot with a thin hypodense rim.",
-      "cta": "Spot sign: a dot of contrast inside the clot."
+      "_": "Hemorragia hipertensiva en los ganglios basales derechos.",
+      "t1": "La sangre aguda es isointensa o ligeramente hipointensa; se vuelve hiperintensa a partir del tercer día.",
+      "t1gd": "El coágulo no realza.",
+      "t2": "La desoxihemoglobina aguda es hipointensa y está rodeada de edema hiperintenso.",
+      "flair": "Coágulo hipointenso dentro de un ribete de edema hiperintenso.",
+      "dwi": "Hipointenso y heterogéneo: los productos hemáticos distorsionan la señal.",
+      "swi": "Blooming marcado: la sangre parece mayor y más negra.",
+      "dti": "Las fibras de la cápsula interna están desplazadas o interrumpidas.",
+      "ctb": "Coágulo hiperdenso (60–80 HU) con un ribete hipodenso fino.",
+      "cta": "Signo del spot: un punto de contraste en el interior del coágulo."
     }
   },
   "sah": {
-    "name": "Subarachnoid haemorrhage",
-    "tag": "Ruptured ACom aneurysm",
+    "name": "Hemorragia subaracnoidea",
+    "tag": "Rotura de aneurisma de la ACoA",
     "cat": "disease",
     "pos": {
       "axial": -10,
@@ -959,16 +959,16 @@ const STATES = window.STATES = {
     },
     "tcd": "vasospasm",
     "text": {
-      "_": "Blood in the basal cisterns and sylvian fissures from a ruptured aneurysm.",
-      "flair": "Sulci and cisterns that should be black are bright.",
-      "ctb": "Hyperdense blood fills the suprasellar cistern and sylvian fissures (“star” pattern); temporal horns dilate.",
-      "cta": "An anterior communicating artery aneurysm.",
-      "mra": "Saccular aneurysm at the anterior communicating artery."
+      "_": "Sangre en las cisternas basales y en las cisuras silvianas por rotura aneurismática.",
+      "flair": "Los surcos y cisternas que deberían ser hipointensos aparecen hiperintensos.",
+      "ctb": "Sangre hiperdensa que rellena la cisterna supraselar y las cisuras silvianas (patrón «en estrella»); se dilatan las astas temporales.",
+      "cta": "Aneurisma de la arteria comunicante anterior.",
+      "mra": "Aneurisma sacular en la arteria comunicante anterior."
     }
   },
   "sdh": {
-    "name": "Subdural haematoma",
-    "tag": "Left convexity · acute",
+    "name": "Hematoma subdural",
+    "tag": "Convexidad izquierda · agudo",
     "cat": "disease",
     "pos": {
       "axial": 32,
@@ -995,16 +995,16 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Blood between the dura and the arachnoid.",
-      "ctb": "Crescent of bright blood along the left convexity; it crosses sutures.",
-      "t1": "Acute blood is near brain signal; subacute turns bright.",
-      "t2": "Crescent of altered signal compressing sulci.",
-      "flair": "Bright crescent over the left hemisphere."
+      "_": "Sangre entre la duramadre y la aracnoides.",
+      "ctb": "Semiluna de sangre hiperdensa a lo largo de la convexidad izquierda que cruza las suturas.",
+      "t1": "La sangre aguda tiene una señal próxima a la del encéfalo; la subaguda se vuelve hiperintensa.",
+      "t2": "Semiluna de señal alterada que comprime los surcos.",
+      "flair": "Semiluna hiperintensa sobre el hemisferio izquierdo."
     }
   },
   "edh": {
-    "name": "Fracture with epidural haematoma",
-    "tag": "Left temporal",
+    "name": "Fractura con hematoma epidural",
+    "tag": "Temporal izquierdo",
     "cat": "disease",
     "pos": {
       "axial": 8,
@@ -1050,15 +1050,15 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "A skull fracture tears the middle meningeal artery.",
-      "ctb": "Lens-shaped bright collection that stops at sutures, under scalp swelling.",
-      "ctbone": "Thin lucent line through the left temporal squama with soft-tissue swelling.",
-      "t2": "Biconvex collection with the dura as a dark line on its inner side."
+      "_": "La fractura craneal desgarra la arteria meníngea media.",
+      "ctb": "Colección hiperdensa en lente que se detiene en las suturas, bajo una tumefacción del cuero cabelludo.",
+      "ctbone": "Línea lucente fina a través de la escama temporal izquierda, con tumefacción de partes blandas.",
+      "t2": "Colección biconvexa, con la duramadre como línea hipointensa en su cara interna."
     }
   },
   "gbm": {
     "name": "Glioblastoma",
-    "tag": "Right frontal",
+    "tag": "Frontal derecho",
     "cat": "disease",
     "pos": {
       "axial": 24,
@@ -1097,23 +1097,23 @@ const STATES = window.STATES = {
       9
     ],
     "text": {
-      "_": "High-grade glial tumour with necrosis and oedema.",
-      "t1": "Dark, ill-defined mass.",
-      "t1gd": "Thick, irregular ring enhancement around a necrotic centre.",
-      "t2": "Necrosis bright; oedema spreads along white matter.",
-      "flair": "Finger-like oedema confined to white matter, sparing the cortex.",
-      "dwi": "Solid rim can restrict; necrosis stays dark.",
-      "swi": "Dark dots from microbleeds and new vessels inside the tumour.",
-      "dti": "Low FA in tumour; tracts displaced.",
-      "asl": "The solid rim is hyperperfused — a marker of high grade.",
-      "mrs": "Choline up, NAA down, lipid–lactate peak from necrosis.",
-      "ctb": "Hypodense mass with surrounding oedema.",
-      "fdg": "Hypermetabolic rim brighter than cortex, around a cold core."
+      "_": "Tumor glial de alto grado con necrosis y edema.",
+      "t1": "Masa hipointensa y mal definida.",
+      "t1gd": "Realce anular grueso e irregular en torno a un centro necrótico.",
+      "t2": "Necrosis hiperintensa; el edema se extiende por la sustancia blanca.",
+      "flair": "Edema digitiforme limitado a la sustancia blanca, que respeta la corteza.",
+      "dwi": "El ribete sólido puede restringir la difusión; la necrosis permanece hipointensa.",
+      "swi": "Puntos hipointensos por microhemorragias y neovasos intratumorales.",
+      "dti": "FA baja en el tumor; tractos desplazados.",
+      "asl": "El ribete sólido está hiperperfundido: marcador de alto grado.",
+      "mrs": "Colina elevada, NAA descendida y pico de lípidos-lactato por necrosis.",
+      "ctb": "Masa hipodensa con edema perilesional.",
+      "fdg": "Ribete hipermetabólico más intenso que la corteza, en torno a un centro hipometabólico."
     }
   },
   "mets": {
-    "name": "Metastases",
-    "tag": "Three lesions",
+    "name": "Metástasis",
+    "tag": "Tres lesiones",
     "cat": "disease",
     "pos": {
       "axial": 32,
@@ -1174,16 +1174,16 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Blood-borne tumour deposits at the grey–white junction.",
-      "t1gd": "Several small ring- or nodular-enhancing lesions.",
-      "flair": "Oedema out of proportion to the lesion size.",
-      "t2": "Oedema around each deposit.",
-      "ctb": "Small hypodense areas of oedema; the deposits themselves may be invisible."
+      "_": "Implantes tumorales hematógenos en la unión sustancia gris–sustancia blanca.",
+      "t1gd": "Varias lesiones pequeñas con realce anular o nodular.",
+      "flair": "Edema desproporcionado respecto al tamaño de la lesión.",
+      "t2": "Edema alrededor de cada implante.",
+      "ctb": "Pequeñas áreas hipodensas de edema; los implantes pueden pasar inadvertidos."
     }
   },
   "abscess": {
-    "name": "Brain abscess",
-    "tag": "Left parietal",
+    "name": "Absceso cerebral",
+    "tag": "Parietal izquierdo",
     "cat": "disease",
     "pos": {
       "axial": 26,
@@ -1217,17 +1217,17 @@ const STATES = window.STATES = {
       7
     ],
     "text": {
-      "_": "A walled-off collection of pus.",
-      "t1gd": "Thin, smooth ring of enhancement, thinnest on the ventricular side.",
-      "dwi": "Pus restricts diffusion: the centre is bright (unlike tumour necrosis).",
-      "t2": "Bright centre, dark rim, surrounding oedema.",
-      "swi": "A dual rim: dark outer and brighter inner layer.",
-      "mrs": "Amino acids, acetate and succinate peaks."
+      "_": "Colección de pus delimitada por una cápsula.",
+      "t1gd": "Anillo de realce fino y regular, más delgado en la vertiente ventricular.",
+      "dwi": "El pus restringe la difusión: el centro es hiperintenso (a diferencia de la necrosis tumoral).",
+      "t2": "Centro hiperintenso, ribete hipointenso y edema perilesional.",
+      "swi": "Doble ribete: una capa externa hipointensa y otra interna más intensa.",
+      "mrs": "Picos de aminoácidos, acetato y succinato."
     }
   },
   "ms": {
-    "name": "Multiple sclerosis",
-    "tag": "Relapsing–remitting",
+    "name": "Esclerosis múltiple",
+    "tag": "Remitente-recurrente",
     "cat": "disease",
     "pos": {
       "axial": 26,
@@ -1442,21 +1442,21 @@ const STATES = window.STATES = {
       8
     ],
     "text": {
-      "_": "Demyelinating plaques in white matter.",
-      "t1": "Some plaques are dark “black holes” from axon loss.",
-      "t1gd": "An active plaque enhances as an incomplete ring.",
-      "t2": "Bright ovoid plaques around the ventricles.",
-      "flair": "Plaques point away from the ventricles (Dawson’s fingers).",
-      "dwi": "Active plaques can restrict slightly.",
-      "swi": "Central vein sign inside plaques.",
-      "dti": "Lower FA in plaques.",
-      "mrs": "NAA down and choline up in active plaques.",
-      "ctb": "Often normal; large plaques may be faintly hypodense."
+      "_": "Placas desmielinizantes en la sustancia blanca.",
+      "t1": "Algunas placas son «agujeros negros» hipointensos por pérdida axonal.",
+      "t1gd": "La placa activa realza en forma de anillo incompleto.",
+      "t2": "Placas ovoideas hiperintensas alrededor de los ventrículos.",
+      "flair": "Las placas se orientan alejándose de los ventrículos (dedos de Dawson).",
+      "dwi": "Las placas activas pueden restringir ligeramente la difusión.",
+      "swi": "Signo de la vena central en el interior de las placas.",
+      "dti": "FA más baja en las placas.",
+      "mrs": "NAA descendida y colina elevada en las placas activas.",
+      "ctb": "Con frecuencia normal; las placas grandes pueden ser levemente hipodensas."
     }
   },
   "ad": {
-    "name": "Alzheimer’s disease",
-    "tag": "Moderate",
+    "name": "Enfermedad de Alzheimer",
+    "tag": "Moderada",
     "cat": "disease",
     "pos": {
       "axial": -14,
@@ -1632,21 +1632,21 @@ const STATES = window.STATES = {
       9
     ],
     "text": {
-      "_": "Neurodegeneration with temporal-predominant atrophy.",
-      "t1": "Shrunken hippocampi, wide sulci and enlarged ventricles.",
-      "t2": "Atrophy with enlarged temporal horns.",
-      "flair": "Atrophy plus mild white-matter changes.",
-      "ctb": "Enlarged ventricles, temporal horns and sulci.",
-      "fdg": "Temporoparietal and posterior cingulate hypometabolism; motor and visual cortex spared.",
-      "amy": "Positive scan: cortical tracer erases the grey–white border.",
-      "hmpao": "Temporoparietal hypoperfusion.",
-      "asl": "Reduced flow in posterior cingulate and parietal cortex.",
-      "mrs": "NAA down, myo-inositol up in the posterior cingulate."
+      "_": "Neurodegeneración con atrofia de predominio temporal.",
+      "t1": "Hipocampos reducidos, surcos amplios y ventrículos dilatados.",
+      "t2": "Atrofia con dilatación de las astas temporales.",
+      "flair": "Atrofia y cambios leves de la sustancia blanca.",
+      "ctb": "Ventrículos, astas temporales y surcos dilatados.",
+      "fdg": "Hipometabolismo temporoparietal y del cíngulo posterior; corteza motora y visual preservadas.",
+      "amy": "Estudio positivo: el trazador cortical borra el límite sustancia gris–sustancia blanca.",
+      "hmpao": "Hipoperfusión temporoparietal.",
+      "asl": "Flujo reducido en el cíngulo posterior y la corteza parietal.",
+      "mrs": "NAA descendida y mioinositol elevado en el cíngulo posterior."
     }
   },
   "tle": {
-    "name": "Temporal lobe epilepsy",
-    "tag": "Left mesial temporal",
+    "name": "Epilepsia del lóbulo temporal",
+    "tag": "Mesial temporal izquierdo",
     "cat": "disease",
     "pos": {
       "axial": -14,
@@ -1698,18 +1698,18 @@ const STATES = window.STATES = {
       "hmpao": "tle_spect"
     },
     "text": {
-      "_": "Seizure focus in the left mesial temporal lobe.",
-      "t1": "Small left hippocampus that has lost its internal structure.",
-      "t2": "Small, bright left hippocampus (hippocampal sclerosis).",
-      "flair": "Bright, shrunken left hippocampus.",
-      "dwi": "Usually normal between seizures.",
-      "fdg": "Interictal hypometabolism of the left temporal lobe.",
-      "hmpao": "Injected during a seizure: the focus is hyperperfused."
+      "_": "Foco epiléptico en el lóbulo temporal mesial izquierdo.",
+      "t1": "Hipocampo izquierdo pequeño, con pérdida de su estructura interna.",
+      "t2": "Hipocampo izquierdo pequeño e hiperintenso (esclerosis hipocámpica).",
+      "flair": "Hipocampo izquierdo hiperintenso y atrófico.",
+      "dwi": "Habitualmente normal en el período interictal.",
+      "fdg": "Hipometabolismo interictal del lóbulo temporal izquierdo.",
+      "hmpao": "Inyectado durante la crisis: el foco está hiperperfundido."
     }
   },
   "hydro": {
-    "name": "Obstructive hydrocephalus",
-    "tag": "Aqueduct stenosis",
+    "name": "Hidrocefalia obstructiva",
+    "tag": "Estenosis del acueducto",
     "cat": "disease",
     "pos": {
       "axial": 18,
@@ -1734,17 +1734,17 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "CSF cannot leave the third ventricle, so the lateral and third ventricles balloon.",
-      "t1": "Enlarged lateral and third ventricles; normal fourth.",
-      "flair": "Bright rim around the ventricles from CSF pushed into the tissue (transependymal flow).",
-      "ctb": "Enlarged ventricles with rounded frontal horns; sulci effaced.",
-      "t2": "Ballooned ventricles.",
-      "cus": "Dilated, rounded ventricles."
+      "_": "El LCR no puede salir del tercer ventrículo, de modo que los ventrículos laterales y el tercero se dilatan.",
+      "t1": "Ventrículos laterales y tercero dilatados; cuarto ventrículo normal.",
+      "flair": "Ribete hiperintenso periventricular por LCR que pasa al tejido (flujo transependimario).",
+      "ctb": "Ventrículos dilatados con astas frontales redondeadas; surcos borrados.",
+      "t2": "Ventrículos dilatados.",
+      "cus": "Ventrículos dilatados y redondeados."
     }
   },
   "pd": {
-    "name": "Parkinson’s disease",
-    "tag": "Right-sided symptoms",
+    "name": "Enfermedad de Parkinson",
+    "tag": "Síntomas derechos",
     "cat": "disease",
     "pos": {
       "axial": 2,
@@ -1769,13 +1769,13 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Loss of dopaminergic nerve terminals.",
-      "dat": "Putamen uptake fades from the back, worse on the left: commas become full stops."
+      "_": "Pérdida de las terminaciones nerviosas dopaminérgicas.",
+      "dat": "La captación del putamen decae desde la región posterior, más en el lado izquierdo: las comas se convierten en puntos finales."
     }
   },
   "aneurysm": {
-    "name": "Unruptured aneurysm",
-    "tag": "Left MCA bifurcation",
+    "name": "Aneurisma no roto",
+    "tag": "Bifurcación de la ACM izquierda",
     "cat": "disease",
     "pos": {
       "axial": -8,
@@ -1809,15 +1809,15 @@ const STATES = window.STATES = {
       }
     },
     "text": {
-      "_": "Saccular berry aneurysm at a branch point.",
-      "mra": "Round outpouching at the left MCA bifurcation.",
-      "cta": "Contrast-filled sac; neck and dome can be measured.",
-      "dsa": "Sac fills in arterial phase and holds contrast."
+      "_": "Aneurisma sacular en forma de baya en un punto de bifurcación.",
+      "mra": "Dilatación redondeada en la bifurcación de la ACM izquierda.",
+      "cta": "Saco relleno de contraste; pueden medirse el cuello y la cúpula.",
+      "dsa": "El saco se rellena en la fase arterial y retiene el contraste."
     }
   },
   "avm": {
-    "name": "Arteriovenous malformation",
-    "tag": "Right parietal",
+    "name": "Malformación arteriovenosa",
+    "tag": "Parietal derecho",
     "cat": "disease",
     "pos": {
       "axial": 40,
@@ -1852,34 +1852,34 @@ const STATES = window.STATES = {
     },
     "dsaInj": "ICA-R",
     "text": {
-      "_": "A tangle of vessels shunting arterial blood straight into veins.",
-      "t2": "Cluster of black serpiginous flow voids.",
-      "t1gd": "Enhancing tangle with enlarged draining vein.",
-      "mra": "Nidus with feeding arteries and an early draining vein.",
-      "cta": "Tangle of opacified vessels.",
-      "dsa": "The nidus and its draining vein fill in the arterial phase (early venous drainage)."
+      "_": "Ovillo de vasos que derivan sangre arterial directamente a las venas.",
+      "t2": "Conglomerado de vacíos de flujo serpiginosos hipointensos.",
+      "t1gd": "Ovillo que realza, con vena de drenaje dilatada.",
+      "mra": "Nido con arterias aferentes y vena de drenaje precoz.",
+      "cta": "Ovillo de vasos opacificados.",
+      "dsa": "El nido y su vena de drenaje se rellenan en la fase arterial (drenaje venoso precoz)."
     }
   },
   "bd": {
-    "name": "Brain death",
-    "tag": "Absent cerebral circulation",
+    "name": "Muerte encefálica",
+    "tag": "Ausencia de circulación cerebral",
     "cat": "physio",
     "noFlow": true,
     "eeg": "bd",
     "tcd": "bd",
     "text": {
-      "_": "Irreversible loss of all brain function. Imaging is ancillary to the clinical examination.",
-      "hmpao": "“Hollow skull”: no tracer in the brain; scalp activity only.",
-      "cta": "No intracranial arterial opacification beyond the skull base.",
-      "dsa": "Contrast stops at the skull base (“stasis filling”).",
-      "asl": "No labelled blood reaches the brain.",
-      "eeg": "Electrocerebral silence: no activity above 2 µV.",
-      "tcd": "Oscillating flow: forward in systole, reversed in diastole."
+      "_": "Pérdida irreversible de toda la función encefálica. Las técnicas de imagen son complementarias a la exploración clínica.",
+      "hmpao": "«Cráneo hueco»: no hay trazador en el encéfalo, solo actividad en el cuero cabelludo.",
+      "cta": "Sin opacificación arterial intracraneal más allá de la base del cráneo.",
+      "dsa": "El contraste se detiene en la base del cráneo («relleno por estasis»).",
+      "asl": "Ninguna sangre marcada alcanza el encéfalo.",
+      "eeg": "Silencio electrocerebral: ausencia de actividad superior a 2 µV.",
+      "tcd": "Flujo oscilante: anterógrado en sístole e invertido en diástole."
     }
   },
   "ivh": {
-    "name": "Intraventricular haemorrhage",
-    "tag": "Grade III (preterm)",
+    "name": "Hemorragia intraventricular",
+    "tag": "Grado III (prematuro)",
     "cat": "disease",
     "pos": {
       "coronal": -6
@@ -1902,13 +1902,13 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Bleeding from the germinal matrix into the ventricle, with dilatation.",
-      "cus": "Echogenic clot fills a dilated left lateral ventricle."
+      "_": "Hemorragia desde la matriz germinal hacia el ventrículo, con dilatación.",
+      "cus": "Coágulo ecogénico que rellena un ventrículo lateral izquierdo dilatado."
     }
   },
   "pvl": {
-    "name": "Periventricular leukomalacia",
-    "tag": "Preterm white-matter injury",
+    "name": "Leucomalacia periventricular",
+    "tag": "Lesión de sustancia blanca del prematuro",
     "cat": "disease",
     "pos": {
       "coronal": -20
@@ -1944,79 +1944,79 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Ischaemic injury to the white matter beside the ventricles.",
-      "cus": "Bright periventricular flare that may later break down into cysts."
+      "_": "Lesión isquémica de la sustancia blanca junto a los ventrículos.",
+      "cus": "Halo periventricular hiperecogénico que puede evolucionar hacia quistes."
     }
   },
   "vasospasm": {
-    "name": "Vasospasm",
-    "tag": "Day 7 after SAH",
+    "name": "Vasoespasmo",
+    "tag": "Día 7 tras HSA",
     "cat": "disease",
     "tcd": "vasospasm",
     "text": {
-      "_": "Arterial narrowing after subarachnoid haemorrhage.",
-      "tcd": "Mean velocity 160 cm/s, Lindegaard ratio > 3."
+      "_": "Estrechamiento arterial tras una hemorragia subaracnoidea.",
+      "tcd": "Velocidad media de 160 cm/s, índice de Lindegaard > 3."
     }
   },
   "icp": {
-    "name": "Raised intracranial pressure",
-    "tag": "Diffuse swelling",
+    "name": "Hipertensión intracraneal",
+    "tag": "Tumefacción difusa",
     "cat": "physio",
     "tcd": "icp",
     "text": {
-      "_": "Pressure inside the skull approaches arterial diastolic pressure.",
-      "tcd": "Diastolic flow collapses; pulsatility index rises above 1.4."
+      "_": "La presión intracraneal se aproxima a la presión arterial diastólica.",
+      "tcd": "El flujo diastólico colapsa; el índice de pulsatilidad supera 1.4."
     }
   },
   "eyes_closed": {
-    "name": "Awake, eyes closed",
-    "tag": "Relaxed",
+    "name": "Vigilia con los ojos cerrados",
+    "tag": "Relajado",
     "cat": "physio",
     "eeg": "alpha",
     "meg": "alpha",
     "text": {
-      "_": "Relaxed wakefulness.",
-      "eeg": "A 9–11 Hz alpha rhythm over the back of the head.",
-      "meg": "Occipital alpha sources oscillate at 10 Hz."
+      "_": "Vigilia relajada.",
+      "eeg": "Ritmo alfa de 9–11 Hz en la región posterior de la cabeza.",
+      "meg": "Fuentes alfa occipitales que oscilan a 10 Hz."
     }
   },
   "eyes_open": {
-    "name": "Awake, eyes open",
-    "tag": "Visual input",
+    "name": "Vigilia con los ojos abiertos",
+    "tag": "Aporte visual",
     "cat": "physio",
     "eeg": "beta",
     "yeo": {
       "1": 1.18
     },
     "text": {
-      "_": "Alert, looking.",
-      "eeg": "Alpha blocks; low-voltage fast activity remains.",
-      "fdg": "Visual cortex metabolism rises."
+      "_": "Vigilia con los ojos abiertos.",
+      "eeg": "El alfa se bloquea; persiste actividad rápida de bajo voltaje.",
+      "fdg": "Aumenta el metabolismo de la corteza visual."
     }
   },
   "n1": {
-    "name": "Sleep N1",
-    "tag": "Drowsy",
+    "name": "Sueño N1",
+    "tag": "Somnolencia",
     "cat": "physio",
     "eeg": "n1",
     "text": {
-      "_": "Light drowsiness.",
-      "eeg": "Alpha drops out; theta and sharp vertex waves appear."
+      "_": "Somnolencia ligera.",
+      "eeg": "Desaparece el alfa; aparecen theta y ondas agudas del vértex."
     }
   },
   "n2": {
-    "name": "Sleep N2",
-    "tag": "Light sleep",
+    "name": "Sueño N2",
+    "tag": "Sueño ligero",
     "cat": "physio",
     "eeg": "n2",
     "text": {
-      "_": "Stable light sleep, about half the night.",
-      "eeg": "Sleep spindles (12–14 Hz) and K-complexes."
+      "_": "Sueño ligero estable, cerca de la mitad de la noche.",
+      "eeg": "Husos de sueño (12–14 Hz) y complejos K."
     }
   },
   "n3": {
-    "name": "Sleep N3",
-    "tag": "Slow-wave sleep",
+    "name": "Sueño N3",
+    "tag": "Sueño de ondas lentas",
     "cat": "physio",
     "eeg": "n3",
     "metG": 0.74,
@@ -2038,14 +2038,14 @@ const STATES = window.STATES = {
       ]
     },
     "text": {
-      "_": "Deep, restorative sleep.",
-      "eeg": "High-amplitude delta waves (> 75 µV, < 2 Hz).",
-      "fdg": "Global metabolism falls about 25–40%, most in frontal cortex and thalamus."
+      "_": "Sueño profundo y reparador.",
+      "eeg": "Ondas delta de gran amplitud (> 75 µV, < 2 Hz).",
+      "fdg": "El metabolismo global desciende un 25–40 %, sobre todo en la corteza frontal y el tálamo."
     }
   },
   "rem": {
-    "name": "REM sleep",
-    "tag": "Dreaming",
+    "name": "Sueño REM",
+    "tag": "Ensoñaciones",
     "cat": "physio",
     "eeg": "rem",
     "yeo": {
@@ -2067,13 +2067,13 @@ const STATES = window.STATES = {
       ]
     },
     "text": {
-      "_": "Dreaming sleep with muscle atonia.",
-      "eeg": "Low-voltage mixed frequencies, sawtooth waves and eye-movement artefact in frontal leads.",
-      "fdg": "Limbic and visual association cortex up; dorsolateral prefrontal down."
+      "_": "Sueño con ensoñaciones y atonía muscular.",
+      "eeg": "Frecuencias mixtas de bajo voltaje, ondas en dientes de sierra y artefacto de movimientos oculares en las derivaciones frontales.",
+      "fdg": "Aumentan la corteza límbica y la de asociación visual; desciende la prefrontal dorsolateral."
     }
   },
   "anaes": {
-    "name": "General anaesthesia",
+    "name": "Anestesia general",
     "tag": "Propofol",
     "cat": "physio",
     "eeg": "anaes",
@@ -2110,46 +2110,46 @@ const STATES = window.STATES = {
       "g": 0.65
     },
     "text": {
-      "_": "Drug-induced unconsciousness.",
-      "eeg": "Frontal alpha with slow waves (“anteriorisation”).",
-      "fdg": "Whole-brain glucose use falls about 40–55%, thalamus most.",
-      "asl": "Global blood flow falls with metabolism."
+      "_": "Pérdida de conciencia inducida por fármacos.",
+      "eeg": "Alfa frontal con ondas lentas («anteriorización»).",
+      "fdg": "El consumo global de glucosa desciende un 40–55 %, sobre todo en el tálamo.",
+      "asl": "El flujo sanguíneo global desciende junto con el metabolismo."
     }
   },
   "burst": {
-    "name": "Burst suppression",
-    "tag": "Deep anaesthesia / coma",
+    "name": "Supresión de brotes",
+    "tag": "Anestesia profunda / coma",
     "cat": "physio",
     "eeg": "burst",
     "metG": 0.45,
     "text": {
-      "_": "Very deep anaesthesia, hypothermia or severe brain injury.",
-      "eeg": "Bursts of activity alternate with flat suppression."
+      "_": "Anestesia muy profunda, hipotermia o lesión encefálica grave.",
+      "eeg": "Brotes de actividad alternados con supresión plana."
     }
   },
   "absence": {
-    "name": "Absence seizure",
-    "tag": "Generalised",
+    "name": "Crisis de ausencia",
+    "tag": "Generalizada",
     "cat": "physio",
     "eeg": "absence",
     "text": {
-      "_": "A brief lapse of awareness, typical of childhood absence epilepsy.",
-      "eeg": "Generalised 3 Hz spike-and-wave, starting and stopping abruptly."
+      "_": "Breve pérdida de conciencia, típica de la epilepsia ausencia infantil.",
+      "eeg": "Complejo punta-onda generalizado a 3 Hz, de inicio y fin bruscos."
     }
   },
   "focal_sz": {
-    "name": "Focal seizure",
-    "tag": "Left temporal onset",
+    "name": "Crisis focal",
+    "tag": "Inicio temporal izquierdo",
     "cat": "physio",
     "eeg": "focal",
     "text": {
-      "_": "A seizure starting in the left temporal lobe.",
-      "eeg": "Rhythmic theta builds over T7/F7, spreading as it evolves."
+      "_": "Crisis que se inicia en el lóbulo temporal izquierdo.",
+      "eeg": "Theta rítmico que se organiza en T7/F7 y se extiende a medida que evoluciona."
     }
   },
   "uws": {
-    "name": "Unresponsive wakefulness",
-    "tag": "Vegetative state",
+    "name": "Vigilia sin respuesta",
+    "tag": "Estado vegetativo",
     "cat": "physio",
     "eeg": "uws",
     "metG": 0.55,
@@ -2177,44 +2177,44 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Eyes open, sleep–wake cycles, but no signs of awareness.",
-      "eeg": "Diffuse slowing with little reactivity.",
-      "fdg": "Global metabolism ~50% of normal; frontoparietal and posterior medial cortex worst."
+      "_": "Ojos abiertos y ciclos de sueño-vigilia, sin signos de conciencia.",
+      "eeg": "Enlentecimiento difuso con escasa reactividad.",
+      "fdg": "Metabolismo global ~50 % de lo normal; las regiones más afectadas son la corteza frontoparietal y la medial posterior."
     }
   },
   "aep": {
-    "name": "Auditory evoked field",
-    "tag": "N100m to a tone",
+    "name": "Campo evocado auditivo",
+    "tag": "N100m ante un tono",
     "cat": "task",
     "meg": "aep",
     "text": {
-      "_": "Tone in both ears.",
-      "meg": "Dipoles in Heschl’s gyrus on both sides peak 100 ms after the tone."
+      "_": "Tono en ambos oídos.",
+      "meg": "Dipolos en la circunvolución de Heschl de ambos lados que alcanzan su máximo 100 ms después del tono."
     }
   },
   "sep": {
-    "name": "Somatosensory evoked field",
-    "tag": "N20m, right median nerve",
+    "name": "Campo evocado somatosensorial",
+    "tag": "N20m, nervio mediano derecho",
     "cat": "task",
     "meg": "sep",
     "text": {
-      "_": "Electrical pulse at the right wrist.",
-      "meg": "A dipole in the left postcentral hand area 20 ms after the pulse."
+      "_": "Estímulo eléctrico en la muñeca derecha.",
+      "meg": "Dipolo en el área poscentral izquierda de la mano, 20 ms después del estímulo."
     }
   },
   "spike": {
-    "name": "Interictal spike",
-    "tag": "Left temporal",
+    "name": "Punta interictal",
+    "tag": "Temporal izquierdo",
     "cat": "disease",
     "meg": "spike",
     "text": {
-      "_": "Epileptic spike between seizures.",
-      "meg": "A dipole in the left anterior temporal lobe; MEG localises it for surgery planning."
+      "_": "Punta epiléptica en el período interictal.",
+      "meg": "Dipolo en el lóbulo temporal anterior izquierdo; la MEG lo localiza para planificar la cirugía."
     }
   },
   "motor": {
-    "name": "Finger tapping",
-    "tag": "Right hand",
+    "name": "Golpeteo con los dedos",
+    "tag": "Mano derecha",
     "cat": "task",
     "plane": "axial",
     "pos": {
@@ -2222,7 +2222,7 @@ const STATES = window.STATES = {
       "coronal": -22,
       "sagittal": -38
     },
-    "roi": "left M1",
+    "roi": "M1 izquierda",
     "act": [
       {
         "c": [
@@ -2271,12 +2271,12 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Left primary motor cortex (hand knob), supplementary motor area and right cerebellum follow the blocks."
+      "_": "La corteza motora primaria izquierda (rodilla de la mano), el área motora suplementaria y el cerebelo derecho siguen los bloques de la tarea."
     }
   },
   "visual": {
-    "name": "Visual checkerboard",
-    "tag": "8 Hz flicker",
+    "name": "Damero visual",
+    "tag": "Parpadeo a 8 Hz",
     "cat": "task",
     "plane": "sagittal",
     "pos": {
@@ -2342,12 +2342,12 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Primary visual cortex along the calcarine sulcus lights up on both sides, plus the lateral geniculate nuclei."
+      "_": "Se activan la corteza visual primaria a lo largo de la cisura calcarina en ambos lados y los núcleos geniculados laterales."
     }
   },
   "language": {
-    "name": "Verb generation",
-    "tag": "Language",
+    "name": "Generación de verbos",
+    "tag": "Lenguaje",
     "cat": "task",
     "plane": "sagittal",
     "pos": {
@@ -2355,7 +2355,7 @@ const STATES = window.STATES = {
       "coronal": 22,
       "sagittal": -50
     },
-    "roi": "Broca area",
+    "roi": "área de Broca",
     "act": [
       {
         "c": [
@@ -2404,12 +2404,12 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Left inferior frontal (Broca) and posterior temporal (Wernicke) regions; language is left-lateralised in ~95% of right-handers."
+      "_": "Regiones frontal inferior izquierda (Broca) y temporal posterior (Wernicke); el lenguaje está lateralizado a la izquierda en ~95 % de los diestros."
     }
   },
   "poststroke": {
-    "name": "Finger tapping after stroke",
-    "tag": "Left MCA infarct",
+    "name": "Golpeteo con los dedos tras ictus",
+    "tag": "Infarto de la ACM izquierda",
     "cat": "task",
     "plane": "axial",
     "pos": {
@@ -2417,7 +2417,7 @@ const STATES = window.STATES = {
       "coronal": -22,
       "sagittal": -38
     },
-    "roi": "right M1",
+    "roi": "M1 derecha",
     "lesions": [
       {
         "k": 1,
@@ -2482,12 +2482,12 @@ const STATES = window.STATES = {
       }
     ],
     "text": {
-      "_": "Weaker left M1 response; the right motor cortex and SMA are recruited instead."
+      "_": "Respuesta M1 izquierda más débil; en su lugar se reclutan la corteza motora derecha y el área motora suplementaria."
     }
   },
   "dmn": {
-    "name": "Default mode network",
-    "tag": "Resting state",
+    "name": "Red neuronal por defecto",
+    "tag": "Estado de reposo",
     "cat": "task",
     "plane": "sagittal",
     "pos": {
@@ -2496,14 +2496,14 @@ const STATES = window.STATES = {
       "sagittal": -4
     },
     "yeoAct": 7,
-    "roi": "PCC seed",
+    "roi": "semilla en el cíngulo posterior",
     "text": {
-      "_": "Posterior cingulate, medial prefrontal and angular gyri fluctuate together at rest and quieten during tasks."
+      "_": "El cíngulo posterior, la corteza prefrontal medial y las circunvoluciones angulares fluctúan juntos en reposo y se atenúan durante las tareas."
     }
   },
   "salience": {
-    "name": "Salience network",
-    "tag": "Resting state",
+    "name": "Red de saliencia",
+    "tag": "Estado de reposo",
     "cat": "task",
     "plane": "axial",
     "pos": {
@@ -2512,14 +2512,14 @@ const STATES = window.STATES = {
       "sagittal": -38
     },
     "yeoAct": 4,
-    "roi": "anterior insula seed",
+    "roi": "semilla en la ínsula anterior",
     "text": {
-      "_": "Anterior insula and anterior cingulate: flags what matters and switches between networks."
+      "_": "Ínsula anterior y cíngulo anterior: identifican lo relevante y alternan entre redes."
     }
   },
   "dan": {
-    "name": "Dorsal attention",
-    "tag": "Resting state",
+    "name": "Atención dorsal",
+    "tag": "Estado de reposo",
     "cat": "task",
     "plane": "axial",
     "pos": {
@@ -2528,14 +2528,14 @@ const STATES = window.STATES = {
       "sagittal": -28
     },
     "yeoAct": 3,
-    "roi": "IPS seed",
+    "roi": "semilla en el surco intraparietal",
     "text": {
-      "_": "Intraparietal sulcus and frontal eye fields: goal-directed spatial attention."
+      "_": "Surco intraparietal y campos oculares frontales: atención espacial dirigida a un objetivo."
     }
   },
   "smn": {
-    "name": "Somatomotor network",
-    "tag": "Resting state",
+    "name": "Red somatomotora",
+    "tag": "Estado de reposo",
     "cat": "task",
     "plane": "axial",
     "pos": {
@@ -2544,14 +2544,14 @@ const STATES = window.STATES = {
       "sagittal": -38
     },
     "yeoAct": 2,
-    "roi": "M1 seed",
+    "roi": "semilla en M1",
     "text": {
-      "_": "Pre- and postcentral gyri of both hemispheres plus SMA and auditory cortex."
+      "_": "Circunvoluciones precentral y poscentral de ambos hemisferios, además del área motora suplementaria y la corteza auditiva."
     }
   },
   "vis": {
-    "name": "Visual network",
-    "tag": "Resting state",
+    "name": "Red visual",
+    "tag": "Estado de reposo",
     "cat": "task",
     "plane": "axial",
     "pos": {
@@ -2560,14 +2560,14 @@ const STATES = window.STATES = {
       "sagittal": 8
     },
     "yeoAct": 1,
-    "roi": "V1 seed",
+    "roi": "semilla en V1",
     "text": {
-      "_": "Occipital cortex, strongly bilateral."
+      "_": "Corteza occipital, marcadamente bilateral."
     }
   },
   "fpn": {
-    "name": "Frontoparietal control",
-    "tag": "Resting state",
+    "name": "Control frontoparietal",
+    "tag": "Estado de reposo",
     "cat": "task",
     "plane": "axial",
     "pos": {
@@ -2576,14 +2576,14 @@ const STATES = window.STATES = {
       "sagittal": -44
     },
     "yeoAct": 6,
-    "roi": "dlPFC seed",
+    "roi": "semilla en la corteza prefrontal dorsolateral",
     "text": {
-      "_": "Lateral prefrontal and inferior parietal cortex: flexible task control and working memory."
+      "_": "Corteza prefrontal lateral y parietal inferior: control flexible de la tarea y memoria de trabajo."
     }
   },
   "limbic": {
-    "name": "Limbic network",
-    "tag": "Resting state",
+    "name": "Red límbica",
+    "tag": "Estado de reposo",
     "cat": "task",
     "plane": "axial",
     "pos": {
@@ -2592,281 +2592,281 @@ const STATES = window.STATES = {
       "sagittal": -30
     },
     "yeoAct": 5,
-    "roi": "orbitofrontal seed",
+    "roi": "semilla orbitofrontal",
     "text": {
-      "_": "Orbitofrontal cortex and temporal poles. Prone to signal loss near air-filled sinuses."
+      "_": "Corteza orbitofrontal y polos temporales. Propensa a pérdida de señal cerca de los senos aéreos."
     }
   }
 };
 
 const FINDINGS = window.FINDINGS = {
   "infarct": {
-    "title": "Acute infarct, left MCA territory",
-    "what": "Brain tissue dying because the left middle cerebral artery is blocked.",
-    "why": "Cells lose energy within minutes, ion pumps fail and water moves into the cells (cytotoxic oedema). Water that can no longer diffuse freely lights up DWI first; free water (T2/FLAIR) and lower density (CT) follow over hours.",
+    "title": "Infarto agudo en el territorio de la arteria cerebral media izquierda",
+    "what": "Tejido encefálico en fase de muerte por la oclusión de la arteria cerebral media izquierda.",
+    "why": "Las células pierden energía en cuestión de minutos, las bombas iónicas fallan y el agua penetra en las células (edema citotóxico). El agua que ya no puede difundir libremente se hace evidente primero en DWI; el agua libre (T2/FLAIR) y la menor densidad (TC) aparecen a lo largo de las horas.",
     "teach": [
-      "DWI positive within minutes; CT may stay normal for hours.",
-      "Right-sided weakness and aphasia when the left (dominant) MCA is involved.",
-      "Thrombolysis up to 4.5 h, thrombectomy up to 24 h in selected patients."
+      "La DWI es positiva en cuestión de minutos; la TC puede permanecer normal durante horas.",
+      "Debilidad derecha y afasia cuando se afecta la ACM izquierda (dominante).",
+      "Trombólisis hasta 4.5 h y trombectomía hasta 24 h en pacientes seleccionados."
     ],
-    "mimics": "Seizure (Todd’s paresis), hypoglycaemia, migraine with aura, tumour."
+    "mimics": "Crisis epiléptica (paresia de Todd), hipoglucemia, migraña con aura, tumor."
   },
   "clot": {
-    "title": "Clot in the left M1 segment",
-    "what": "The thrombus blocking the middle cerebral artery.",
-    "why": "Packed red cells are dense on CT (hyperdense MCA sign), dephase spins on SWI (susceptibility vessel sign) and stop flow-related signal on MRA, CTA and DSA.",
+    "title": "Trombo en el segmento M1 izquierdo",
+    "what": "El trombo que ocluye la arteria cerebral media.",
+    "why": "Los hematíes aglomerados son densos en la TC (signo de la arteria cerebral media hiperdensa), desfasan los espines en SWI (signo del vaso susceptible) e interrumpen la señal de flujo en ARM, Angio-TC y ASD.",
     "teach": [
-      "A proximal large-vessel occlusion is a target for thrombectomy.",
-      "Look for the dense artery before the infarct is visible."
+      "La oclusión proximal de un gran vaso es tributaria de trombectomía.",
+      "Busque la arteria hiperdensa antes de que el infarto sea visible."
     ],
-    "mimics": "Calcified vessel wall, high haematocrit."
+    "mimics": "Pared vascular calcificada, hematocrito elevado."
   },
   "haem": {
-    "title": "Intracerebral haemorrhage",
-    "what": "A bleed into the brain, here the classic hypertensive site in the putamen.",
-    "why": "Fresh clot is dense on CT (protein and packed cells). On MR the signal depends on the iron state of haemoglobin, which changes over days: deoxyhaemoglobin (dark T2), methaemoglobin (bright T1), haemosiderin (dark rim).",
+    "title": "Hemorragia intracerebral",
+    "what": "Sangrado en el parénquima encefálico; en este caso, en la localización hipertensiva clásica del putamen.",
+    "why": "El coágulo reciente es denso en la TC (proteínas y hematíes aglomerados). En RM la señal depende del estado del hierro de la hemoglobina, que evoluciona a lo largo de los días: desoxihemoglobina (hipointensa en T2), metahemoglobina (hiperintensa en T1) y hemosiderina (ribete hipointenso).",
     "teach": [
-      "CT is the first test for any acute stroke to exclude this.",
-      "The CTA spot sign predicts haematoma growth.",
-      "Other hypertensive sites: thalamus, pons, cerebellum."
+      "La TC es la primera prueba ante cualquier ictus agudo para descartar esta entidad.",
+      "El signo del spot en la angio-TC predice el crecimiento del hematoma.",
+      "Otras localizaciones hipertensivas: tálamo, protuberancia y cerebelo."
     ],
-    "mimics": "Haemorrhagic tumour, haemorrhagic transformation of infarct."
+    "mimics": "Tumor hemorrágico, transformación hemorrágica de un infarto."
   },
   "sah": {
-    "title": "Subarachnoid blood",
-    "what": "Blood in the CSF spaces around the base of the brain.",
-    "why": "Blood replaces dark CSF in the cisterns: dense on CT, and on FLAIR the protein-rich bloody CSF is no longer nulled so it turns bright.",
+    "title": "Sangre en el espacio subaracnoideo",
+    "what": "Sangre en los espacios de líquido cefalorraquídeo que rodean la base del encéfalo.",
+    "why": "La sangre sustituye al líquido cefalorraquídeo hipointenso de las cisternas: es densa en la TC y, en FLAIR, el líquido cefalorraquídeo hemático rico en proteínas deja de anularse y se vuelve hiperintenso.",
     "teach": [
-      "“Worst headache of my life” — thunderclap onset.",
-      "CT sensitivity falls over days; lumbar puncture for xanthochromia if CT is negative.",
-      "Watch for vasospasm at days 4–14 and hydrocephalus."
+      "«La peor cefalea de mi vida», de inicio fulminante («en trueno»).",
+      "La sensibilidad de la TC disminuye con los días; si es negativa, se realiza punción lumbar para detectar xantocromía.",
+      "Vigile el vasoespasmo entre los días 4 y 14 y la hidrocefalia."
     ],
-    "mimics": "Pseudo-SAH from diffuse brain swelling, FLAIR artefact from oxygen."
+    "mimics": "Pseudohemorragia subaracnoidea por tumefacción cerebral difusa; artefacto en FLAIR por oxígeno."
   },
   "aneur_rupt": {
-    "title": "Ruptured ACom aneurysm",
-    "what": "Source of the haemorrhage: a sac on the anterior communicating artery.",
-    "why": "Seen on angiographic techniques as a contrast-filled outpouching.",
+    "title": "Rotura de aneurisma de la arteria comunicante anterior",
+    "what": "Origen de la hemorragia: un saco aneurismático en la arteria comunicante anterior.",
+    "why": "Se visualiza en las técnicas angiográficas como una dilatación sacular rellena de contraste.",
     "teach": [
-      "ACom is the commonest aneurysm site.",
-      "Treated by coiling or clipping to prevent re-bleeding."
+      "La arteria comunicante anterior es la localización aneurismática más frecuente.",
+      "Se trata con coils o clipaje para evitar el resangrado."
     ],
-    "mimics": "Infundibulum (a funnel-shaped origin < 3 mm)."
+    "mimics": "Infundíbulo (origen en embudo < 3 mm)."
   },
   "sdh": {
-    "title": "Acute subdural haematoma",
-    "what": "Torn bridging veins bleed into the space under the dura.",
-    "why": "Blood spreads freely under the dura, so it follows the curve of the brain as a crescent and can cross suture lines. It pushes the brain inward.",
+    "title": "Hematoma subdural agudo",
+    "what": "La rotura de las venas puente produce sangrado en el espacio situado bajo la duramadre.",
+    "why": "La sangre se extiende libremente bajo la duramadre, por lo que adopta una morfología en semiluna siguiendo la convexidad encefálica y puede cruzar las líneas de sutura. Comprime el encéfalo hacia el interior.",
     "teach": [
-      "Elderly and anticoagulated patients; may follow minor trauma.",
-      "Crescent crosses sutures, stops at the falx.",
-      "Chronic SDH becomes darker than brain on CT."
+      "Pacientes ancianos y anticoagulados; puede seguir a un traumatismo menor.",
+      "La semiluna cruza las suturas y se detiene en la hoz.",
+      "El hematoma subdural crónico se vuelve más hipodenso que el encéfalo en la TC."
     ],
-    "mimics": "Subdural hygroma, empyema."
+    "mimics": "Higroma subdural, empiema."
   },
   "edh": {
-    "title": "Epidural haematoma",
-    "what": "Arterial bleed between skull and dura, usually the middle meningeal artery.",
-    "why": "The dura is stuck to the skull at the sutures, so the blood bulges inward as a lens and stops at suture lines.",
+    "title": "Hematoma epidural",
+    "what": "Sangrado arterial entre el cráneo y la duramadre, habitualmente de la arteria meníngea media.",
+    "why": "La duramadre está adherida al cráneo en las suturas, por lo que la sangre se acumula hacia el interior con morfología en lente y se detiene en las líneas de sutura.",
     "teach": [
-      "Classic lucid interval, then rapid deterioration.",
-      "Lens shape, does not cross sutures.",
-      "A surgical emergency."
+      "Intervalo lúcido clásico y deterioro rápido posterior.",
+      "Morfología en lente; no cruza las suturas.",
+      "Es una urgencia quirúrgica."
     ],
-    "mimics": "Subdural haematoma (crescent, crosses sutures)."
+    "mimics": "Hematoma subdural (semiluna, cruza las suturas)."
   },
   "fracture": {
-    "title": "Temporal bone fracture",
-    "what": "A linear crack in the thin squamous temporal bone.",
-    "why": "Bone is the brightest thing on CT; a fracture shows as a sharp dark line, best seen in the bone window.",
+    "title": "Fractura del hueso temporal",
+    "what": "Una fisura lineal en la delgada porción escamosa del hueso temporal.",
+    "why": "El hueso es la estructura más hiperdensa de la TC; la fractura se manifiesta como una línea oscura de bordes netos, que se valora mejor en la ventana ósea.",
     "teach": [
-      "The middle meningeal artery runs in a groove just inside.",
-      "Distinguish from sutures (symmetric, serrated) and vascular grooves."
+      "La arteria meníngea media discurre por un surco inmediatamente por dentro.",
+      "Debe distinguirse de las suturas (simétricas y dentadas) y de los surcos vasculares."
     ],
-    "mimics": "Sutures, vascular channels."
+    "mimics": "Suturas, canales vasculares."
   },
   "gbm": {
     "title": "Glioblastoma",
-    "what": "The commonest and most aggressive primary brain tumour (WHO grade 4).",
-    "why": "Leaky new vessels let contrast into the rim; the centre outgrows its blood supply and dies (necrosis). Vasogenic oedema spreads along white-matter tracts but spares the cortex.",
+    "what": "El tumor cerebral primario más frecuente y más agresivo (grado 4 de la OMS).",
+    "why": "Los vasos neoformados, de permeabilidad aumentada, permiten el paso del contraste al ribete; el centro crece por encima de su aporte vascular y sufre necrosis. El edema vasogénico se extiende a lo largo de los tractos de sustancia blanca y respeta la corteza.",
     "teach": [
-      "Thick irregular ring enhancement with necrosis.",
-      "Can cross the corpus callosum (“butterfly glioma”).",
-      "Raised choline, lipid–lactate on MRS; high rCBV on perfusion."
+      "Realce anular grueso e irregular con necrosis.",
+      "Puede cruzar el cuerpo calloso («glioma en mariposa»).",
+      "Colina elevada y lípidos-lactato en la espectroscopia; rCBV alto en perfusión."
     ],
-    "mimics": "Abscess (thin smooth rim, restricted centre), metastasis, tumefactive MS."
+    "mimics": "Absceso (ribete fino y regular, centro con restricción), metástasis, esclerosis múltiple tumefactiva."
   },
   "met": {
-    "title": "Metastasis",
-    "what": "A deposit of cancer that has spread through the blood.",
-    "why": "Tumour cells lodge where vessels narrow at the grey–white junction. They have leaky vessels (enhance) and provoke a lot of vasogenic oedema.",
+    "title": "Metástasis",
+    "what": "Un implante tumoral diseminado por vía hematógena.",
+    "why": "Las células tumorales se alojan donde los vasos se estrechan, en la unión sustancia gris–sustancia blanca. Presentan vasos permeables (realzan con contraste) y provocan un edema vasogénico abundante.",
     "teach": [
-      "Commonest brain tumour in adults overall.",
-      "Multiple lesions at the grey–white junction suggest metastases.",
-      "Lung, breast, melanoma, kidney, colon."
+      "Es el tumor cerebral más frecuente en el adulto en conjunto.",
+      "Múltiples lesiones en la unión sustancia gris–sustancia blanca sugieren metástasis.",
+      "Pulmón, mama, melanoma, riñón y colon."
     ],
-    "mimics": "Abscesses, septic emboli, glioma."
+    "mimics": "Abscesos, émbolos sépticos, glioma."
   },
   "abscess": {
-    "title": "Pyogenic abscess",
-    "what": "A bacterial infection walled off by a capsule.",
-    "why": "Thick, viscous pus restricts water diffusion, so the core is bright on DWI and dark on ADC — the key difference from tumour necrosis. The capsule makes a thin, smooth enhancing ring.",
+    "title": "Absceso piógeno",
+    "what": "Una infección bacteriana delimitada por una cápsula.",
+    "why": "El pus espeso y viscoso restringe la difusión del agua, por lo que el centro es hiperintenso en DWI e hipointenso en ADC: esta es la diferencia clave respecto a la necrosis tumoral. La cápsula origina un anillo de realce fino y regular.",
     "teach": [
-      "DWI bright centre: think abscess.",
-      "Ring is thinnest on the ventricular side (less blood supply).",
-      "Amino acid, acetate and succinate peaks on MRS."
+      "Centro hiperintenso en DWI: piense en absceso.",
+      "El anillo es más fino en la vertiente ventricular (menor aporte sanguíneo).",
+      "Picos de aminoácidos, acetato y succinato en la espectroscopia."
     ],
-    "mimics": "Glioblastoma, metastasis."
+    "mimics": "Glioblastoma, metástasis."
   },
   "plaque": {
-    "title": "Demyelinating plaque",
-    "what": "An area where the myelin around axons has been stripped by inflammation.",
-    "why": "Loss of myelin frees water (bright on T2/FLAIR). Plaques form around small veins that run out from the ventricles, so they line up at right angles to them.",
+    "title": "Placa desmielinizante",
+    "what": "Una zona en la que la inflamación ha destruido la mielina que rodea los axones.",
+    "why": "La pérdida de mielina libera agua (hiperintensidad en T2/FLAIR). Las placas se forman alrededor de pequeñas venas que emergen de los ventrículos, por lo que se disponen perpendiculares a ellos.",
     "teach": [
-      "Dawson’s fingers: ovoid lesions perpendicular to the ventricles.",
-      "McDonald criteria: dissemination in space and time.",
-      "Central vein sign helps separate MS from small-vessel disease."
+      "Dedos de Dawson: lesiones ovoideas perpendiculares a los ventrículos.",
+      "Criterios de McDonald: diseminación en el espacio y en el tiempo.",
+      "El signo de la vena central ayuda a diferenciar la esclerosis múltiple de la enfermedad de pequeño vaso."
     ],
-    "mimics": "Small-vessel ischaemia, migraine, ADEM."
+    "mimics": "Isquemia de pequeño vaso, migraña, ADEM."
   },
   "active": {
-    "title": "Active (enhancing) plaque",
-    "what": "A plaque with ongoing inflammation.",
-    "why": "Inflammation opens the blood–brain barrier, so gadolinium leaks in, often as an open ring facing the cortex.",
+    "title": "Placa activa (con realce)",
+    "what": "Una placa con inflamación en curso.",
+    "why": "La inflamación altera la barrera hematoencefálica, de modo que el gadolinio se extravasa, a menudo adoptando la forma de un anillo abierto hacia la corteza.",
     "teach": [
-      "Enhancing and non-enhancing plaques together show dissemination in time.",
-      "Enhancement fades over about 4–6 weeks."
+      "La coexistencia de placas con y sin realce demuestra diseminación en el tiempo.",
+      "El realce se desvanece en unas 4–6 semanas."
     ],
-    "mimics": "Tumour, abscess (closed ring)."
+    "mimics": "Tumor, absceso (anillo cerrado)."
   },
   "hippo": {
-    "title": "Hippocampal atrophy",
-    "what": "Shrinkage of the memory centres in the medial temporal lobes.",
-    "why": "Neurofibrillary tangles and neuron loss start in the entorhinal cortex and hippocampus, so these shrink first and the temporal horns widen.",
+    "title": "Atrofia hipocámpica",
+    "what": "Reducción volumétrica de los centros de la memoria situados en los lóbulos temporales mediales.",
+    "why": "Los ovillos neurofibrilares y la pérdida neuronal comienzan en la corteza entorrinal y el hipocampo, por lo que estas estructuras se reducen primero y las astas temporales se dilatan.",
     "teach": [
-      "Scheltens MTA score on coronal T1.",
-      "Episodic memory loss is the early symptom."
+      "Escala MTA de Scheltens en T1 coronal.",
+      "La pérdida de memoria episódica es el síntoma inicial."
     ],
-    "mimics": "Normal ageing, hippocampal sclerosis, frontotemporal dementia."
+    "mimics": "Envejecimiento normal, esclerosis hipocámpica, demencia frontotemporal."
   },
   "tp": {
-    "title": "Temporoparietal hypometabolism",
-    "what": "Reduced glucose use in posterior association cortex and posterior cingulate.",
-    "why": "Synaptic failure lowers energy demand before tissue is lost, so PET shows the disease pattern years before atrophy is obvious.",
+    "title": "Hipometabolismo temporoparietal",
+    "what": "Disminución del consumo de glucosa en la corteza de asociación posterior y en el cíngulo posterior.",
+    "why": "El fallo sináptico reduce la demanda energética antes de que se produzca pérdida de tejido, de modo que el PET muestra el patrón de la enfermedad años antes de que la atrofia sea evidente.",
     "teach": [
-      "Bilateral temporoparietal + posterior cingulate = Alzheimer’s pattern.",
-      "Frontal-predominant = frontotemporal dementia; occipital = Lewy body."
+      "Temporoparietal bilateral y cíngulo posterior: patrón de Alzheimer.",
+      "Predominio frontal: demencia frontotemporal; occipital: cuerpos de Lewy."
     ],
-    "mimics": "Lewy body dementia, vascular dementia."
+    "mimics": "Demencia por cuerpos de Lewy, demencia vascular."
   },
   "mts": {
-    "title": "Mesial temporal sclerosis",
-    "what": "Neuron loss and scarring (gliosis) in the left hippocampus.",
-    "why": "Scarring raises water content (bright T2/FLAIR) and lost neurons shrink the structure, so the temporal horn grows.",
+    "title": "Esclerosis mesial temporal",
+    "what": "Pérdida neuronal y cicatrización (gliosis) en el hipocampo izquierdo.",
+    "why": "La gliosis aumenta el contenido de agua (hiperintensidad en T2/FLAIR) y la pérdida neuronal reduce el volumen de la estructura, por lo que el asta temporal se dilata.",
     "teach": [
-      "Commonest cause of drug-resistant focal epilepsy in adults.",
-      "Often follows prolonged febrile seizures in childhood.",
-      "Surgery (anterior temporal lobectomy) gives ~70% seizure freedom."
+      "Causa más frecuente de epilepsia focal farmacorresistente en el adulto.",
+      "Suele seguir a convulsiones febriles prolongadas en la infancia.",
+      "La cirugía (lobectomía temporal anterior) consigue libertad de crisis en ~70 %."
     ],
-    "mimics": "Low-grade tumour, normal asymmetry."
+    "mimics": "Tumor de bajo grado, asimetría normal."
   },
   "tle_pet": {
-    "title": "Left temporal hypometabolism",
-    "what": "The epileptogenic temporal lobe uses less glucose between seizures.",
-    "why": "Interictal dysfunction and neuron loss lower metabolism around the focus, often more widely than the MRI lesion.",
+    "title": "Hipometabolismo temporal izquierdo",
+    "what": "El lóbulo temporal epileptógeno consume menos glucosa en el período interictal.",
+    "why": "La disfunción interictal y la pérdida neuronal reducen el metabolismo en torno al foco, a menudo de forma más extensa que la lesión visible en la RM.",
     "teach": [
-      "Helps lateralise the focus when MRI is normal.",
-      "Inject between seizures for FDG."
+      "Ayuda a lateralizar el foco cuando la RM es normal.",
+      "Inyectar el FDG en el período interictal."
     ],
-    "mimics": "Post-ictal changes, contralateral focus."
+    "mimics": "Cambios posictales, foco contralateral."
   },
   "tle_spect": {
-    "title": "Ictal hyperperfusion",
-    "what": "Blood flow surges in the seizure focus during the seizure.",
-    "why": "HMPAO is trapped within a minute of injection, freezing the blood-flow pattern of that moment for later scanning.",
+    "title": "Hiperperfusión ictal",
+    "what": "El flujo sanguíneo aumenta de forma marcada en el foco epiléptico durante la crisis.",
+    "why": "El HMPAO queda atrapado en el minuto siguiente a la inyección, de modo que fija el patrón de flujo sanguíneo de ese momento para su adquisición posterior.",
     "teach": [
-      "Inject within seconds of seizure onset.",
-      "SISCOM subtracts an interictal scan to find the focus."
+      "Inyectar en los segundos siguientes al inicio de la crisis.",
+      "SISCOM resta un estudio interictal para localizar el foco."
     ],
-    "mimics": "Propagated seizure activity."
+    "mimics": "Actividad epiléptica propagada."
   },
   "hydro": {
-    "title": "Ventricular enlargement",
-    "what": "The lateral and third ventricles are dilated.",
-    "why": "CSF keeps being produced by the choroid plexus but cannot drain past the narrowed cerebral aqueduct, so pressure balloons the ventricles upstream.",
+    "title": "Dilatación ventricular",
+    "what": "Los ventrículos laterales y el tercer ventrículo están dilatados.",
+    "why": "El plexo coroideo continúa produciendo líquido cefalorraquídeo, pero este no puede drenar a través del acueducto cerebral estrechado, de modo que la presión dilata los ventrículos situados por encima del obstáculo.",
     "teach": [
-      "Normal fourth ventricle points to aqueductal stenosis.",
-      "Rounded frontal horns and effaced sulci separate it from atrophy.",
-      "Treat with shunt or endoscopic third ventriculostomy."
+      "Un cuarto ventrículo normal orienta a estenosis del acueducto.",
+      "Las astas frontales redondeadas y el borramiento de los surcos lo distinguen de la atrofia.",
+      "Tratamiento con derivación o ventriculostomía endoscópica del tercer ventrículo."
     ],
-    "mimics": "Atrophy (ex vacuo dilation with wide sulci)."
+    "mimics": "Atrofia (dilatación ex vacuo con surcos amplios)."
   },
   "dat_loss": {
-    "title": "Reduced putamen uptake",
-    "what": "Loss of dopamine transporters in the left striatum.",
-    "why": "Nigrostriatal neurons die from the back of the putamen forward, so uptake fades posterior-first and on the side opposite the worse symptoms.",
+    "title": "Captación reducida en el putamen",
+    "what": "Pérdida de transportadores de dopamina en el cuerpo estriado izquierdo.",
+    "why": "Las neuronas nigroestriatales degeneran desde la porción posterior del putamen hacia delante, por lo que la captación disminuye primero en la región posterior y en el lado contralateral a los síntomas más marcados.",
     "teach": [
-      "Separates Parkinsonism from essential tremor (normal scan).",
-      "Does not separate PD from atypical parkinsonism."
+      "Diferencia el parkinsonismo del temblor esencial (estudio normal).",
+      "No distingue la enfermedad de Parkinson del parkinsonismo atípico."
     ],
-    "mimics": "Drug-induced parkinsonism (normal), vascular parkinsonism."
+    "mimics": "Parkinsonismo farmacológico (normal), parkinsonismo vascular."
   },
   "aneur": {
-    "title": "Saccular aneurysm",
-    "what": "A berry-shaped outpouching at the left MCA bifurcation.",
-    "why": "Flow hits the apex of the branch point where the vessel wall media is weakest.",
+    "title": "Aneurisma sacular",
+    "what": "Una dilatación en forma de baya en la bifurcación de la arteria cerebral media izquierda.",
+    "why": "El flujo sanguíneo impacta en el vértice de la bifurcación, donde la capa media de la pared vascular es más débil.",
     "teach": [
-      "Risk of rupture rises with size, location and growth.",
-      "Associations: polycystic kidney disease, connective tissue disorders, smoking."
+      "El riesgo de rotura aumenta con el tamaño, la localización y el crecimiento.",
+      "Asociaciones: poliquistosis renal, trastornos del tejido conectivo y tabaquismo."
     ],
-    "mimics": "Infundibulum, vessel loop."
+    "mimics": "Infundíbulo, asa vascular."
   },
   "avm": {
-    "title": "Arteriovenous malformation",
-    "what": "Arteries connect straight to veins through a tangle (nidus) with no capillary bed.",
-    "why": "High-flow vessels appear as flow voids on T2, and on angiography the veins fill early, at the same time as the arteries.",
+    "title": "Malformación arteriovenosa",
+    "what": "Las arterias se conectan directamente con las venas a través de un ovillo vascular (nido) sin lecho capilar interpuesto.",
+    "why": "Los vasos de alto flujo se manifiestan como vacíos de flujo en T2 y, en la angiografía, las venas se opacifican de forma precoz, de manera simultánea a las arterias.",
     "teach": [
-      "Presents with haemorrhage or seizures.",
-      "Spetzler–Martin grade guides surgery (size, eloquence, venous drainage)."
+      "Se manifiesta por hemorragia o crisis epilépticas.",
+      "La escala de Spetzler-Martin orienta la cirugía (tamaño, elocuencia, drenaje venoso)."
     ],
-    "mimics": "Vascular tumour, developmental venous anomaly."
+    "mimics": "Tumor vascular, anomalía venosa del desarrollo."
   },
   "nofill": {
-    "title": "Absent intracranial filling",
-    "what": "No contrast or tracer reaches the brain.",
-    "why": "When intracranial pressure exceeds arterial pressure, blood can no longer enter the skull.",
+    "title": "Ausencia de relleno intracraneal",
+    "what": "Ni el contraste ni el trazador alcanzan el encéfalo.",
+    "why": "Cuando la presión intracraneal supera la presión arterial, la sangre deja de entrar en la cavidad craneal.",
     "teach": [
-      "Ancillary test only; brain death is a clinical diagnosis."
+      "Prueba únicamente complementaria; la muerte encefálica es un diagnóstico clínico."
     ],
-    "mimics": "Technical failure of injection."
+    "mimics": "Fallo técnico de la inyección."
   },
   "ivh": {
-    "title": "Germinal matrix haemorrhage",
-    "what": "Bleeding into the left lateral ventricle in a preterm infant.",
-    "why": "Fresh clot reflects sound strongly, so it is bright inside the normally echo-free ventricle.",
+    "title": "Hemorragia de la matriz germinal",
+    "what": "Sangrado en el ventrículo lateral izquierdo de un recién nacido prematuro.",
+    "why": "El coágulo reciente refleja intensamente el sonido, por lo que aparece ecogénico en el interior de un ventrículo que normalmente es anecoico.",
     "teach": [
-      "Papile grading I–IV; grade III has ventricular dilatation.",
-      "Most occur in the first 72 hours of life in babies < 32 weeks."
+      "Clasificación de Papile I–IV; el grado III presenta dilatación ventricular.",
+      "La mayoría ocurre en las primeras 72 horas de vida en recién nacidos de < 32 semanas."
     ],
-    "mimics": "Normal choroid plexus (smooth, ends at the caudothalamic groove)."
+    "mimics": "Plexo coroideo normal (liso, termina en el surco caudotalámico)."
   },
   "pvl": {
-    "title": "Periventricular flare",
-    "what": "Injured white matter beside the ventricles.",
-    "why": "Oedematous, injured white matter scatters more sound and looks brighter than the choroid plexus.",
+    "title": "Hiperecogenicidad periventricular",
+    "what": "Sustancia blanca lesionada junto a los ventrículos.",
+    "why": "La sustancia blanca lesionada y edematosa dispersa más el sonido y aparece más ecogénica que el plexo coroideo.",
     "teach": [
-      "Cystic PVL (weeks later) predicts spastic diplegia."
+      "La leucomalacia periventricular quística (semanas después) predice diplejía espástica."
     ],
-    "mimics": "Normal transient periventricular flare."
+    "mimics": "Halo periventricular transitorio normal."
   },
   "uws": {
-    "title": "Posterior medial hypometabolism",
-    "what": "Low metabolism in the precuneus and posterior cingulate.",
-    "why": "These hubs are among the most active at rest in conscious people; their recovery tracks the return of awareness.",
+    "title": "Hipometabolismo medial posterior",
+    "what": "Metabolismo bajo en el precúneo y en el cíngulo posterior.",
+    "why": "Estos núcleos de conexión son de los más activos en reposo en la persona consciente; su recuperación acompaña al retorno de la conciencia.",
     "teach": [
-      "FDG-PET helps separate minimally conscious from unresponsive patients."
+      "El FDG-PET ayuda a distinguir el estado de conciencia mínima del paciente sin respuesta."
     ],
-    "mimics": "Sedation."
+    "mimics": "Sedación."
   }
 };
 
@@ -3124,27 +3124,27 @@ const TCD = window.TCD = {
   "normal": {
     "psv": 100,
     "edv": 45,
-    "label": "L MCA · 55 mm"
+    "label": "ACM izquierda · 55 mm"
   },
   "vasospasm": {
     "psv": 230,
     "edv": 115,
-    "label": "L MCA · 55 mm"
+    "label": "ACM izquierda · 55 mm"
   },
   "occl": {
     "psv": 0,
     "edv": 0,
-    "label": "L MCA · 55 mm — no signal"
+    "label": "ACM izquierda · 55 mm — sin señal"
   },
   "icp": {
     "psv": 95,
     "edv": 8,
-    "label": "L MCA · 55 mm"
+    "label": "ACM izquierda · 55 mm"
   },
   "bd": {
     "psv": 70,
     "edv": -40,
     "osc": true,
-    "label": "L MCA · 55 mm"
+    "label": "ACM izquierda · 55 mm"
   }
 };

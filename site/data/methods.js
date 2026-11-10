@@ -1,27 +1,27 @@
 const METHOD_CARD = window.METHOD_CARD = {
   "mri": {
-    "ds": "Soft-tissue anatomy from the hydrogen in water and fat.",
-    "kind": "Structure",
+    "ds": "Anatomía de partes blandas a partir del hidrógeno presente en el agua y la grasa.",
+    "kind": "Estructura",
     "res": "≈1 mm",
-    "time": "minutes",
+    "time": "minutos",
     "thumb": [
       "t1",
       "normal"
     ]
   },
   "ct": {
-    "ds": "X-ray slices. Bone and fresh blood show within seconds.",
-    "kind": "Structure",
+    "ds": "Cortes de rayos X. El hueso y la sangre reciente se visualizan en segundos.",
+    "kind": "Estructura",
     "res": "0.5 mm",
-    "time": "seconds",
+    "time": "segundos",
     "thumb": [
       "ctb",
       "ich"
     ]
   },
   "pet": {
-    "ds": "A radioactive tracer maps glucose use or amyloid.",
-    "kind": "Function",
+    "ds": "Un trazador radiactivo cartografía el consumo de glucosa o el amiloide.",
+    "kind": "Función",
     "res": "4–5 mm",
     "time": "30–60 min",
     "thumb": [
@@ -30,18 +30,18 @@ const METHOD_CARD = window.METHOD_CARD = {
     ]
   },
   "spect": {
-    "ds": "Gamma rays map blood flow or dopamine transporters.",
-    "kind": "Function",
+    "ds": "Los rayos gamma cartografían el flujo sanguíneo o los transportadores de dopamina.",
+    "kind": "Función",
     "res": "8–10 mm",
-    "time": "minutes",
+    "time": "minutos",
     "thumb": [
       "dat",
       "normal"
     ]
   },
   "fmri": {
-    "ds": "Oxygen-rich blood shows where the cortex is working.",
-    "kind": "Function",
+    "ds": "La sangre rica en oxígeno revela qué regiones de la corteza están en actividad.",
+    "kind": "Función",
     "res": "2–3 mm",
     "time": "1–2 s",
     "thumb": [
@@ -50,8 +50,8 @@ const METHOD_CARD = window.METHOD_CARD = {
     ]
   },
   "eeg": {
-    "ds": "Scalp electrodes record the brain’s electrical rhythms.",
-    "kind": "Function",
+    "ds": "Los electrodos del cuero cabelludo registran los ritmos eléctricos del encéfalo.",
+    "kind": "Función",
     "res": "cm",
     "time": "1 ms",
     "thumb": [
@@ -60,8 +60,8 @@ const METHOD_CARD = window.METHOD_CARD = {
     ]
   },
   "meg": {
-    "ds": "Sensors in a helmet record the brain’s magnetic fields.",
-    "kind": "Function",
+    "ds": "Los sensores de un casco registran los campos magnéticos del encéfalo.",
+    "kind": "Función",
     "res": "3–5 mm",
     "time": "1 ms",
     "thumb": [
@@ -70,18 +70,18 @@ const METHOD_CARD = window.METHOD_CARD = {
     ]
   },
   "us": {
-    "ds": "Echoes through a baby’s fontanelle; Doppler flow in adults.",
-    "kind": "Structure",
+    "ds": "Ecos a través de la fontanela del lactante; flujo Doppler en el adulto.",
+    "kind": "Estructura",
     "res": "≈1 mm",
-    "time": "real time",
+    "time": "tiempo real",
     "thumb": [
       "cus",
       "normal"
     ]
   },
   "dsa": {
-    "ds": "Contrast through a catheter shows every artery and vein.",
-    "kind": "Structure",
+    "ds": "El contraste administrado mediante catéter muestra cada arteria y cada vena.",
+    "kind": "Estructura",
     "res": "0.2 mm",
     "time": "3 frames/s",
     "thumb": [

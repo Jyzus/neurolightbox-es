@@ -9,19 +9,19 @@ const CASES = window.CASES = [
     ],
     "state": "stroke",
     "find": true,
-    "lvl": "Core",
-    "hx": "72-year-old woman. Sudden weakness of the right arm and face and difficulty finding words. Last seen well 2 hours ago.",
+    "lvl": "Básico",
+    "hx": "Mujer de 72 años. Debilidad súbita de la extremidad superior derecha y de la cara, junto con dificultad para encontrar las palabras. Última vez vista en estado normal hace 2 horas.",
     "dx": [
-      "Acute ischaemic stroke, left MCA territory",
-      "Intracerebral haemorrhage",
-      "Left frontal glioma",
-      "Herpes simplex encephalitis"
+      "Ictus isquémico agudo en territorio de la arteria cerebral media izquierda",
+      "Hemorragia intracerebral",
+      "Glioma frontal izquierdo",
+      "Encefalitis por virus herpes simple"
     ],
-    "report": "Non-contrast CT: loss of grey–white differentiation in the left insula and lentiform nucleus with sulcal effacement, and a hyperdense left MCA. No haemorrhage. CTA: occlusion of the left M1 segment.",
+    "report": "TC sin contraste: pérdida de la diferenciación entre sustancia gris y sustancia blanca en la ínsula y el núcleo lentiforme izquierdos, con borramiento de los surcos y una arteria cerebral media izquierda hiperdensa. Sin hemorragia. Angio-TC: oclusión del segmento M1 izquierdo.",
     "teach": [
-      "Early CT signs of infarction are subtle: insular ribbon loss, a blurred lentiform nucleus, sulcal effacement and a hyperdense artery (the clot).",
-      "CT’s first job is to exclude blood, which rules out thrombolysis.",
-      "CT angiography looks for a large-vessel occlusion that can be removed by thrombectomy."
+      "Los signos precoces de infarto en la TC son sutiles: pérdida de la cinta insular, núcleo lentiforme mal definido, borramiento de los surcos y una arteria hiperdensa (el coágulo).",
+      "La primera función de la TC es descartar sangrado, lo que contraindica la trombólisis.",
+      "La angio-TC busca una oclusión de gran vaso susceptible de extracción mediante trombectomía."
     ]
   },
   {
@@ -34,19 +34,19 @@ const CASES = window.CASES = [
     ],
     "state": "ich",
     "find": true,
-    "lvl": "Core",
-    "hx": "64-year-old man with poorly controlled hypertension. Sudden left-sided weakness and headache while gardening; now drowsy.",
+    "lvl": "Básico",
+    "hx": "Varón de 64 años con hipertensión arterial mal controlada. Debilidad súbita del hemicuerpo izquierdo y cefalea mientras trabajaba en el jardín; en la actualidad somnoliento.",
     "dx": [
-      "Intracerebral haemorrhage, right putamen",
-      "Acute ischaemic stroke",
+      "Hemorragia intracerebral en el putamen derecho",
+      "Ictus isquémico agudo",
       "Glioblastoma",
-      "Calcified meningioma"
+      "Meningioma calcificado"
     ],
-    "report": "Non-contrast CT: 4 cm hyperdense (≈ 70 HU) haematoma centred on the right putamen with a thin rim of oedema and mild mass effect. CTA: punctate contrast inside the clot (spot sign).",
+    "report": "TC sin contraste: hematoma hiperdenso de 4 cm (≈ 70 HU) centrado en el putamen derecho, con una fina corona de edema y leve efecto de masa. Angio-TC: foco puntiforme de contraste en el interior del coágulo (signo del punto).",
     "teach": [
-      "Fresh blood is bright on CT (60–80 HU) because packed red cells absorb X-rays.",
-      "Hypertensive bleeds favour the putamen, thalamus, pons and cerebellum.",
-      "A spot sign on CTA predicts that the haematoma will grow."
+      "La sangre fresca es hiperdensa en la TC (60–80 HU) porque los hematíes empaquetados absorben los rayos X.",
+      "Las hemorragias hipertensivas afectan de forma preferente al putamen, el tálamo, la protuberancia y el cerebelo.",
+      "La presencia del signo del punto en la angio-TC predice el crecimiento del hematoma."
     ]
   },
   {
@@ -60,19 +60,19 @@ const CASES = window.CASES = [
     ],
     "state": "sah",
     "find": true,
-    "lvl": "Core",
-    "hx": "45-year-old woman. The worst headache of her life, maximal within a minute, while lifting a box. Vomited; neck stiff.",
+    "lvl": "Básico",
+    "hx": "Mujer de 45 años. La cefalea más intensa de su vida, máxima en menos de un minuto, mientras levantaba una caja. Vomitó; rigidez de nuca.",
     "dx": [
-      "Subarachnoid haemorrhage from a ruptured aneurysm",
-      "Migraine",
-      "Bacterial meningitis",
-      "Acute subdural haematoma"
+      "Hemorragia subaracnoidea por rotura de aneurisma",
+      "Migraña",
+      "Meningitis bacteriana",
+      "Hematoma subdural agudo"
     ],
-    "report": "Non-contrast CT: hyperdense blood in the suprasellar cistern and both sylvian fissures; early dilatation of the temporal horns. CTA: anterior communicating artery aneurysm.",
+    "report": "TC sin contraste: sangre hiperdensa en la cisterna supraselar y en ambas cisuras silvianas; dilatación precoz de las astas temporales. Angio-TC: aneurisma de la arteria comunicante anterior.",
     "teach": [
-      "CT within 6 hours of onset detects nearly all aneurysmal SAH; after that, sensitivity falls and lumbar puncture is used.",
-      "Blood in the basal cisterns in a star pattern suggests an aneurysm at the circle of Willis.",
-      "Watch for hydrocephalus early and vasospasm between days 4 and 14."
+      "La TC realizada dentro de las primeras 6 horas desde el inicio detecta casi todas las hemorragias subaracnoideas aneurismáticas; pasado ese plazo la sensibilidad disminuye y se recurre a la punción lumbar.",
+      "La sangre en las cisternas basales con un patrón en estrella sugiere un aneurisma del polígono de Willis.",
+      "Vigilar la hidrocefalia precoz y el vasoespasmo entre los días 4 y 14."
     ]
   },
   {
@@ -85,19 +85,19 @@ const CASES = window.CASES = [
     ],
     "state": "sdh",
     "find": true,
-    "lvl": "Core",
-    "hx": "81-year-old man on an anticoagulant. Fell at home two days ago; now increasingly confused and drowsy.",
+    "lvl": "Básico",
+    "hx": "Varón de 81 años en tratamiento anticoagulante. Sufrió una caída en su domicilio hace dos días; en la actualidad presenta confusión y somnolencia crecientes.",
     "dx": [
-      "Acute subdural haematoma",
-      "Extradural (epidural) haematoma",
-      "Subarachnoid haemorrhage",
-      "Normal age-related atrophy"
+      "Hematoma subdural agudo",
+      "Hematoma extradural (epidural)",
+      "Hemorragia subaracnoidea",
+      "Atrofia normal relacionada con la edad"
     ],
-    "report": "Non-contrast CT: crescent-shaped hyperdense collection over the left convexity that crosses the coronal suture, effacing the sulci beneath it.",
+    "report": "TC sin contraste: colección hiperdensa en forma de medialuna sobre la convexidad izquierda que cruza la sutura coronal y borra los surcos subyacentes.",
     "teach": [
-      "Subdural blood spreads along the convexity as a crescent and crosses sutures, but not the midline falx.",
-      "Extradural blood is lens-shaped and stops at sutures.",
-      "Older brains shrink, stretching the bridging veins; anticoagulants make small tears bleed."
+      "La sangre subdural se extiende por la convexidad en forma de medialuna y cruza las suturas, pero no la hoz del cerebro.",
+      "La sangre extradural tiene forma de lente y se detiene en las suturas.",
+      "Con la edad el cerebro se atrofia y estira las venas puente; los anticoagulantes hacen que pequeños desgarros sangren."
     ]
   },
   {
@@ -110,19 +110,19 @@ const CASES = window.CASES = [
     ],
     "state": "edh",
     "find": true,
-    "lvl": "Core",
-    "hx": "19-year-old struck on the left side of the head by a cricket ball. Brief loss of consciousness, then talking normally. Three hours later: severe headache and vomiting.",
+    "lvl": "Básico",
+    "hx": "Varón de 19 años que recibió el impacto de una pelota de críquet en el lado izquierdo de la cabeza. Pérdida de conciencia breve y posteriormente habla con normalidad. Tres horas más tarde: cefalea intensa y vómitos.",
     "dx": [
-      "Extradural haematoma with a temporal bone fracture",
-      "Acute subdural haematoma",
-      "Cerebral contusion",
-      "Subarachnoid haemorrhage"
+      "Hematoma extradural con fractura del hueso temporal",
+      "Hematoma subdural agudo",
+      "Contusión cerebral",
+      "Hemorragia subaracnoidea"
     ],
-    "report": "Non-contrast CT: biconvex hyperdense collection over the left temporal lobe, limited by the sutures, under scalp swelling. Bone window: linear fracture of the left temporal squama.",
+    "report": "TC sin contraste: colección hiperdensa biconvexa sobre el lóbulo temporal izquierdo, delimitada por las suturas, por debajo de una tumefacción del cuero cabelludo. Ventana ósea: fractura lineal de la escama temporal izquierda.",
     "teach": [
-      "The classic story is a lucid interval followed by rapid deterioration.",
-      "The fracture tears the middle meningeal artery; arterial pressure strips the dura off the skull.",
-      "A neurosurgical emergency: evacuation is often lifesaving."
+      "El relato clásico consiste en un intervalo lúcido seguido de un deterioro rápido.",
+      "La fractura desgarra la arteria meníngea media; la presión arterial despega la duramadre del cráneo.",
+      "Se trata de una urgencia neuroquirúrgica: la evacuación suele salvar la vida."
     ]
   },
   {
@@ -136,19 +136,19 @@ const CASES = window.CASES = [
     ],
     "state": "gbm",
     "find": true,
-    "lvl": "Core",
-    "hx": "58-year-old man. Six weeks of personality change and morning headaches; one generalised seizure.",
+    "lvl": "Básico",
+    "hx": "Varón de 58 años. Seis semanas de cambios de personalidad y cefaleas matutinas; una crisis convulsiva generalizada.",
     "dx": [
       "Glioblastoma",
-      "Pyogenic abscess",
-      "Solitary metastasis",
-      "Tumefactive demyelination"
+      "Absceso piógeno",
+      "Metástasis única",
+      "Desmielinización tumefactiva"
     ],
-    "report": "MRI: right frontal mass with thick, irregular ring enhancement around a necrotic centre. Extensive FLAIR signal spreading through the white matter. The necrotic centre does not restrict diffusion.",
+    "report": "RM: masa frontal derecha con realce anular grueso e irregular en torno a un centro necrótico. Señal FLAIR extensa que se disemina por la sustancia blanca. El centro necrótico no restringe la difusión.",
     "teach": [
-      "Thick, nodular ring enhancement with necrosis is typical of high-grade glioma.",
-      "Tumour cells infiltrate beyond the enhancing edge along white-matter tracts.",
-      "Pus restricts diffusion, but tumour necrosis does not: DWI separates abscess from glioma."
+      "El realce anular grueso y nodular con necrosis es típico del glioma de alto grado.",
+      "Las células tumorales infiltran más allá del borde que realza, siguiendo los tractos de sustancia blanca.",
+      "El pus restringe la difusión, pero la necrosis tumoral no: la DWI distingue el absceso del glioma."
     ]
   },
   {
@@ -161,19 +161,19 @@ const CASES = window.CASES = [
     ],
     "state": "abscess",
     "find": true,
-    "lvl": "Core",
-    "hx": "34-year-old with a recent dental infection. Ten days of headache and fever; now clumsy with the right hand.",
+    "lvl": "Básico",
+    "hx": "Paciente de 34 años con una infección dental reciente. Diez días de cefalea y fiebre; en la actualidad torpeza con la mano derecha.",
     "dx": [
-      "Pyogenic brain abscess",
+      "Absceso cerebral piógeno",
       "Glioblastoma",
-      "Metastasis",
-      "Acute infarct"
+      "Metástasis",
+      "Infarto agudo"
     ],
-    "report": "MRI: left parietal ring-enhancing lesion with a thin, smooth wall that is thinnest on the ventricular side. The centre restricts diffusion strongly.",
+    "report": "RM: lesión parietal izquierda con realce anular y pared fina y regular, más delgada en la vertiente ventricular. El centro restringe intensamente la difusión.",
     "teach": [
-      "A thin, smooth ring, thinner on the side facing the ventricle, favours abscess.",
-      "Bright DWI centre = viscous pus. This is the key test against necrotic tumour.",
-      "Spectroscopy can show amino acids, acetate and succinate from bacterial metabolism."
+      "Un anillo fino y regular, más delgado en la vertiente que mira hacia el ventrículo, orienta hacia absceso.",
+      "Centro hiperintenso en DWI = pus viscoso. Es la prueba clave frente al tumor necrótico.",
+      "La espectroscopia puede mostrar aminoácidos, acetato y succinato procedentes del metabolismo bacteriano."
     ]
   },
   {
@@ -186,19 +186,19 @@ const CASES = window.CASES = [
     ],
     "state": "mets",
     "find": true,
-    "lvl": "Core",
-    "hx": "61-year-old smoker with weight loss and a lung mass. New unsteadiness and headache.",
+    "lvl": "Básico",
+    "hx": "Paciente de 61 años, fumador, con pérdida de peso y una masa pulmonar. Inestabilidad de aparición reciente y cefalea.",
     "dx": [
-      "Brain metastases",
-      "Multiple sclerosis",
-      "Septic emboli",
-      "Multifocal glioblastoma"
+      "Metástasis cerebrales",
+      "Esclerosis múltiple",
+      "Émbolos sépticos",
+      "Glioblastoma multifocal"
     ],
-    "report": "MRI with contrast: three small ring- and nodular-enhancing lesions at the grey–white junction, each with oedema out of proportion to its size.",
+    "report": "RM con contraste: tres lesiones pequeñas con realce anular y nodular en la unión sustancia gris–sustancia blanca, cada una con edema desproporcionado respecto a su tamaño.",
     "teach": [
-      "Metastases lodge at the grey–white junction, where vessels narrow.",
-      "Contrast MRI finds far more lesions than CT, which changes treatment.",
-      "Count them: a few lesions may be treated with radiosurgery."
+      "Las metástasis se alojan en la unión sustancia gris–sustancia blanca, donde los vasos se estrechan.",
+      "La RM con contraste detecta muchas más lesiones que la TC, lo que modifica el tratamiento.",
+      "Cuéntelas: un número reducido de lesiones puede tratarse con radiocirugía."
     ]
   },
   {
@@ -212,19 +212,19 @@ const CASES = window.CASES = [
     ],
     "state": "ms",
     "find": true,
-    "lvl": "Core",
-    "hx": "27-year-old woman. Painful blurred vision in the right eye last year that recovered; now tingling in both legs.",
+    "lvl": "Básico",
+    "hx": "Mujer de 27 años. El año pasado presentó visión borrosa dolorosa en el ojo derecho, que se recuperó; ahora refiere parestesias en ambas piernas.",
     "dx": [
-      "Multiple sclerosis",
-      "Small-vessel ischaemic disease",
-      "Migraine-related white-matter spots",
+      "Esclerosis múltiple",
+      "Enfermedad isquémica de pequeño vaso",
+      "Lesiones de sustancia blanca asociadas a migraña",
       "Neurosarcoidosis"
     ],
-    "report": "MRI: multiple ovoid FLAIR-bright lesions around the lateral ventricles, oriented perpendicular to them, with juxtacortical lesions. One lesion enhances after gadolinium; the others do not.",
+    "report": "RM: múltiples lesiones ovoideas hiperintensas en FLAIR alrededor de los ventrículos laterales, orientadas perpendicularmente a ellos, junto con lesiones yuxtacorticales. Una lesión realza tras la administración de gadolinio; las demás no.",
     "teach": [
-      "Ovoid periventricular lesions pointing away from the ventricles (Dawson’s fingers) are typical.",
-      "Enhancing and non-enhancing lesions together show dissemination in time on a single scan (McDonald criteria).",
-      "Spinal MRI and CSF oligoclonal bands support the diagnosis."
+      "Son típicas las lesiones ovoideas periventriculares orientadas radialmente, alejándose de los ventrículos (dedos de Dawson).",
+      "La coexistencia de lesiones con y sin realce demuestra diseminación en el tiempo en una única exploración (criterios de McDonald).",
+      "La RM medular y las bandas oligoclonales en el líquido cefalorraquídeo apoyan el diagnóstico."
     ]
   },
   {
@@ -238,19 +238,19 @@ const CASES = window.CASES = [
     ],
     "state": "hydro",
     "find": true,
-    "lvl": "Core",
-    "hx": "22-year-old with three weeks of worsening morning headaches and vomiting. Papilloedema on examination.",
+    "lvl": "Básico",
+    "hx": "Paciente de 22 años con tres semanas de cefalea matutina y vómitos de intensidad creciente. Papiledema en la exploración.",
     "dx": [
-      "Obstructive hydrocephalus (aqueduct stenosis)",
-      "Normal pressure hydrocephalus",
-      "Cerebral atrophy",
-      "Idiopathic intracranial hypertension"
+      "Hidrocefalia obstructiva (estenosis del acueducto)",
+      "Hidrocefalia normotensiva",
+      "Atrofia cerebral",
+      "Hipertensión intracraneal idiopática"
     ],
-    "report": "CT: dilated lateral and third ventricles with rounded frontal horns and effaced sulci; the fourth ventricle is normal in size. MRI FLAIR: periventricular high signal from transependymal flow.",
+    "report": "TC: dilatación de los ventrículos laterales y del tercer ventrículo, con astas frontales redondeadas y borramiento de los surcos; el cuarto ventrículo es de tamaño normal. RM FLAIR: hiperintensidad periventricular por flujo transependimario.",
     "teach": [
-      "Big lateral and third ventricles with a normal fourth point to a block at the cerebral aqueduct.",
-      "In hydrocephalus the sulci are squeezed; in atrophy they are wide.",
-      "Transependymal CSF flow means the pressure is acutely raised."
+      "La dilatación de los ventrículos laterales y del tercer ventrículo con un cuarto ventrículo normal orienta a un bloqueo a nivel del acueducto cerebral.",
+      "En la hidrocefalia los surcos están comprimidos; en la atrofia están amplios.",
+      "El flujo transependimario de líquido cefalorraquídeo indica que la presión está elevada de forma aguda."
     ]
   },
   {
@@ -264,19 +264,19 @@ const CASES = window.CASES = [
     ],
     "state": "ad",
     "find": true,
-    "lvl": "Advanced",
-    "hx": "74-year-old retired teacher. Two years of gradually worsening memory; now gets lost driving to familiar places.",
+    "lvl": "Avanzado",
+    "hx": "Profesora jubilada de 74 años. Dos años de deterioro progresivo de la memoria; ahora se desorienta al conducir a lugares conocidos.",
     "dx": [
-      "Alzheimer’s disease",
-      "Frontotemporal dementia",
-      "Dementia with Lewy bodies",
-      "Vascular dementia"
+      "Enfermedad de Alzheimer",
+      "Demencia frontotemporal",
+      "Demencia por cuerpos de Lewy",
+      "Demencia vascular"
     ],
-    "report": "FDG-PET: bilateral temporoparietal and posterior cingulate hypometabolism with sparing of the sensorimotor and visual cortex. MRI: bilateral hippocampal atrophy. Amyloid PET: positive.",
+    "report": "FDG-PET: hipometabolismo temporoparietal bilateral y del cíngulo posterior, con preservación de la corteza sensitivomotora y visual. RM: atrofia hipocámpica bilateral. PET de amiloide: positivo.",
     "teach": [
-      "Alzheimer’s: temporoparietal and posterior cingulate hypometabolism.",
-      "Frontotemporal dementia hits frontal and anterior temporal lobes; Lewy body dementia adds occipital loss with a spared posterior cingulate (“island sign”).",
-      "Amyloid PET confirms pathology, which matters for anti-amyloid treatments."
+      "Enfermedad de Alzheimer: hipometabolismo temporoparietal y del cíngulo posterior.",
+      "La demencia frontotemporal afecta a los lóbulos frontal y temporal anterior; la demencia por cuerpos de Lewy añade hipometabolismo occipital con preservación del cíngulo posterior («signo de la isla»).",
+      "El PET de amiloide confirma la patología, lo que resulta relevante para los tratamientos antiamiloide."
     ]
   },
   {
@@ -290,19 +290,19 @@ const CASES = window.CASES = [
     ],
     "state": "tle",
     "find": true,
-    "lvl": "Advanced",
-    "hx": "23-year-old with seizures since age 12 that start with a rising feeling in the stomach, then lip-smacking. Febrile seizures as a toddler.",
+    "lvl": "Avanzado",
+    "hx": "Paciente de 23 años con crisis epilépticas desde los 12 años, que comienzan con una sensación ascendente en el epigastrio y continúan con automatismos orales (chasquido de labios). Antecedente de convulsiones febriles en la primera infancia.",
     "dx": [
-      "Left mesial temporal sclerosis",
-      "Low-grade glioma",
-      "Herpes simplex encephalitis",
-      "Focal cortical dysplasia"
+      "Esclerosis mesial temporal izquierda",
+      "Glioma de bajo grado",
+      "Encefalitis por virus del herpes simple",
+      "Displasia cortical focal"
     ],
-    "report": "MRI: small left hippocampus with high T2/FLAIR signal and loss of internal architecture. FDG-PET: interictal hypometabolism of the left temporal lobe.",
+    "report": "RM: hipocampo izquierdo pequeño, con hiperintensidad en T2/FLAIR y pérdida de su arquitectura interna. FDG-PET: hipometabolismo interictal del lóbulo temporal izquierdo.",
     "teach": [
-      "Hippocampal sclerosis: volume loss, high T2 signal and lost internal structure, best seen on thin coronal slices.",
-      "Interictal FDG-PET shows the focus as cold; ictal SPECT shows it as hot.",
-      "Concordant MRI, EEG and PET make this patient a strong surgical candidate."
+      "Esclerosis hipocámpica: pérdida de volumen, hiperintensidad en T2 y pérdida de la estructura interna, que se valora mejor en cortes coronales finos.",
+      "El FDG-PET interictal muestra el foco «frío»; el SPECT ictal lo muestra «caliente».",
+      "La concordancia entre RM, EEG y PET convierte a esta paciente en una buena candidata a cirugía."
     ]
   },
   {
@@ -314,19 +314,19 @@ const CASES = window.CASES = [
     ],
     "state": "pd",
     "find": true,
-    "lvl": "Advanced",
-    "hx": "66-year-old with a resting tremor of the right hand and slowness for a year. Parkinson’s disease or essential tremor?",
+    "lvl": "Avanzado",
+    "hx": "Paciente de 66 años con temblor de reposo en la mano derecha y lentitud de un año de evolución. ¿Enfermedad de Parkinson o temblor esencial?",
     "dx": [
-      "Presynaptic dopaminergic loss (parkinsonian syndrome)",
-      "Essential tremor (normal scan)",
-      "Drug-induced parkinsonism",
-      "Normal ageing"
+      "Pérdida dopaminérgica presináptica (síndrome parkinsoniano)",
+      "Temblor esencial (exploración normal)",
+      "Parkinsonismo farmacológico",
+      "Envejecimiento normal"
     ],
-    "report": "DaTscan: reduced uptake in the left putamen, worst posteriorly, giving a “full stop” instead of a “comma”. Mildly reduced on the right.",
+    "report": "DaTscan: captación reducida en el putamen izquierdo, más marcada en su porción posterior, lo que configura un «punto final» en lugar de una «coma». Reducción leve en el lado derecho.",
     "teach": [
-      "Loss starts in the posterior putamen, opposite the side of the symptoms.",
-      "The scan is normal in essential tremor and in drug-induced parkinsonism.",
-      "It cannot separate Parkinson’s disease from the atypical parkinsonian syndromes."
+      "La pérdida de captación comienza en el putamen posterior, contralateral al lado de los síntomas.",
+      "La exploración es normal en el temblor esencial y en el parkinsonismo farmacológico.",
+      "No permite distinguir la enfermedad de Parkinson de los síndromes parkinsonianos atípicos."
     ]
   },
   {
@@ -340,19 +340,19 @@ const CASES = window.CASES = [
     ],
     "state": "avm",
     "find": true,
-    "lvl": "Advanced",
-    "hx": "29-year-old with a first seizure and occasional headaches.",
+    "lvl": "Avanzado",
+    "hx": "Paciente de 29 años con una primera crisis epiléptica y cefaleas ocasionales.",
     "dx": [
-      "Arteriovenous malformation",
-      "Cavernous malformation",
+      "Malformación arteriovenosa",
+      "Malformación cavernosa",
       "Glioblastoma",
-      "Giant aneurysm"
+      "Aneurisma gigante"
     ],
-    "report": "MRI: right parietal cluster of serpiginous flow voids with enhancing vessels and an enlarged draining vein. MRA: nidus with feeding arteries and early venous drainage.",
+    "report": "RM: conglomerado parietal derecho de vacíos de flujo serpiginosos, con vasos que realzan y una vena de drenaje dilatada. ARM: nido con arterias aferentes y drenaje venoso precoz.",
     "teach": [
-      "Flow voids are black because fast blood leaves the slice before it can be imaged.",
-      "Arteries connect straight to veins through a nidus, with no capillaries between.",
-      "Catheter angiography (DSA) is the gold standard for planning treatment."
+      "Los vacíos de flujo se ven negros porque la sangre circula a gran velocidad y abandona el corte antes de poder ser representada.",
+      "Las arterias se conectan directamente con las venas a través de un nido, sin capilares interpuestos.",
+      "La angiografía por catéter (ASD, angiografía por sustracción digital) es el patrón de referencia para planificar el tratamiento."
     ]
   },
   {
@@ -365,19 +365,19 @@ const CASES = window.CASES = [
     ],
     "state": "bd",
     "find": false,
-    "lvl": "Advanced",
-    "hx": "Adult on intensive care after cardiac arrest. The clinical tests for brain death are complete; an ancillary perfusion study is requested.",
+    "lvl": "Avanzado",
+    "hx": "Paciente adulto en cuidados intensivos tras una parada cardiorrespiratoria. Las pruebas clínicas de muerte encefálica se han completado; se solicita un estudio complementario de perfusión.",
     "dx": [
-      "Absent cerebral perfusion, consistent with brain death",
-      "Normal brain perfusion",
-      "Diffuse low perfusion from sedation",
-      "Failed tracer injection"
+      "Ausencia de perfusión cerebral, compatible con muerte encefálica",
+      "Perfusión cerebral normal",
+      "Perfusión difusamente disminuida por sedación",
+      "Inyección fallida del trazador"
     ],
-    "report": "HMPAO SPECT: no tracer uptake in the cerebral hemispheres, cerebellum or brainstem (“hollow skull”); scalp activity present, so the injection worked. CTA: no intracranial arterial opacification.",
+    "report": "SPECT con HMPAO: ausencia de captación del trazador en los hemisferios cerebrales, el cerebelo y el tronco del encéfalo («cráneo hueco»); se observa actividad en el cuero cabelludo, lo que confirma que la inyección fue correcta. Angio-TC: ausencia de opacificación arterial intracraneal.",
     "teach": [
-      "Brain death is a clinical diagnosis; imaging is an ancillary test where the examination cannot be completed.",
-      "Scalp uptake proves the tracer was delivered.",
-      "Sedation lowers flow but never abolishes it."
+      "La muerte encefálica es un diagnóstico clínico; las técnicas de imagen constituyen una prueba complementaria cuando no es posible completar la exploración.",
+      "La captación en el cuero cabelludo demuestra que el trazador se administró correctamente.",
+      "La sedación reduce el flujo, pero nunca lo suprime por completo."
     ]
   }
 ];
