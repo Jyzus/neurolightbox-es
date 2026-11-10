@@ -330,7 +330,7 @@ def apply_task(task_path):
 
     # Execute safe patcher depending on target
     if target_rel.endswith('.js'):
-        patcher = """
+        patcher = r"""
         const fs = require('fs');
         const file = process.argv[1];
         const items = JSON.parse(process.argv[2]);
