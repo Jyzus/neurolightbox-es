@@ -25,6 +25,7 @@ const FS_SLICE = window.FS_SLICE;
 const VS_MESH = window.VS_MESH;
 const FS_MESH = window.FS_MESH;
 const LAB = window.LAB;
+const labMode = window.NeuroLabMode;
 const METHOD_CARD = window.METHOD_CARD;
 const CASES = window.CASES;
 const CHAPTERS = window.CHAPTERS;
@@ -472,7 +473,8 @@ let renderScale = BASE_SCALE, motionScale = TOUCH ? Math.min(BASE_SCALE, 1.15) :
 function updateShift(){ const lp = $('#labPanel'); const cp = $('#caseP'); viewShift = (S.tab === 'lab' && stageW > 820 && !lp.hidden) ? -lp.offsetWidth/2 : (S.caseMode && cp && !cp.hidden && stageW > 820) ? -cp.offsetWidth/2 : 0; dirty = true; }
 function resize(){
   const r = stage.getBoundingClientRect(); stageW = Math.max(1, r.width); stageH = Math.max(1, r.height);
-  const w = Math.round(stageW*renderScale), h = Math.round(stageH*renderScale);
+  const scale = labMode.scale(renderScale, VIEW === 'lab' && S.tab === 'lab');
+  const w = Math.max(1, Math.round(stageW*scale)), h = Math.max(1, Math.round(stageH*scale));
   if (canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
   resizeCompatibilityPreview(w, h);
   updateShift();
@@ -699,7 +701,7 @@ function frame(now){
     const renderDt = Math.min(0.25, (now - lastRender)/1000); lastRender = now;
     buildVessels();
     render(); dirty = false;
-    if (moving){ frameTimes.push(renderDt); if (frameTimes.length > 16){ const avg = frameTimes.reduce((a,b)=>a+b,0)/frameTimes.length; frameTimes = []; if (avg > (TOUCH ? 0.045 : 0.055) && motionScale > (TOUCH ? 0.6 : 0.75) && now - lastScaleChange > (TOUCH ? 500 : 1200)){ motionScale = Math.max(TOUCH ? 0.6 : 0.75, motionScale*0.85); renderScale = motionScale; lastScaleChange = now; resize(); } } }
+    if (moving && !(VIEW === 'lab' && labMode.light)){ frameTimes.push(renderDt); if (frameTimes.length > 16){ const avg = frameTimes.reduce((a,b)=>a+b,0)/frameTimes.length; frameTimes = []; if (avg > (TOUCH ? 0.045 : 0.055) && motionScale > (TOUCH ? 0.6 : 0.75) && now - lastScaleChange > (TOUCH ? 500 : 1200)){ motionScale = Math.max(TOUCH ? 0.6 : 0.75, motionScale*0.85); renderScale = motionScale; lastScaleChange = now; resize(); } } }
   } else if (thumbQueue.length) renderThumb(thumbQueue.shift());
 }
 requestAnimationFrame(frame);
@@ -1026,7 +1028,9 @@ $('#pGroups').addEventListener('click', e=>{
 /* ---------- tabs ---------- */
 function setTab(t){
   if (!ready) return;
+  const changedLab = S.tab !== t && (S.tab === 'lab' || t === 'lab');
   S.tab = t;
+  if (changedLab){ renderScale = BASE_SCALE; frameTimes = []; }
   rail.hidden = t !== 'scans'; subbar.hidden = t !== 'scans'; $('#labRail').hidden = t !== 'lab'; $('#labPanel').hidden = t !== 'lab';
   if (t === 'lab'){ openPanel(false); fcard.hidden = true; hideTip(); LAB.enter(); } else LAB.leave();
   canvas.classList.toggle('pointing', t === 'lab'); updateShift();
@@ -1571,6 +1575,11 @@ function visualField(f){
 function labRailHTML(){
   const groups = GROUP_ORDER.map(g=>{ const c = GROUP_COLORS[g].map(v=>Math.round(v*255)); return `<label class="grp"><input type="checkbox" data-g="${g}" ${LAB.groups[g] !== false ? 'checked' : ''}><i style="background:rgb(${c})"></i>${groupEs(g)}</label>`; }).join('');
   return `
+  <div class="lab-sec"><h3 id="labModeLabel">Modo gráfico</h3>
+    <div class="seg2" id="labMode" role="group" aria-labelledby="labModeLabel">
+      <button type="button" data-lab-mode="light" aria-pressed="${labMode.light}">Ligero</button>
+      <button type="button" data-lab-mode="full" aria-pressed="${!labMode.light}">Completo</button>
+    </div></div>
   <div class="lab-sec"><h3>Herramienta</h3><div class="seg2" id="labTool"><button type="button" data-t="stim" aria-pressed="${LAB.tool==='stim'}">Estimular</button><button type="button" data-t="dissect" aria-pressed="${LAB.tool==='dissect'}">Diseccionar</button></div>
     <p class="hint-s">${LAB.tool === 'stim' ? 'Pulse en cualquier punto de la corteza para aplicar un tren de pulsos de 50 Hz, como hacen los cirujanos al mapear a un paciente despierto.' : 'Pulse una estructura para conocerla. Oculte grupos, separe los lóbulos o seccione el encéfalo.'}</p></div>
   <div class="lab-sec"><h3>Hemisferios</h3><div class="row"><button type="button" class="mini" data-h="L" aria-pressed="${LAB.hemi.L}">Izquierdo</button><button type="button" class="mini" data-h="R" aria-pressed="${LAB.hemi.R}">Derecho</button></div></div>
@@ -1587,11 +1596,13 @@ function labRailHTML(){
 function renderLabRail(){
   const el = $('#labRail'); el.innerHTML = `<button type="button" class="crumb" data-go="lab">Acerca del Laboratorio cerebral</button>` + labRailHTML();
 }
+let labBodyAnimation = 0;
 function renderLabPanel(){
+  pauseLabBody();
   const el = $('#labPanel');
   if (LAB.tool === 'stim'){
     const s = LAB.stim;
-    const use3d = !!(s || LB.r) && !!lbBuild();
+    const use3d = !labMode.light && !!(s || LB.r) && !!lbBuild();
     el.innerHTML = `<div class="lh"><span class="eb">Mapeo por estimulación cortical</span><h2>${s ? s.effect.title : 'Toque el encéfalo'}</h2></div>
       <div class="lb">
         <div class="lab-fb">
@@ -1604,7 +1615,14 @@ function renderLabPanel(){
         <div class="row"><label>Añadir una exploración<select id="labScan" aria-label="Exploración que añadir">${[['none','Ninguna'],['fmri','Activación por RMf'],['fdg','PET con FDG'],['t1','Anatomía T1'],['dti','Tractos DTI']].map(([v,n])=>`<option value="${v}" ${v===LAB.scan?'selected':''}>${n}</option>`).join('')}</select></label></div>
         ${LAB.log.length ? `<div class="log"><b>Reciente</b>${LAB.log.map(l=>`<div><span>${l.where}</span><b>${l.what}</b></div>`).join('')}</div>` : ''}
       </div>`;
-    if (use3d) lbMount($('#labBody'), s); else if (s) requestAnimationFrame(()=>animateBody(s.effect));
+    if (use3d) lbMount($('#labBody'), s);
+    else if (s){
+      const svg = $('#bodySvg');
+      labBodyAnimation = requestAnimationFrame(()=>{
+        labBodyAnimation = 0;
+        if (VIEW === 'lab' && $('#bodySvg') === svg) animateBody(s.effect);
+      });
+    }
   } else {
     const r = LAB.selR > 0 ? REG[LAB.selR] : null, info = r ? (REGION_INFO[r.name] || {}) : null;
     el.innerHTML = `<div class="lh"><span class="eb">${r ? groupEs(r.group) + (r.hemi !== 'M' ? ' · ' + HEMI[r.hemi] : '') : 'Disección'}</span><h2>${r ? regionNameEs(r.name) : 'Elija una estructura'}</h2></div>
@@ -1617,6 +1635,20 @@ function renderLabPanel(){
 
 /* ---------- events ---------- */
 $('#labRail').addEventListener('click', e=>{
+  const modeButton = e.target.closest('[data-lab-mode]');
+  if (modeButton){
+    if (modeButton.getAttribute('aria-pressed') === 'true') return;
+    labMode.set(modeButton.dataset.labMode);
+    $('#labMode').querySelectorAll('button').forEach(button=>{
+      button.setAttribute('aria-pressed', button === modeButton);
+    });
+    LAB.hover(-1, -1);
+    renderScale = BASE_SCALE;
+    frameTimes = [];
+    resize();
+    renderLabPanel();
+    return;
+  }
   const t = e.target.closest('[data-t]'); if (t){ LAB.tool = t.dataset.t; LAB.selR = -1; renderLabRail(); renderLabPanel(); syncHud(); dirty = true; return; }
   const h = e.target.closest('[data-h]'); if (h){ LAB.hemi[h.dataset.h] = !LAB.hemi[h.dataset.h]; renderLabRail(); labApplyRegions(); return; }
   const c = e.target.closest('[data-c]'); if (c){ LAB.colorBy = c.dataset.c; renderLabRail(); uploadRegions(); return; }
@@ -1652,7 +1684,7 @@ function centreSliceOn(p){ const [, , f] = basisQ(S.q); S.slice = v3.dot(f, v3.s
 
 let labHoverT = 0;
 LAB.hover = function(cx, cy, clientX, clientY){
-  if (cx < 0){ if (this.hoverR !== -1){ this.hoverR = -1; dirty = true; } tip.hidden = true; return; }
+  if (cx < 0 || labMode.light){ if (this.hoverR !== -1){ this.hoverR = -1; dirty = true; } tip.hidden = true; return; }
   const now = performance.now(); if (now - labHoverT < 60) return; labHoverT = now;
   const hit = pickAt(cx, cy);
   const id = hit ? hit.id : -1;
@@ -1685,6 +1717,7 @@ LAB.enter = function(){
   if (S.plane !== 'free' && S.plane !== 'sagittal') animateTo('free', S.slice);
 };
 LAB.leave = function(){
+  pauseLabBody();
   for (const r of META.regions){ REG[r.id].visible = true; REG[r.id].off = [0,0,0]; }
   if (ready) uploadRegions();
   this.hoverR = -1; tip.hidden = true;
@@ -5038,7 +5071,7 @@ function buildDSA(scene, renderer, R){
 
 /* =====================================================================
    Brain Lab feedback: a 3D mannequin that answers cortical stimulation.
-   Replaces the flat SVG figure (kept only as a fallback without WebGL).
+   Available in full mode. Light mode and unavailable WebGL use the SVG figure.
    The figure faces the reader, so the patient's right is on the reader's
    left; stimulating one hemisphere lights and moves the opposite side.
    Joints come from buildMannequin: xL = the mannequin's left (+x).
@@ -5132,6 +5165,21 @@ function lbBuild(){
     cv.addEventListener('dblclick', ()=>{ LB.yawHome = true; });
   } catch(err){ console.warn('Cuerpo 3D no disponible', err); LB.failed = true; LB.r = null; }
   return LB.r;
+}
+
+function pauseLabBody(){
+  if (labBodyAnimation) cancelAnimationFrame(labBodyAnimation);
+  labBodyAnimation = 0;
+  if (LB.raf) cancelAnimationFrame(LB.raf);
+  LB.raf = 0;
+  LB.drag = null;
+  LB.lastT = 0;
+  LB.evKey = null;
+  if (LB.cv){
+    LB.cv.classList.remove('dragging');
+    LB.cv.remove();
+  }
+  LB.host = LB.sideR = LB.sideL = LB.bub = LB.viewBtn = null;
 }
 
 function lbMount(host, s){
@@ -5294,7 +5342,7 @@ function lbAnchor(n, v){
 function lbFrame(now){
   LB.raf = 0;
   const cv = LB.cv, lp = $('#labPanel');
-  if (!cv || !cv.isConnected || S.tab !== 'lab' || !lp || lp.hidden) return;
+  if (!cv || !cv.isConnected || VIEW !== 'lab' || labMode.light || LAB.tool !== 'stim' || !lp || lp.hidden) return;
   LB.raf = requestAnimationFrame(lbFrame);
   const w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
   const r = LB.r, pr = Math.min(window.devicePixelRatio || 1, TOUCH ? 1.5 : 2);
@@ -5702,6 +5750,7 @@ function showHome(anchor){
   heroLast = -1; updateNav(); heroTick();
 }
 function showChapter(id){
+  if (S.tab === 'lab' && ready) setTab('scans');
   VIEW = 'learn'; showViews('learn'); markTab(id); updateNav();
   buildChapter(id); window.scrollTo(0, 0); startScene(id);
 }
