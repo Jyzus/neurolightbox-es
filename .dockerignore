@@ -1,0 +1,7 @@
+# Contexto mínimo: excluye .git, orig, tools, tasks y cualquier otro archivo.
+**
+!Dockerfile
+!docker/
+!docker/nginx.conf
+!site/
+!site/**

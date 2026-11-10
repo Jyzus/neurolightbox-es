@@ -14,26 +14,32 @@
 <meta name="twitter:title" content="Neuro Lightbox: imagen cerebral que puede explorar en 3D">
 <meta name="twitter:description" content="Entre en el escáner: recorridos interactivos en 3D por RM, TC, PET, SPECT, RMf, EEG, MEG, ecografía y angiografía, estudios cerebrales reales para interpretar y un Laboratorio Cerebral para estimular la corteza.">
 <meta name="twitter:image" content="https://app.neurolightbox.workers.dev/og.png">
-<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}body.booting{overflow:hidden}.loading{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:#f1f4f5;padding:24px;box-sizing:border-box}.loading .box{width:min(400px,100%)}.loading [hidden]{display:none!important}</style>
 <title>Neuro Lightbox</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<script src="vendor/three/three.min.js"></script>
-<script src="vendor/three/CopyShader.js"></script>
-<script src="vendor/three/EffectComposer.js"></script>
-<script src="vendor/three/RenderPass.js"></script>
-<script src="vendor/three/ShaderPass.js"></script>
-<script src="vendor/three/MaskPass.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,200..800&family=Azeret+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap">
 <link rel="stylesheet" href="css/style.css">
-</head><body><header class="nav" id="nav" data-show="false">
+</head><body class="booting">
+<div class="loading" id="loading" role="dialog" aria-modal="true" aria-labelledby="loadTitle" aria-describedby="loadSub">
+  <div class="box">
+    <p class="eb">Neuro Lightbox</p>
+    <h1 id="loadTitle">Preparando su recorrido</h1>
+    <div class="lbl"><span id="loadMsg" role="status" aria-live="polite">Iniciando la carga</span><span id="loadPct" aria-hidden="true">0%</span></div>
+    <div class="bar" id="loadProgress" role="progressbar" aria-label="Descarga de los datos cerebrales" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="loadBar"></i></div>
+    <p id="loadSub">Descargaremos aproximadamente 23 MB para que pueda explorar todo el recorrido.</p>
+    <button type="button" class="btn-big" id="loadRetry" hidden>Reintentar</button>
+    <noscript>Active JavaScript para cargar el recorrido interactivo.</noscript>
+  </div>
+</div>
+<header inert class="nav" id="nav" data-show="false">
   <button type="button" class="brand" id="brand" aria-label="Neuro Lightbox, volver al inicio"><span class="brand-mark" aria-hidden="true"></span><span>Neuro Lightbox</span></button>
   <nav class="tabs" id="tabs" aria-label="Métodos de imagen"></nav>
 </header>
 
 <!-- ============ HOME: title → brain reveal → methods ============ -->
-<main class="view home" id="home">
+<main inert class="view home" id="home">
   <section class="hero" id="hero" aria-labelledby="heroTitle">
     <span class="reg r1" aria-hidden="true"></span><span class="reg r2" aria-hidden="true"></span>
     <span class="reg r3" aria-hidden="true"></span><span class="reg r4" aria-hidden="true"></span>
@@ -83,10 +89,10 @@
 </main>
 
 <!-- ============ CHAPTER: how the machine works ============ -->
-<main class="view chap" id="chapter" hidden></main>
+<main inert class="view chap" id="chapter" hidden></main>
 
 <!-- ============ VIEWER: the glass-slide app ============ -->
-<div class="view app" id="viewer" hidden>
+<div inert class="view app" id="viewer" hidden>
   <nav class="rail" id="rail" aria-label="Tipos de estudio"></nav>
   <nav class="rail labrail" id="labRail" aria-label="Herramientas del Laboratorio Cerebral" hidden></nav>
   <div class="subbar" id="subbar" aria-label="Tipos de estudio"></div>
@@ -161,11 +167,6 @@
 
     <aside class="labp" id="labPanel" hidden></aside>
 
-    <div class="loading" id="loading"><div class="box">
-      <div class="lbl"><span id="loadMsg">Descargando el encéfalo</span><span id="loadPct">0%</span></div>
-      <div class="bar"><i id="loadBar"></i></div>
-      <div class="lbl"><span id="loadSub">≈ 23 MB; se guarda en caché tras la primera visita</span></div>
-    </div></div>
   </main>
 </div>
 <canvas id="gl" aria-label="Encéfalo en 3D. Arrastre para girarlo."></canvas>
@@ -191,6 +192,12 @@
 <script src="data/methods.js"></script>
 <script src="data/cases.js"></script>
 <script src="data/chapters.js"></script>
+
+<script src="js/boot-loading.js"></script>
+<script src="js/data-codec.js"></script>
+<script src="js/data-loader.js"></script>
+<script src="js/mesh-data.js"></script>
+<script src="js/gpu-loading.js"></script>
 
 <!-- Application Runtime Engine -->
 <script src="js/app.js"></script>

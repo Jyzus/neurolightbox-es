@@ -97,7 +97,6 @@ const gl = (()=>{ for (const o of GL_TRIES){ let c = null; try { c = canvas.getC
 canvas.addEventListener('webglcontextlost', e=>{ e.preventDefault(); console.error('Contexto WebGL perdido'); try { setPreviewNotice('El controlador gráfico reinició la vista 3D. Recargue la página para restaurarla.', rendererDiagnostics()); } catch(err){} });
 let META = null, VOL = null, ready = false, dirty = true, sliceAvailable = false;
 const TEX = {};
-function failMsg(m){ $("#loading").innerHTML = `<div class="box"><div style="margin:0;color:var(--ink-2)">${m}</div></div>`; }
 
 const shaderReports = [];
 // Shaders are compiled in two phases so a slow driver (e.g. Windows/Direct3D, where the
@@ -175,49 +174,27 @@ let regData = new Float32Array(128*4*4), regTex, vesTex, nVes = 0;
 let pickFbo = null, pickSize = [0,0], thumbFbo, TH = 256;
 
 /* ---------- loading ---------- */
-async function fetchBin(url, onp){
-  const r = await fetch(url); if (!r.ok) throw new Error(url + ' ' + r.status);
-  const reader = r.body.getReader(); const chunks = []; let got = 0;
-  for(;;){ const {done, value} = await reader.read(); if (done) break; chunks.push(value); got += value.length; onp(got); }
-  let blob = new Blob(chunks);
-  if (url.endsWith('.png')){ // gzip bytes stored losslessly in PNG pixels (RGB, 8-byte header)
-    const bmp = await createImageBitmap(blob, {colorSpaceConversion:'none', premultiplyAlpha:'none'});
-    const c = document.createElement('canvas'); c.width = bmp.width; c.height = bmp.height;
-    const ctx = c.getContext('2d', {willReadFrequently:true}); ctx.drawImage(bmp, 0, 0);
-    const px = ctx.getImageData(0, 0, c.width, c.height).data, n = c.width*c.height, out = new Uint8Array(n*3);
-    const CHUNK = 262144;
-    for (let i = 0, j = 0; i < n; i++, j += 4){
-      out[i*3] = px[j]; out[i*3+1] = px[j+1]; out[i*3+2] = px[j+2];
-      if (i > 0 && (i & (CHUNK - 1)) === 0) await new Promise(r => setTimeout(r, 0));
-    }
-    const len = out[0] | (out[1] << 8) | (out[2] << 16) | (out[3] << 24);
-    if (String.fromCharCode(out[4], out[5], out[6], out[7]) !== 'NLB1') throw new Error('la cabecera de la imagen de datos no coincide');
-    blob = new Blob([out.subarray(8, 8 + len)]);
-  }
-  const head = new Uint8Array(await blob.slice(0,2).arrayBuffer());
-  if (head[0] === 0x1f && head[1] === 0x8b){
-    if (typeof DecompressionStream === 'undefined') throw new Error('Este navegador no puede descomprimir los datos (requiere DecompressionStream).');
-    return new Uint8Array(await new Response(blob.stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
-  }
-  return new Uint8Array(await blob.arrayBuffer());
-}
+async function fetchBin(url, onp){ return window.NeuroData.fetchBin(url, onp); }
 async function load(){
   if (!gl){ await loadCompatibilityPreview('Contexto WebGL 2 no disponible.\nIntentos de contexto: ' + glTried.join(' | ') + '\nEn iframe: ' + (window.top !== window) + '\nNavegador: ' + navigator.userAgent); return; }
   // Compile the surface renderer first so the brain can still be shown if a
   // device-specific failure is limited to the more complex scan shader.
-  progMesh = startProgram('malla del encéfalo', VS_MESH, FS_MESH);
-  progSlice = startProgram('superposición de la exploración', VS_FULL, FS_SLICE);
+  const boot = window.NeuroBoot;
   // Download the brain while the GPU driver compiles.
-  const metaP = fetch('data/meta.json').then(r=>{ if (!r.ok) throw new Error('data/meta.json ' + r.status); return r.json(); });
-  const binsP = metaP.then(meta=>{
+  const binsP = window.NeuroBoot.download(fetchBin).then(({meta, bins})=>{
     META = meta;
-    const total = META.bytes.vol + META.bytes.mesh; let gv = 0, gm = 0;
-    const prog = () => { const f = (gv + gm)/total; $('#loadBar').style.width = (f*100).toFixed(1) + '%'; $('#loadPct').textContent = Math.round(f*100) + '%'; onLoadProgress(f); };
-    return Promise.all([fetchBin('data/vol.png', g=>{gv=g;prog();}), fetchBin('data/mesh.png', g=>{gm=g;prog();}), fetchBin('data/jue.png', ()=>{})]);
+    return bins;
   });
   binsP.catch(()=>{});
-  await waitPrograms([progMesh, progSlice]);
-  finishProgram(progMesh); finishProgram(progSlice);
+  await boot.stage('Preparando el renderizador');
+  progMesh = await boot.measure('preparación:compilar-malla', ()=>startProgram('malla del encéfalo', VS_MESH, FS_MESH));
+  await boot.yieldFrame();
+  progSlice = await boot.measure('preparación:compilar-escáner', ()=>startProgram('superposición de la exploración', VS_FULL, FS_SLICE));
+  await Promise.all([boot.measure('preparación:espera-shaders', ()=>waitPrograms([progMesh, progSlice])), binsP]);
+  await boot.stage('Preparando el renderizador');
+  await boot.measure('preparación:enlace-malla', ()=>finishProgram(progMesh));
+  await boot.yieldFrame();
+  await boot.measure('preparación:enlace-escáner', ()=>finishProgram(progSlice));
   const okM = linked(progMesh), okS = linked(progSlice);
   sliceAvailable = okS;
   if (gl.isContextLost() || !okM){ await loadCompatibilityPreview(rendererDiagnostics()); return; }
@@ -227,26 +204,21 @@ async function load(){
     setPreviewNotice('El encéfalo 3D está disponible, pero las superposiciones de exploración están desactivadas porque falló el shader del escáner.', shaderReports.join('\n\n'));
   }
   const [vol, mesh, jue] = await binsP;
-  $('#loadMsg').textContent = 'Construyendo el encéfalo'; $('#loadPct').textContent = '';
-  await new Promise(r=>setTimeout(r,30));
+  await boot.stage('Preparando las imágenes 3D');
   const [w,h,d] = META.dims, n = w*h*d;
   VOL = {A: vol.subarray(0, n*4), B: vol.subarray(n*4, n*8), C: vol.subarray(n*8, n*12), J: jue, dims:[w,h,d], lo:META.lo};
-  const mk3 = (data, unit, linear) => {
-    const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_3D, t);
-    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
-    gl.texImage3D(gl.TEXTURE_3D, 0, gl.RGBA8, w, h, d, 0, gl.RGBA, gl.UNSIGNED_BYTE, data);
-    if (linear){ gl.generateMipmap(gl.TEXTURE_3D); gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); }
-    else { gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); }
-    for (const p of [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T, gl.TEXTURE_WRAP_R]) gl.texParameteri(gl.TEXTURE_3D, p, gl.CLAMP_TO_EDGE);
-    return t;
-  };
-  TEX.A = mk3(VOL.A, 0, true); TEX.B = mk3(VOL.B, 1, true); TEX.C = mk3(VOL.C, 2, false);
+  for (const [name,unit,linear] of [['A',0,true],['B',1,true],['C',2,false]]){
+    TEX[name] = await boot.measure('preparación:textura-' + name, ()=>window.NeuroGPU.texture3D(gl,VOL[name],META.dims,unit,linear,()=>boot.checkpoint()));
+    await boot.yieldFrame();
+  }
   // region + vessel data textures
   const mk2 = (unit, w2, h2) => { const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, w2, h2, 0, gl.RGBA, gl.FLOAT, null);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); return t; };
   regTex = mk2(4, 128, 4); vesTex = mk2(3, 200, 2);
-  buildMesh(mesh);
+  await boot.stage('Construyendo la geometría del encéfalo');
+  await boot.measure('preparación:geometría', ()=>buildMesh(mesh));
+  await boot.stage('Finalizando el recorrido');
   emptyVao = gl.createVertexArray();
   // thumbnail target
   const tt = gl.createTexture(); gl.activeTexture(gl.TEXTURE5); gl.bindTexture(gl.TEXTURE_2D, tt);
@@ -257,36 +229,31 @@ async function load(){
   initRegions();
   buildVessels();
   ready = true; dirty = true;
-  $('#loading').classList.add('gone');
-  setTimeout(()=>$('#loading').remove(), 600);
   onReady();
+  await boot.yieldFrame();
   if (!sliceAvailable){
     const hl = $('#heroLoad');
     if (hl){ hl.classList.remove('done'); $('#heroLoadMsg').textContent = 'Encéfalo 3D listo; las superposiciones de exploración no están disponibles en este dispositivo.'; }
   }
 }
 
-function buildMesh(buf){
-  const pcs = META.pieces; let nv = 0, nf = 0;
-  for (const p of pcs){ nv += p.nv; nf += p.nf; }
-  const pos = new Int16Array(nv*3), nrm = new Int8Array(nv*4), reg = new Uint8Array(nv), idx = new Uint32Array(nf*3);
-  let vo = 0, fo = 0;
-  for (const p of pcs){
-    pos.set(new Int16Array(buf.buffer, buf.byteOffset + p.pos, p.nv*3), vo*3);
-    nrm.set(new Int8Array(buf.buffer, buf.byteOffset + p.nrm, p.nv*4), vo*4);
-    reg.fill(p.id, vo, vo + p.nv);
-    const src = new Uint32Array(buf.buffer.slice(buf.byteOffset + p.idx, buf.byteOffset + p.idx + p.nf*12));
-    for (let i = 0; i < src.length; i++) idx[fo*3 + i] = src[i] + vo;
-    if (p.id === 0){ scalpStart = fo*3; scalpCount = p.nf*3; } else brainCount = (fo + p.nf)*3;
-    vo += p.nv; fo += p.nf;
-  }
-  // keep the raw arrays so the immersive three.js scenes can show the same brain
-  const scalpPiece = pcs.find(p=>p.id === 0); MESHRAW = {pos, nrm, reg, idx, brainCount, nv: nv - (scalpPiece ? scalpPiece.nv : 0)};
-  vao = gl.createVertexArray(); gl.bindVertexArray(vao);
-  const vb = (data, loc, size, type, norm, stride) => { const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, size, type, norm, stride, 0); };
-  vb(pos, 0, 3, gl.SHORT, false, 6); vb(nrm, 1, 4, gl.BYTE, true, 4); vb(reg, 2, 1, gl.UNSIGNED_BYTE, false, 1);
-  const ib = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
-  gl.bindVertexArray(null);
+async function buildMesh(buf){
+  const boot = window.NeuroBoot, yieldTask = ()=>boot.checkpoint();
+  const mesh = await window.NeuroMesh.assemble(buf,META.pieces,yieldTask);
+  const {pos,nrm,reg,idx,nv} = mesh;
+  ({brainCount,scalpStart,scalpCount} = mesh);
+  const scalpPiece = META.pieces.find(p=>p.id === 0);
+  MESHRAW = {pos,nrm,reg,idx,brainCount,nv:nv - (scalpPiece ? scalpPiece.nv : 0)};
+  await boot.stage('Preparando la geometría 3D');
+  await boot.measure('preparación:buffers-gpu', async()=>{
+    vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+    for (const [data,loc,size,type,norm,stride] of [[pos,0,3,gl.SHORT,false,6],[nrm,1,4,gl.BYTE,true,4],[reg,2,1,gl.UNSIGNED_BYTE,false,1]]){
+      await window.NeuroGPU.buffer(gl,gl.ARRAY_BUFFER,data,yieldTask);
+      gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,size,type,norm,stride,0);
+    }
+    await window.NeuroGPU.buffer(gl,gl.ELEMENT_ARRAY_BUFFER,idx,yieldTask);
+    gl.bindVertexArray(null);
+  });
 }
 
 /* ---------- regions (colour, visibility, explode offset) ---------- */
@@ -1103,23 +1070,14 @@ async function loadCompatibilityPreview(details){
   $('#loadPct').textContent = '0%';
   $('#loadSub').textContent = 'Vista previa de compatibilidad · tres cortes T1 ortogonales';
 
-  const metaResponse = await fetch('data/meta.json');
-  if (!metaResponse.ok) throw new Error(`data/meta.json ${metaResponse.status}`);
-  META = await metaResponse.json();
-  const packed = await fetchBin('data/vol.png', got=>{
-    const fraction = Math.min(1, got / META.bytes.vol);
-    $('#loadBar').style.width = (fraction*100).toFixed(1) + '%';
-    $('#loadPct').textContent = Math.round(fraction*100) + '%';
-    onLoadProgress(fraction);
-  });
+  const {meta, bins:[packed]} = await window.NeuroBoot.download(fetchBin);
+  META = meta;
+  await window.NeuroBoot.stage('Preparando la vista de compatibilidad');
   const [w,h,d] = META.dims, voxels = w*h*d, firstVolumeBytes = voxels*4;
   if (packed.byteLength < firstVolumeBytes) throw new Error('El volumen de referencia es más corto que las dimensiones de sus metadatos.');
-  VOL = {A:packed.slice(0, firstVolumeBytes), dims:META.dims, lo:META.lo};
+  VOL = {A:packed.subarray(0, firstVolumeBytes), dims:META.dims, lo:META.lo};
   compatSliceCache.clear();
   fallbackReady = true;
-  $('#loading').classList.add('gone');
-  $('#loading').style.display = 'none';
-  setTimeout(()=>$('#loading').remove(), 600);
   $('#heroLoad').classList.add('done');
   $('#heroLoadMsg').textContent = 'Vista previa de referencia lista';
   onReady();
@@ -1725,30 +1683,7 @@ LAB.leave = function(){
 
 /* ---------- boot ---------- */
 buildRail(); syncRail(); buildCmpSelect();
-let loadTriggered = false;
-function triggerLoad(){
-  if (loadTriggered) return;
-  loadTriggered = true;
-  load().catch(err=>{ console.error(err); failMsg('No se pudieron cargar los datos cerebrales: ' + err.message); });
-}
-
-// Lazy trigger: scroll, interaction, intersection with reveal section, or idle fallback
-window.addEventListener('scroll', triggerLoad, {once:true, passive:true});
-window.addEventListener('pointerdown', triggerLoad, {once:true, passive:true});
-window.addEventListener('touchstart', triggerLoad, {once:true, passive:true});
-
-if (typeof IntersectionObserver !== 'undefined' && $('#reveal')){
-  const _io = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting){ triggerLoad(); _io.disconnect(); }
-  }, {rootMargin: '400px'});
-  _io.observe($('#reveal'));
-}
-
-if (typeof requestIdleCallback !== 'undefined'){
-  requestIdleCallback(() => triggerLoad(), {timeout: 1200});
-} else {
-  setTimeout(triggerLoad, 400);
-}
+window.NeuroBoot.run(load);
 
 /* =====================================================================
    Chapter content: how each machine works
@@ -5784,7 +5719,6 @@ function enterViewer(id){
 }
 
 /* ---------- loading hooks (called from app.js) ---------- */
-function onLoadProgress(f){ $('#heroLoadBar').style.width = (f*100).toFixed(1) + '%'; }
 function onReady(){
   $('#heroLoad').classList.add('done'); $('#heroLoadMsg').textContent = fallbackReady ? 'Vista previa de referencia lista' : 'Listo';
   queueMethodThumbs();
