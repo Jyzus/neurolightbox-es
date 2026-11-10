@@ -1726,6 +1726,53 @@ load().catch(err=>{ console.error(err); failMsg('Could not load the brain data: 
 const ORDER = ['mri','ct','pet','spect','fmri','eeg','meg','us','dsa'];
 const TAB_NAMES = {mri:'MRI', ct:'CT', pet:'PET', spect:'SPECT', fmri:'fMRI', eeg:'EEG', meg:'MEG', us:'Ultrasound', dsa:'Angiography', lab:'Brain Lab'};
 
+/* =====================================================================
+   Scenes: one drawing per chapter step, in a 1000 × 1000 unit box.
+   G.u = canvas units per CSS pixel (for line widths and text).
+   ===================================================================== */
+const G = {u:1, ctx:null, t:0, env:null};
+const KC = {ink:'#0c161b', ink2:'#3d4c53', muted:'#7d8b91', line:'#cdd5d9', soft:'#eef2f4', soft2:'#dfe6e9', sig:'#0050ff', sigSoft:'rgba(0,80,255,.12)',
+  red:'#d9412b', redSoft:'rgba(217,65,43,.18)', amber:'#e8962a', teal:'#00a389', paper:'#ffffff', film:'#04070a', skin:'#f2e2d9', deoxy:'#6b2a4f'};
+const TAU = Math.PI*2;
+const narrowScene = () => innerWidth <= 820;
+
+/* ---------- drawing kit ---------- */
+function _st(c, w, dash){ const x = G.ctx; x.strokeStyle = c; x.lineWidth = w*G.u; x.setLineDash(dash ? dash.map(d=>d*G.u) : []); }
+function ln(x1, y1, x2, y2, c = KC.ink2, w = 1.2, dash){ const x = G.ctx; x.beginPath(); x.moveTo(x1, y1); x.lineTo(x2, y2); _st(c, w, dash); x.stroke(); x.setLineDash([]); }
+function circ(cx, cy, r, fill, stroke, w = 1.2, dash){ const x = G.ctx; x.beginPath(); x.arc(cx, cy, Math.max(0.01, r), 0, TAU); if (fill){ x.fillStyle = fill; x.fill(); } if (stroke){ _st(stroke, w, dash); x.stroke(); x.setLineDash([]); } }
+function ell(cx, cy, rx, ry, fill, stroke, w = 1.2, dash, rot = 0){ const x = G.ctx; x.beginPath(); x.ellipse(cx, cy, Math.max(0.01, rx), Math.max(0.01, ry), rot, 0, TAU); if (fill){ x.fillStyle = fill; x.fill(); } if (stroke){ _st(stroke, w, dash); x.stroke(); x.setLineDash([]); } }
+function rr(x0, y0, w, h, r, fill, stroke, lw = 1.2, dash){ const x = G.ctx; x.beginPath(); x.roundRect ? x.roundRect(x0, y0, w, h, r) : x.rect(x0, y0, w, h); if (fill){ x.fillStyle = fill; x.fill(); } if (stroke){ _st(stroke, lw, dash); x.stroke(); x.setLineDash([]); } }
+function poly(pts, fill, stroke, lw = 1.2, close = true, dash){ const x = G.ctx; x.beginPath(); pts.forEach((p, i)=> i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1])); if (close) x.closePath(); if (fill){ x.fillStyle = fill; x.fill(); } if (stroke){ _st(stroke, lw, dash); x.stroke(); x.setLineDash([]); } }
+function curve(fn, x0, x1, n, stroke, lw = 1.6, dash){ const x = G.ctx; x.beginPath(); for (let i = 0; i <= n; i++){ const u = x0 + (x1 - x0)*i/n, [px, py] = fn(u); i ? x.lineTo(px, py) : x.moveTo(px, py); } _st(stroke, lw, dash); x.stroke(); x.setLineDash([]); }
+function arrow(x1, y1, x2, y2, c = KC.ink, w = 1.6, hs = 9){
+  ln(x1, y1, x2, y2, c, w); const a = Math.atan2(y2 - y1, x2 - x1), h = hs*G.u;
+  poly([[x2, y2], [x2 - h*Math.cos(a - 0.42), y2 - h*Math.sin(a - 0.42)], [x2 - h*Math.cos(a + 0.42), y2 - h*Math.sin(a + 0.42)]], c);
+}
+function fontOf(kind, size, weight){ const px = size*(narrowScene() ? 0.9 : 1)*G.u; return kind === 'body' ? `${weight || 500} ${px}px "Instrument Sans", system-ui, sans-serif` : kind === 'disp' ? `${weight || 600} ${px}px Archivo, Arial, sans-serif` : `${weight || 400} ${px}px "Azeret Mono", ui-monospace, monospace`; }
+function txt(s, x, y, o = {}){
+  const c = G.ctx; c.font = fontOf(o.font || 'mono', o.size || 11, o.weight); c.fillStyle = o.color || KC.ink2; c.textAlign = o.align || 'left'; c.textBaseline = o.base || 'alphabetic';
+  if (!o.maxW){ c.fillText(s, x, y); return 1; }
+  const words = String(s).split(' '), lh = (o.size || 11)*1.35*G.u*(narrowScene() ? 0.9 : 1); let line = '', n = 0;
+  for (const w of words){ const tt = line ? line + ' ' + w : w; if (c.measureText(tt).width > o.maxW && line){ c.fillText(line, x, y + n*lh); n++; line = w; } else line = tt; }
+  c.fillText(line, x, y + n*lh); return n + 1;
+}
+function label(s, x, y, o = {}){ return txt(s, x, y, {size:11, color:KC.ink2, ...o}); }
+function head(s, x, y, o = {}){ return txt(s.toUpperCase(), x, y, {size:10.5, color:KC.muted, ...o}); }
+function callout(x, y, tx, ty, s, o = {}){
+  circ(x, y, 3.2*G.u, o.color || KC.ink); ln(x, y, tx, ty, o.color || KC.ink2, 0.9);
+  const right = tx >= x; ln(tx, ty, tx + (right ? 14 : -14)*G.u, ty, o.color || KC.ink2, 0.9);
+  txt(s, tx + (right ? 20 : -20)*G.u, ty + 4*G.u, {size:11, color:o.color || KC.ink, align:right ? 'left' : 'right', maxW:o.maxW, font:o.font, weight:o.weight});
+}
+function fade(a, fn){ if (a <= 0.002) return; const c = G.ctx; c.save(); c.globalAlpha *= Math.min(1, a); fn(); c.restore(); }
+function clip(fn, draw){ const c = G.ctx; c.save(); c.beginPath(); fn(c); c.clip(); draw(); c.restore(); }
+function box(x, y, w, h, title, o = {}){ rr(x, y, w, h, 3, o.fill || null, o.stroke || KC.line, 1); if (title) head(title, x, y - 10*G.u); }
+function img(cv, x, y, w, h, a = 1){ if (!cv) { rr(x, y, w, h, 3, KC.film); return; } fade(a, ()=>{ const c = G.ctx; c.imageSmoothingEnabled = true; c.drawImage(cv, x, y, w, h); }); }
+function placeholder(x, y, w, h, s = 'Loading the brain…'){ rr(x, y, w, h, 3, KC.soft, KC.line, 1); txt(s, x + w/2, y + h/2, {align:'center', color:KC.muted, size:10.5}); }
+const rnd = seed => () => { seed = (seed*16807) % 2147483647; return (seed - 1)/2147483646; };
+const hashf = i => { const s = Math.sin(i*127.1 + 311.7)*43758.5453; return s - Math.floor(s); };
+
+/* ---------- images from the real volume ---------- */
+
 const SCANCV = new Map();
 function scanCanvas(subId, state){
   if (!ready) return null;
