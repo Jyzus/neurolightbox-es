@@ -1,78 +1,483 @@
 const REGION_INFO = window.REGION_INFO = {
-  'Frontal Pole':{fn:'Planning many steps ahead, weighing alternatives, and holding long-term goals.', clin:'Damage blunts planning and initiative with little obvious deficit on routine exam.', supply:'ACA'},
-  'Insular Cortex':{fn:'Interoception: feeling your own heartbeat, breathing, hunger, pain, taste and emotion.', clin:'Infarcts can cause disordered taste, autonomic changes and loss of craving.', supply:'MCA (M2 insular branches)'},
-  'Superior Frontal Gyrus':{fn:'Self-awareness, working memory and, at its back end, the supplementary motor area.', clin:'Medial damage causes reduced spontaneous movement and speech (abulia).', supply:'ACA'},
-  'Middle Frontal Gyrus':{fn:'Working memory and attention; its posterior part holds the frontal eye field that turns gaze.', clin:'Acute lesions make the eyes deviate toward the damaged side.', supply:'MCA (superior division)'},
-  'Inferior Frontal Gyrus pars triangularis':{fn:'Part of Broca’s area (BA45): selecting words and meaning in speech.', clin:'Left-sided damage gives non-fluent (Broca’s) aphasia.', supply:'MCA (superior division)'},
-  'Inferior Frontal Gyrus pars opercularis':{fn:'Part of Broca’s area (BA44): planning the sequence of speech movements.', clin:'Left-sided damage: halting, effortful speech with preserved comprehension.', supply:'MCA (superior division)'},
-  'Subcallosal Cortex':{fn:'Mood regulation; area 25 under the corpus callosum.', clin:'A deep brain stimulation target for treatment-resistant depression.', supply:'ACA'},
-  'Temporal Pole':{fn:'Linking faces, names and emotional memories (semantic hub).', clin:'Atrophy in semantic dementia: words lose their meaning.', supply:'MCA (anterior temporal branch)'},
-  'Superior Temporal Gyrus anterior division':{fn:'Auditory association cortex for sounds and speech.', clin:'Damage impairs recognising complex sounds.', supply:'MCA (inferior division)'},
-  'Superior Temporal Gyrus posterior division':{fn:'Wernicke’s area on the left: understanding spoken language.', clin:'Left damage gives fluent but meaningless speech with poor comprehension.', supply:'MCA (inferior division)'},
-  'Middle Temporal Gyrus anterior division':{fn:'Word meaning and semantic memory.', clin:'Naming and comprehension problems.', supply:'MCA'},
-  'Middle Temporal Gyrus posterior division':{fn:'Linking words to meaning; near area MT for motion.', clin:'Word-finding problems.', supply:'MCA'},
-  'Middle Temporal Gyrus temporooccipital part':{fn:'Visual motion area MT/V5.', clin:'Bilateral damage causes akinetopsia (seeing motion as still frames).', supply:'MCA / PCA'},
-  'Inferior Temporal Gyrus anterior division':{fn:'Object recognition and visual memory.', clin:'Visual agnosia.', supply:'MCA / PCA'},
-  'Inferior Temporal Gyrus posterior division':{fn:'Recognising objects and forms (ventral “what” stream).', clin:'Visual agnosia.', supply:'PCA'},
-  'Inferior Temporal Gyrus temporooccipital part':{fn:'High-level visual object recognition.', clin:'Object agnosia.', supply:'PCA'},
-  'Postcentral Gyrus':{fn:'Primary somatosensory cortex (S1): touch, pain, temperature and joint position, mapped as a homunculus.', clin:'Contralateral loss of fine sensation and position sense.', supply:'MCA (face, arm) / ACA (leg)'},
-  'Superior Parietal Lobule':{fn:'Body map in space; guides reaching and eye–hand coordination.', clin:'Optic ataxia: misreaching for objects.', supply:'MCA / ACA'},
-  'Supramarginal Gyrus anterior division':{fn:'Integrating touch and body position; phonological working memory on the left.', clin:'Conduction aphasia (poor repetition) on the left.', supply:'MCA'},
-  'Supramarginal Gyrus posterior division':{fn:'Language and tool use (praxis).', clin:'Ideomotor apraxia.', supply:'MCA'},
-  'Angular Gyrus':{fn:'Reading, writing, arithmetic and number sense on the left; bodily self-location on the right.', clin:'Gerstmann syndrome (left): agraphia, acalculia, finger agnosia, left–right confusion.', supply:'MCA (angular branch)'},
-  'Lateral Occipital Cortex superior division':{fn:'Visual association: spatial layout and motion.', clin:'Visual spatial disorientation.', supply:'PCA / MCA'},
-  'Lateral Occipital Cortex inferior division':{fn:'Object shape recognition (lateral occipital complex).', clin:'Object agnosia.', supply:'PCA'},
-  'Intracalcarine Cortex':{fn:'Primary visual cortex (V1) inside the calcarine sulcus.', clin:'Contralateral homonymous hemianopia, often with macular sparing.', supply:'PCA (calcarine artery)'},
-  'Frontal Medial Cortex':{fn:'Valuing choices, self-referential thought; a default-mode hub.', clin:'Apathy and poor judgement.', supply:'ACA'},
-  'Supplementary Motor Area (juxtapositional lobule)':{fn:'Planning and initiating movement sequences, both sides.', clin:'Transient mutism and neglect of the opposite limbs after resection.', supply:'ACA'},
-  'Paracingulate Gyrus':{fn:'Reality monitoring and conflict detection.', clin:'Varies widely between people; subtle effects.', supply:'ACA'},
-  'Cingulate Gyrus anterior division':{fn:'Error detection, motivation, pain affect.', clin:'Akinetic mutism with bilateral damage.', supply:'ACA (pericallosal)'},
-  'Cingulate Gyrus posterior division':{fn:'Default-mode hub: memory retrieval and self-reflection.', clin:'Among the earliest areas affected in Alzheimer’s disease.', supply:'ACA / PCA'},
-  'Precuneus':{fn:'Mental imagery, episodic memory and self-consciousness.', clin:'Hypometabolic early in Alzheimer’s and in disorders of consciousness.', supply:'ACA / PCA'},
-  'Cuneal Cortex':{fn:'Visual cortex above the calcarine sulcus: the lower visual field.', clin:'Contralateral lower quadrantanopia.', supply:'PCA'},
-  'Frontal Orbital Cortex':{fn:'Reward, social behaviour and decision-making.', clin:'Disinhibition and impulsivity (Phineas Gage).', supply:'ACA / MCA'},
-  'Parahippocampal Gyrus anterior division':{fn:'Entorhinal cortex: the gateway into the hippocampus.', clin:'First area affected by tangles in Alzheimer’s disease.', supply:'PCA'},
-  'Parahippocampal Gyrus posterior division':{fn:'Recognising places and scenes.', clin:'Topographic disorientation.', supply:'PCA'},
-  'Lingual Gyrus':{fn:'Visual cortex below the calcarine sulcus: the upper visual field and colour.', clin:'Contralateral upper quadrantanopia; achromatopsia.', supply:'PCA'},
-  'Temporal Fusiform Cortex anterior division':{fn:'Semantic and object knowledge.', clin:'Semantic deficits.', supply:'PCA'},
-  'Temporal Fusiform Cortex posterior division':{fn:'Fusiform face area (especially on the right).', clin:'Prosopagnosia: cannot recognise faces.', supply:'PCA'},
-  'Temporal Occipital Fusiform Cortex':{fn:'Faces (right) and the visual word form area (left).', clin:'Pure alexia on the left; prosopagnosia on the right.', supply:'PCA'},
-  'Occipital Fusiform Gyrus':{fn:'Colour and early object processing.', clin:'Achromatopsia.', supply:'PCA'},
-  'Frontal Operculum Cortex':{fn:'Speech motor control and taste.', clin:'Speech output problems on the left.', supply:'MCA'},
-  'Central Opercular Cortex':{fn:'Face, tongue and throat sensorimotor areas; swallowing.', clin:'Bilateral damage: Foix–Chavany–Marie syndrome (cannot move face voluntarily).', supply:'MCA'},
-  'Parietal Operculum Cortex':{fn:'Secondary somatosensory cortex (S2): touch from both sides of the body, pain.', clin:'Altered pain perception.', supply:'MCA'},
-  'Planum Polare':{fn:'Auditory association cortex for melody and pitch.', clin:'Amusia.', supply:'MCA'},
-  "Heschl's Gyrus (includes H1 and H2)":{fn:'Primary auditory cortex (A1), arranged by sound frequency.', clin:'Unilateral damage is subtle; bilateral causes cortical deafness.', supply:'MCA'},
-  'Planum Temporale':{fn:'Larger on the left; processes speech sounds and spatial hearing.', clin:'Part of Wernicke’s region.', supply:'MCA'},
-  'Supracalcarine Cortex':{fn:'Visual cortex just above the calcarine sulcus.', clin:'Lower visual field defects.', supply:'PCA'},
-  'Occipital Pole':{fn:'Central (macular) vision; the largest piece of V1 per degree of visual field.', clin:'Central scotoma.', supply:'PCA / MCA watershed'},
-  'Lateral ventricle':{fn:'CSF-filled cavity; the choroid plexus inside produces about 500 mL of CSF a day.', clin:'Enlarges with hydrocephalus or atrophy.', supply:'Choroidal arteries'},
-  'Thalamus':{fn:'Relay and gate for almost all sensory input to the cortex, plus arousal and attention.', clin:'Contralateral sensory loss; thalamic pain syndrome (Dejerine–Roussy).', supply:'PCA perforators'},
-  'Caudate':{fn:'Learning, habits and goal-directed action (basal ganglia).', clin:'Atrophies early in Huntington’s disease.', supply:'MCA lenticulostriates, ACA (Heubner)'},
-  'Putamen':{fn:'Motor learning and movement selection (basal ganglia).', clin:'Commonest site of hypertensive haemorrhage.', supply:'MCA lenticulostriates'},
-  'Globus pallidus':{fn:'Main output of the basal ganglia; iron-rich.', clin:'GPi is a DBS target for dystonia and Parkinson’s disease.', supply:'Anterior choroidal artery'},
-  'Hippocampus':{fn:'Forming new long-term memories and mapping space.', clin:'Bilateral loss causes dense anterograde amnesia (patient H.M.).', supply:'PCA, anterior choroidal'},
-  'Amygdala':{fn:'Detecting threat and tagging memories with emotion.', clin:'Bilateral damage removes fear (Urbach–Wiethe disease).', supply:'Anterior choroidal artery'},
-  'Nucleus accumbens':{fn:'Reward, motivation and addiction.', clin:'DBS target studied for depression and addiction.', supply:'ACA / MCA perforators'},
-  'Brainstem':{fn:'Breathing, heart rate, consciousness (reticular formation), cranial nerves and every long tract.', clin:'Small lesions cause crossed signs: cranial nerve palsy on one side, weakness on the other.', supply:'Vertebrobasilar system'},
-  'Cerebellar hemisphere':{fn:'Coordinating limb movement and timing, on the same side of the body.', clin:'Ipsilateral ataxia, intention tremor, dysdiadochokinesia.', supply:'SCA, AICA, PICA'},
-  'Vermis':{fn:'Balance, posture and eye movements.', clin:'Truncal ataxia: broad-based, unsteady gait (alcohol).', supply:'SCA, PICA'},
-  'Third ventricle':{fn:'Midline CSF cavity between the two thalami.', clin:'Colloid cysts here can block CSF flow suddenly.', supply:'—'},
-  'Fourth ventricle':{fn:'CSF cavity between brainstem and cerebellum, draining to the subarachnoid space.', clin:'Posterior fossa tumours can obstruct it.', supply:'—'},
+  "Frontal Pole": {
+    "fn": "Planning many steps ahead, weighing alternatives, and holding long-term goals.",
+    "clin": "Damage blunts planning and initiative with little obvious deficit on routine exam.",
+    "supply": "ACA"
+  },
+  "Insular Cortex": {
+    "fn": "Interoception: feeling your own heartbeat, breathing, hunger, pain, taste and emotion.",
+    "clin": "Infarcts can cause disordered taste, autonomic changes and loss of craving.",
+    "supply": "MCA (M2 insular branches)"
+  },
+  "Superior Frontal Gyrus": {
+    "fn": "Self-awareness, working memory and, at its back end, the supplementary motor area.",
+    "clin": "Medial damage causes reduced spontaneous movement and speech (abulia).",
+    "supply": "ACA"
+  },
+  "Middle Frontal Gyrus": {
+    "fn": "Working memory and attention; its posterior part holds the frontal eye field that turns gaze.",
+    "clin": "Acute lesions make the eyes deviate toward the damaged side.",
+    "supply": "MCA (superior division)"
+  },
+  "Inferior Frontal Gyrus pars triangularis": {
+    "fn": "Part of Broca’s area (BA45): selecting words and meaning in speech.",
+    "clin": "Left-sided damage gives non-fluent (Broca’s) aphasia.",
+    "supply": "MCA (superior division)"
+  },
+  "Inferior Frontal Gyrus pars opercularis": {
+    "fn": "Part of Broca’s area (BA44): planning the sequence of speech movements.",
+    "clin": "Left-sided damage: halting, effortful speech with preserved comprehension.",
+    "supply": "MCA (superior division)"
+  },
+  "Subcallosal Cortex": {
+    "fn": "Mood regulation; area 25 under the corpus callosum.",
+    "clin": "A deep brain stimulation target for treatment-resistant depression.",
+    "supply": "ACA"
+  },
+  "Temporal Pole": {
+    "fn": "Linking faces, names and emotional memories (semantic hub).",
+    "clin": "Atrophy in semantic dementia: words lose their meaning.",
+    "supply": "MCA (anterior temporal branch)"
+  },
+  "Superior Temporal Gyrus anterior division": {
+    "fn": "Auditory association cortex for sounds and speech.",
+    "clin": "Damage impairs recognising complex sounds.",
+    "supply": "MCA (inferior division)"
+  },
+  "Superior Temporal Gyrus posterior division": {
+    "fn": "Wernicke’s area on the left: understanding spoken language.",
+    "clin": "Left damage gives fluent but meaningless speech with poor comprehension.",
+    "supply": "MCA (inferior division)"
+  },
+  "Middle Temporal Gyrus anterior division": {
+    "fn": "Word meaning and semantic memory.",
+    "clin": "Naming and comprehension problems.",
+    "supply": "MCA"
+  },
+  "Middle Temporal Gyrus posterior division": {
+    "fn": "Linking words to meaning; near area MT for motion.",
+    "clin": "Word-finding problems.",
+    "supply": "MCA"
+  },
+  "Middle Temporal Gyrus temporooccipital part": {
+    "fn": "Visual motion area MT/V5.",
+    "clin": "Bilateral damage causes akinetopsia (seeing motion as still frames).",
+    "supply": "MCA / PCA"
+  },
+  "Inferior Temporal Gyrus anterior division": {
+    "fn": "Object recognition and visual memory.",
+    "clin": "Visual agnosia.",
+    "supply": "MCA / PCA"
+  },
+  "Inferior Temporal Gyrus posterior division": {
+    "fn": "Recognising objects and forms (ventral “what” stream).",
+    "clin": "Visual agnosia.",
+    "supply": "PCA"
+  },
+  "Inferior Temporal Gyrus temporooccipital part": {
+    "fn": "High-level visual object recognition.",
+    "clin": "Object agnosia.",
+    "supply": "PCA"
+  },
+  "Postcentral Gyrus": {
+    "fn": "Primary somatosensory cortex (S1): touch, pain, temperature and joint position, mapped as a homunculus.",
+    "clin": "Contralateral loss of fine sensation and position sense.",
+    "supply": "MCA (face, arm) / ACA (leg)"
+  },
+  "Superior Parietal Lobule": {
+    "fn": "Body map in space; guides reaching and eye–hand coordination.",
+    "clin": "Optic ataxia: misreaching for objects.",
+    "supply": "MCA / ACA"
+  },
+  "Supramarginal Gyrus anterior division": {
+    "fn": "Integrating touch and body position; phonological working memory on the left.",
+    "clin": "Conduction aphasia (poor repetition) on the left.",
+    "supply": "MCA"
+  },
+  "Supramarginal Gyrus posterior division": {
+    "fn": "Language and tool use (praxis).",
+    "clin": "Ideomotor apraxia.",
+    "supply": "MCA"
+  },
+  "Angular Gyrus": {
+    "fn": "Reading, writing, arithmetic and number sense on the left; bodily self-location on the right.",
+    "clin": "Gerstmann syndrome (left): agraphia, acalculia, finger agnosia, left–right confusion.",
+    "supply": "MCA (angular branch)"
+  },
+  "Lateral Occipital Cortex superior division": {
+    "fn": "Visual association: spatial layout and motion.",
+    "clin": "Visual spatial disorientation.",
+    "supply": "PCA / MCA"
+  },
+  "Lateral Occipital Cortex inferior division": {
+    "fn": "Object shape recognition (lateral occipital complex).",
+    "clin": "Object agnosia.",
+    "supply": "PCA"
+  },
+  "Intracalcarine Cortex": {
+    "fn": "Primary visual cortex (V1) inside the calcarine sulcus.",
+    "clin": "Contralateral homonymous hemianopia, often with macular sparing.",
+    "supply": "PCA (calcarine artery)"
+  },
+  "Frontal Medial Cortex": {
+    "fn": "Valuing choices, self-referential thought; a default-mode hub.",
+    "clin": "Apathy and poor judgement.",
+    "supply": "ACA"
+  },
+  "Supplementary Motor Area (juxtapositional lobule)": {
+    "fn": "Planning and initiating movement sequences, both sides.",
+    "clin": "Transient mutism and neglect of the opposite limbs after resection.",
+    "supply": "ACA"
+  },
+  "Paracingulate Gyrus": {
+    "fn": "Reality monitoring and conflict detection.",
+    "clin": "Varies widely between people; subtle effects.",
+    "supply": "ACA"
+  },
+  "Cingulate Gyrus anterior division": {
+    "fn": "Error detection, motivation, pain affect.",
+    "clin": "Akinetic mutism with bilateral damage.",
+    "supply": "ACA (pericallosal)"
+  },
+  "Cingulate Gyrus posterior division": {
+    "fn": "Default-mode hub: memory retrieval and self-reflection.",
+    "clin": "Among the earliest areas affected in Alzheimer’s disease.",
+    "supply": "ACA / PCA"
+  },
+  "Precuneus": {
+    "fn": "Mental imagery, episodic memory and self-consciousness.",
+    "clin": "Hypometabolic early in Alzheimer’s and in disorders of consciousness.",
+    "supply": "ACA / PCA"
+  },
+  "Cuneal Cortex": {
+    "fn": "Visual cortex above the calcarine sulcus: the lower visual field.",
+    "clin": "Contralateral lower quadrantanopia.",
+    "supply": "PCA"
+  },
+  "Frontal Orbital Cortex": {
+    "fn": "Reward, social behaviour and decision-making.",
+    "clin": "Disinhibition and impulsivity (Phineas Gage).",
+    "supply": "ACA / MCA"
+  },
+  "Parahippocampal Gyrus anterior division": {
+    "fn": "Entorhinal cortex: the gateway into the hippocampus.",
+    "clin": "First area affected by tangles in Alzheimer’s disease.",
+    "supply": "PCA"
+  },
+  "Parahippocampal Gyrus posterior division": {
+    "fn": "Recognising places and scenes.",
+    "clin": "Topographic disorientation.",
+    "supply": "PCA"
+  },
+  "Lingual Gyrus": {
+    "fn": "Visual cortex below the calcarine sulcus: the upper visual field and colour.",
+    "clin": "Contralateral upper quadrantanopia; achromatopsia.",
+    "supply": "PCA"
+  },
+  "Temporal Fusiform Cortex anterior division": {
+    "fn": "Semantic and object knowledge.",
+    "clin": "Semantic deficits.",
+    "supply": "PCA"
+  },
+  "Temporal Fusiform Cortex posterior division": {
+    "fn": "Fusiform face area (especially on the right).",
+    "clin": "Prosopagnosia: cannot recognise faces.",
+    "supply": "PCA"
+  },
+  "Temporal Occipital Fusiform Cortex": {
+    "fn": "Faces (right) and the visual word form area (left).",
+    "clin": "Pure alexia on the left; prosopagnosia on the right.",
+    "supply": "PCA"
+  },
+  "Occipital Fusiform Gyrus": {
+    "fn": "Colour and early object processing.",
+    "clin": "Achromatopsia.",
+    "supply": "PCA"
+  },
+  "Frontal Operculum Cortex": {
+    "fn": "Speech motor control and taste.",
+    "clin": "Speech output problems on the left.",
+    "supply": "MCA"
+  },
+  "Central Opercular Cortex": {
+    "fn": "Face, tongue and throat sensorimotor areas; swallowing.",
+    "clin": "Bilateral damage: Foix–Chavany–Marie syndrome (cannot move face voluntarily).",
+    "supply": "MCA"
+  },
+  "Parietal Operculum Cortex": {
+    "fn": "Secondary somatosensory cortex (S2): touch from both sides of the body, pain.",
+    "clin": "Altered pain perception.",
+    "supply": "MCA"
+  },
+  "Planum Polare": {
+    "fn": "Auditory association cortex for melody and pitch.",
+    "clin": "Amusia.",
+    "supply": "MCA"
+  },
+  "Heschl's Gyrus (includes H1 and H2)": {
+    "fn": "Primary auditory cortex (A1), arranged by sound frequency.",
+    "clin": "Unilateral damage is subtle; bilateral causes cortical deafness.",
+    "supply": "MCA"
+  },
+  "Planum Temporale": {
+    "fn": "Larger on the left; processes speech sounds and spatial hearing.",
+    "clin": "Part of Wernicke’s region.",
+    "supply": "MCA"
+  },
+  "Supracalcarine Cortex": {
+    "fn": "Visual cortex just above the calcarine sulcus.",
+    "clin": "Lower visual field defects.",
+    "supply": "PCA"
+  },
+  "Occipital Pole": {
+    "fn": "Central (macular) vision; the largest piece of V1 per degree of visual field.",
+    "clin": "Central scotoma.",
+    "supply": "PCA / MCA watershed"
+  },
+  "Lateral ventricle": {
+    "fn": "CSF-filled cavity; the choroid plexus inside produces about 500 mL of CSF a day.",
+    "clin": "Enlarges with hydrocephalus or atrophy.",
+    "supply": "Choroidal arteries"
+  },
+  "Thalamus": {
+    "fn": "Relay and gate for almost all sensory input to the cortex, plus arousal and attention.",
+    "clin": "Contralateral sensory loss; thalamic pain syndrome (Dejerine–Roussy).",
+    "supply": "PCA perforators"
+  },
+  "Caudate": {
+    "fn": "Learning, habits and goal-directed action (basal ganglia).",
+    "clin": "Atrophies early in Huntington’s disease.",
+    "supply": "MCA lenticulostriates, ACA (Heubner)"
+  },
+  "Putamen": {
+    "fn": "Motor learning and movement selection (basal ganglia).",
+    "clin": "Commonest site of hypertensive haemorrhage.",
+    "supply": "MCA lenticulostriates"
+  },
+  "Globus pallidus": {
+    "fn": "Main output of the basal ganglia; iron-rich.",
+    "clin": "GPi is a DBS target for dystonia and Parkinson’s disease.",
+    "supply": "Anterior choroidal artery"
+  },
+  "Hippocampus": {
+    "fn": "Forming new long-term memories and mapping space.",
+    "clin": "Bilateral loss causes dense anterograde amnesia (patient H.M.).",
+    "supply": "PCA, anterior choroidal"
+  },
+  "Amygdala": {
+    "fn": "Detecting threat and tagging memories with emotion.",
+    "clin": "Bilateral damage removes fear (Urbach–Wiethe disease).",
+    "supply": "Anterior choroidal artery"
+  },
+  "Nucleus accumbens": {
+    "fn": "Reward, motivation and addiction.",
+    "clin": "DBS target studied for depression and addiction.",
+    "supply": "ACA / MCA perforators"
+  },
+  "Brainstem": {
+    "fn": "Breathing, heart rate, consciousness (reticular formation), cranial nerves and every long tract.",
+    "clin": "Small lesions cause crossed signs: cranial nerve palsy on one side, weakness on the other.",
+    "supply": "Vertebrobasilar system"
+  },
+  "Cerebellar hemisphere": {
+    "fn": "Coordinating limb movement and timing, on the same side of the body.",
+    "clin": "Ipsilateral ataxia, intention tremor, dysdiadochokinesia.",
+    "supply": "SCA, AICA, PICA"
+  },
+  "Vermis": {
+    "fn": "Balance, posture and eye movements.",
+    "clin": "Truncal ataxia: broad-based, unsteady gait (alcohol).",
+    "supply": "SCA, PICA"
+  },
+  "Third ventricle": {
+    "fn": "Midline CSF cavity between the two thalami.",
+    "clin": "Colloid cysts here can block CSF flow suddenly.",
+    "supply": "—"
+  },
+  "Fourth ventricle": {
+    "fn": "CSF cavity between brainstem and cerebellum, draining to the subarachnoid space.",
+    "clin": "Posterior fossa tumours can obstruct it.",
+    "supply": "—"
+  }
 };
-const GROUP_COLORS = window.GROUP_COLORS = {
-  'Frontal lobe':[0.88,0.48,0.37], 'Parietal lobe':[0.87,0.72,0.37], 'Temporal lobe':[0.55,0.72,0.42], 'Occipital lobe':[0.42,0.64,0.86],
-  'Limbic lobe':[0.75,0.52,0.79], 'Insula & operculum':[0.31,0.7,0.66], 'Deep grey matter':[0.85,0.79,0.64], 'Ventricles':[0.4,0.78,0.88],
-  'Cerebellum':[0.84,0.48,0.62], 'Brainstem':[0.6,0.65,0.72],
-};
-const GROUP_ORDER = window.GROUP_ORDER = ['Frontal lobe','Parietal lobe','Temporal lobe','Occipital lobe','Limbic lobe','Insula & operculum','Deep grey matter','Ventricles','Cerebellum','Brainstem'];
 
-/* ---------- stimulation (Penfield and modern cortical stimulation mapping) ---------- */
-const SOMATO = window.SOMATO = [ // |x|, y, z on precentral gyrus -> body part
-  ['toes',6,-25,72],['foot',9,-26,72],['leg',14,-24,74],['hip',20,-22,72],['trunk',24,-21,70],['shoulder',29,-20,67],['arm',33,-20,63],
-  ['hand',37,-20,58],['fingers',40,-18,53],['thumb',45,-14,47],['neck',49,-11,42],['face',53,-8,34],['lips',57,-6,26],['tongue',59,-4,18],['throat',61,-2,10],
+const GROUP_COLORS = window.GROUP_COLORS = {
+  "Frontal lobe": [
+    0.88,
+    0.48,
+    0.37
+  ],
+  "Parietal lobe": [
+    0.87,
+    0.72,
+    0.37
+  ],
+  "Temporal lobe": [
+    0.55,
+    0.72,
+    0.42
+  ],
+  "Occipital lobe": [
+    0.42,
+    0.64,
+    0.86
+  ],
+  "Limbic lobe": [
+    0.75,
+    0.52,
+    0.79
+  ],
+  "Insula & operculum": [
+    0.31,
+    0.7,
+    0.66
+  ],
+  "Deep grey matter": [
+    0.85,
+    0.79,
+    0.64
+  ],
+  "Ventricles": [
+    0.4,
+    0.78,
+    0.88
+  ],
+  "Cerebellum": [
+    0.84,
+    0.48,
+    0.62
+  ],
+  "Brainstem": [
+    0.6,
+    0.65,
+    0.72
+  ]
+};
+
+const GROUP_ORDER = window.GROUP_ORDER = [
+  "Frontal lobe",
+  "Parietal lobe",
+  "Temporal lobe",
+  "Occipital lobe",
+  "Limbic lobe",
+  "Insula & operculum",
+  "Deep grey matter",
+  "Ventricles",
+  "Cerebellum",
+  "Brainstem"
 ];
-const PART_LABEL = window.PART_LABEL = {toes:'toes',foot:'foot',leg:'leg',hip:'hip',trunk:'trunk',shoulder:'shoulder',arm:'arm',hand:'hand',fingers:'fingers',thumb:'thumb',neck:'neck',face:'face',lips:'lips',tongue:'tongue',throat:'throat'};
+
+const SOMATO = window.SOMATO = [
+  [
+    "toes",
+    6,
+    -25,
+    72
+  ],
+  [
+    "foot",
+    9,
+    -26,
+    72
+  ],
+  [
+    "leg",
+    14,
+    -24,
+    74
+  ],
+  [
+    "hip",
+    20,
+    -22,
+    72
+  ],
+  [
+    "trunk",
+    24,
+    -21,
+    70
+  ],
+  [
+    "shoulder",
+    29,
+    -20,
+    67
+  ],
+  [
+    "arm",
+    33,
+    -20,
+    63
+  ],
+  [
+    "hand",
+    37,
+    -20,
+    58
+  ],
+  [
+    "fingers",
+    40,
+    -18,
+    53
+  ],
+  [
+    "thumb",
+    45,
+    -14,
+    47
+  ],
+  [
+    "neck",
+    49,
+    -11,
+    42
+  ],
+  [
+    "face",
+    53,
+    -8,
+    34
+  ],
+  [
+    "lips",
+    57,
+    -6,
+    26
+  ],
+  [
+    "tongue",
+    59,
+    -4,
+    18
+  ],
+  [
+    "throat",
+    61,
+    -2,
+    10
+  ]
+];
+
+const PART_LABEL = window.PART_LABEL = {
+  "toes": "toes",
+  "foot": "foot",
+  "leg": "leg",
+  "hip": "hip",
+  "trunk": "trunk",
+  "shoulder": "shoulder",
+  "arm": "arm",
+  "hand": "hand",
+  "fingers": "fingers",
+  "thumb": "thumb",
+  "neck": "neck",
+  "face": "face",
+  "lips": "lips",
+  "tongue": "tongue",
+  "throat": "throat"
+};
+
 window.stimEffect = function stimEffect(region, p){
   // region: {name, hemi, group}; p: MNI point. Returns {kind, part, side, title, text, ref}
   const side = region.hemi === 'L' ? 'right' : region.hemi === 'R' ? 'left' : 'both';
@@ -109,9 +514,6 @@ window.stimEffect = function stimEffect(region, p){
   if (nm === 'Brainstem') return {kind:'quiet', part:'none', side:'both', title:'Not stimulated', text:'Brainstem. Never stimulated in awake mapping: it controls breathing, heart rate and consciousness.'};
   if (region.group === 'Ventricles') return {kind:'quiet', part:'none', side:'both', title:'CSF space — nothing to stimulate', text:'This is fluid, not neurons.'};
   return {kind:'quiet', part:'none', side:'both', title:'No obvious response', text:`${nm}. Much of the prefrontal and association cortex is “silent” to stimulation: nothing visible happens, although careful testing can reveal subtle effects on attention, mood or decision-making.`};
-}
-window.cap = function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+};
 
-/* =====================================================================
-   GLSL. World space = MNI152 millimetres (+x right, +y anterior, +z superior).
-   ===================================================================== */
+window.cap = function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); };
