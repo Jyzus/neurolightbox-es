@@ -184,7 +184,11 @@ async function fetchBin(url, onp){
     const c = document.createElement('canvas'); c.width = bmp.width; c.height = bmp.height;
     const ctx = c.getContext('2d', {willReadFrequently:true}); ctx.drawImage(bmp, 0, 0);
     const px = ctx.getImageData(0, 0, c.width, c.height).data, n = c.width*c.height, out = new Uint8Array(n*3);
-    for (let i = 0, j = 0; i < n; i++, j += 4){ out[i*3] = px[j]; out[i*3+1] = px[j+1]; out[i*3+2] = px[j+2]; }
+    const CHUNK = 262144;
+    for (let i = 0, j = 0; i < n; i++, j += 4){
+      out[i*3] = px[j]; out[i*3+1] = px[j+1]; out[i*3+2] = px[j+2];
+      if (i > 0 && (i & (CHUNK - 1)) === 0) await new Promise(r => setTimeout(r, 0));
+    }
     const len = out[0] | (out[1] << 8) | (out[2] << 16) | (out[3] << 24);
     if (String.fromCharCode(out[4], out[5], out[6], out[7]) !== 'NLB1') throw new Error('data image header mismatch');
     blob = new Blob([out.subarray(8, 8 + len)]);
@@ -1718,7 +1722,30 @@ LAB.leave = function(){
 
 /* ---------- boot ---------- */
 buildRail(); syncRail(); buildCmpSelect();
-load().catch(err=>{ console.error(err); failMsg('Could not load the brain data: ' + err.message); });
+let loadTriggered = false;
+function triggerLoad(){
+  if (loadTriggered) return;
+  loadTriggered = true;
+  load().catch(err=>{ console.error(err); failMsg('No se pudieron cargar los datos cerebrales: ' + err.message); });
+}
+
+// Lazy trigger: scroll, interaction, intersection with reveal section, or idle fallback
+window.addEventListener('scroll', triggerLoad, {once:true, passive:true});
+window.addEventListener('pointerdown', triggerLoad, {once:true, passive:true});
+window.addEventListener('touchstart', triggerLoad, {once:true, passive:true});
+
+if (typeof IntersectionObserver !== 'undefined' && $('#reveal')){
+  const _io = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting){ triggerLoad(); _io.disconnect(); }
+  }, {rootMargin: '400px'});
+  _io.observe($('#reveal'));
+}
+
+if (typeof requestIdleCallback !== 'undefined'){
+  requestIdleCallback(() => triggerLoad(), {timeout: 1200});
+} else {
+  setTimeout(triggerLoad, 400);
+}
 
 /* =====================================================================
    Chapter content: how each machine works
