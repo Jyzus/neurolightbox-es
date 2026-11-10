@@ -1,298 +1,3150 @@
 const VESSELS = window.VESSELS = [
-  // [name, group, type(0 artery,1 vein), radius, points, flags]
-  ['ICA', 'ICA', 0, 2.4, [[-24,-10,-78],[-24,-12,-58],[-22,-13,-44],[-18,-6,-38],[-17,-1,-31],[-16,4,-25],[-15,2,-18],[-14,2,-14]]],
-  ['M1', 'ICA', 0, 1.6, [[-14,2,-14],[-20,3,-13],[-26,3,-12]], 'MCA1'],
-  ['M1d', 'ICA', 0, 1.5, [[-26,3,-12],[-34,4,-9]], 'MCA'],
-  ['M2s', 'ICA', 0, 1.15, [[-34,4,-9],[-38,8,0],[-40,2,14],[-44,-12,28],[-48,-28,40]], 'MCA'],
-  ['M2i', 'ICA', 0, 1.15, [[-34,4,-9],[-40,-4,-3],[-45,-22,4],[-50,-42,14]], 'MCA'],
-  ['M3a', 'ICA', 0, 0.85, [[-38,8,0],[-46,22,12],[-48,34,24]], 'MCA'],
-  ['M3b', 'ICA', 0, 0.8, [[-40,2,14],[-50,4,30],[-54,0,42]], 'MCA'],
-  ['M3c', 'ICA', 0, 0.8, [[-45,-22,4],[-56,-18,-8]], 'MCA'],
-  ['M3d', 'ICA', 0, 0.8, [[-50,-42,14],[-54,-58,28]], 'MCA'],
-  ['A1', 'ICA', 0, 1.1, [[-14,2,-14],[-8,10,-12],[-2,16,-11]]],
-  ['ACom', 'ICA', 0, 0.6, [[-2,16,-11],[2,16,-11]], 'mid'],
-  ['A2', 'ICA', 0, 1.05, [[-2,16,-11],[-3,28,-2],[-3,36,10],[-3,36,24]]],
-  ['peri', 'ICA', 0, 0.9, [[-3,36,24],[-3,22,34],[-3,0,40],[-3,-24,40],[-3,-42,30]]],
-  ['callosomarg', 'ICA', 0, 0.8, [[-3,36,24],[-5,30,45],[-5,5,60],[-5,-25,64]]],
-  ['PCom', 'ICA', 0, 0.6, [[-14,2,-14],[-12,-7,-16],[-8,-13,-18]]],
-  ['VA', 'POST', 0, 1.6, [[-10,-36,-78],[-9,-32,-62],[-4,-20,-52],[0,-16,-50]]],
-  ['BA', 'POST', 0, 1.8, [[0,-16,-50],[0,-13,-40],[0,-11,-30],[0,-10,-21]], 'mid'],
-  ['P1P2', 'POST', 0, 1.15, [[0,-10,-21],[-8,-13,-19],[-18,-22,-15],[-25,-40,-8],[-18,-62,0]]],
-  ['P3', 'POST', 0, 0.9, [[-18,-62,0],[-12,-78,6],[-8,-92,8]]],
-  ['SCA', 'POST', 0, 0.7, [[0,-11,-28],[-12,-20,-28],[-20,-45,-22],[-14,-66,-18]]],
-  ['PICA', 'POST', 0, 0.7, [[-6,-30,-58],[-14,-46,-50],[-12,-62,-42]]],
-  ['SSS', 'VEIN', 1, 3.2, null],
-  ['TS', 'VEIN', 1, 3.6, [[0,-104,8],[-28,-100,2],[-48,-86,-8],[-57,-66,-20],[-50,-46,-34],[-44,-36,-56]]],
-  ['SS', 'VEIN', 1, 2.3, [[0,-48,6],[0,-74,6],[0,-100,8]], 'mid'],
-  ['ICV', 'VEIN', 1, 1.1, [[-3,2,18],[-3,-22,16],[-1,-40,10],[0,-48,6]]],
+  [
+    "ICA",
+    "ICA",
+    0,
+    2.4,
+    [
+      [
+        -24,
+        -10,
+        -78
+      ],
+      [
+        -24,
+        -12,
+        -58
+      ],
+      [
+        -22,
+        -13,
+        -44
+      ],
+      [
+        -18,
+        -6,
+        -38
+      ],
+      [
+        -17,
+        -1,
+        -31
+      ],
+      [
+        -16,
+        4,
+        -25
+      ],
+      [
+        -15,
+        2,
+        -18
+      ],
+      [
+        -14,
+        2,
+        -14
+      ]
+    ]
+  ],
+  [
+    "M1",
+    "ICA",
+    0,
+    1.6,
+    [
+      [
+        -14,
+        2,
+        -14
+      ],
+      [
+        -20,
+        3,
+        -13
+      ],
+      [
+        -26,
+        3,
+        -12
+      ]
+    ],
+    "MCA1"
+  ],
+  [
+    "M1d",
+    "ICA",
+    0,
+    1.5,
+    [
+      [
+        -26,
+        3,
+        -12
+      ],
+      [
+        -34,
+        4,
+        -9
+      ]
+    ],
+    "MCA"
+  ],
+  [
+    "M2s",
+    "ICA",
+    0,
+    1.15,
+    [
+      [
+        -34,
+        4,
+        -9
+      ],
+      [
+        -38,
+        8,
+        0
+      ],
+      [
+        -40,
+        2,
+        14
+      ],
+      [
+        -44,
+        -12,
+        28
+      ],
+      [
+        -48,
+        -28,
+        40
+      ]
+    ],
+    "MCA"
+  ],
+  [
+    "M2i",
+    "ICA",
+    0,
+    1.15,
+    [
+      [
+        -34,
+        4,
+        -9
+      ],
+      [
+        -40,
+        -4,
+        -3
+      ],
+      [
+        -45,
+        -22,
+        4
+      ],
+      [
+        -50,
+        -42,
+        14
+      ]
+    ],
+    "MCA"
+  ],
+  [
+    "M3a",
+    "ICA",
+    0,
+    0.85,
+    [
+      [
+        -38,
+        8,
+        0
+      ],
+      [
+        -46,
+        22,
+        12
+      ],
+      [
+        -48,
+        34,
+        24
+      ]
+    ],
+    "MCA"
+  ],
+  [
+    "M3b",
+    "ICA",
+    0,
+    0.8,
+    [
+      [
+        -40,
+        2,
+        14
+      ],
+      [
+        -50,
+        4,
+        30
+      ],
+      [
+        -54,
+        0,
+        42
+      ]
+    ],
+    "MCA"
+  ],
+  [
+    "M3c",
+    "ICA",
+    0,
+    0.8,
+    [
+      [
+        -45,
+        -22,
+        4
+      ],
+      [
+        -56,
+        -18,
+        -8
+      ]
+    ],
+    "MCA"
+  ],
+  [
+    "M3d",
+    "ICA",
+    0,
+    0.8,
+    [
+      [
+        -50,
+        -42,
+        14
+      ],
+      [
+        -54,
+        -58,
+        28
+      ]
+    ],
+    "MCA"
+  ],
+  [
+    "A1",
+    "ICA",
+    0,
+    1.1,
+    [
+      [
+        -14,
+        2,
+        -14
+      ],
+      [
+        -8,
+        10,
+        -12
+      ],
+      [
+        -2,
+        16,
+        -11
+      ]
+    ]
+  ],
+  [
+    "ACom",
+    "ICA",
+    0,
+    0.6,
+    [
+      [
+        -2,
+        16,
+        -11
+      ],
+      [
+        2,
+        16,
+        -11
+      ]
+    ],
+    "mid"
+  ],
+  [
+    "A2",
+    "ICA",
+    0,
+    1.05,
+    [
+      [
+        -2,
+        16,
+        -11
+      ],
+      [
+        -3,
+        28,
+        -2
+      ],
+      [
+        -3,
+        36,
+        10
+      ],
+      [
+        -3,
+        36,
+        24
+      ]
+    ]
+  ],
+  [
+    "peri",
+    "ICA",
+    0,
+    0.9,
+    [
+      [
+        -3,
+        36,
+        24
+      ],
+      [
+        -3,
+        22,
+        34
+      ],
+      [
+        -3,
+        0,
+        40
+      ],
+      [
+        -3,
+        -24,
+        40
+      ],
+      [
+        -3,
+        -42,
+        30
+      ]
+    ]
+  ],
+  [
+    "callosomarg",
+    "ICA",
+    0,
+    0.8,
+    [
+      [
+        -3,
+        36,
+        24
+      ],
+      [
+        -5,
+        30,
+        45
+      ],
+      [
+        -5,
+        5,
+        60
+      ],
+      [
+        -5,
+        -25,
+        64
+      ]
+    ]
+  ],
+  [
+    "PCom",
+    "ICA",
+    0,
+    0.6,
+    [
+      [
+        -14,
+        2,
+        -14
+      ],
+      [
+        -12,
+        -7,
+        -16
+      ],
+      [
+        -8,
+        -13,
+        -18
+      ]
+    ]
+  ],
+  [
+    "VA",
+    "POST",
+    0,
+    1.6,
+    [
+      [
+        -10,
+        -36,
+        -78
+      ],
+      [
+        -9,
+        -32,
+        -62
+      ],
+      [
+        -4,
+        -20,
+        -52
+      ],
+      [
+        0,
+        -16,
+        -50
+      ]
+    ]
+  ],
+  [
+    "BA",
+    "POST",
+    0,
+    1.8,
+    [
+      [
+        0,
+        -16,
+        -50
+      ],
+      [
+        0,
+        -13,
+        -40
+      ],
+      [
+        0,
+        -11,
+        -30
+      ],
+      [
+        0,
+        -10,
+        -21
+      ]
+    ],
+    "mid"
+  ],
+  [
+    "P1P2",
+    "POST",
+    0,
+    1.15,
+    [
+      [
+        0,
+        -10,
+        -21
+      ],
+      [
+        -8,
+        -13,
+        -19
+      ],
+      [
+        -18,
+        -22,
+        -15
+      ],
+      [
+        -25,
+        -40,
+        -8
+      ],
+      [
+        -18,
+        -62,
+        0
+      ]
+    ]
+  ],
+  [
+    "P3",
+    "POST",
+    0,
+    0.9,
+    [
+      [
+        -18,
+        -62,
+        0
+      ],
+      [
+        -12,
+        -78,
+        6
+      ],
+      [
+        -8,
+        -92,
+        8
+      ]
+    ]
+  ],
+  [
+    "SCA",
+    "POST",
+    0,
+    0.7,
+    [
+      [
+        0,
+        -11,
+        -28
+      ],
+      [
+        -12,
+        -20,
+        -28
+      ],
+      [
+        -20,
+        -45,
+        -22
+      ],
+      [
+        -14,
+        -66,
+        -18
+      ]
+    ]
+  ],
+  [
+    "PICA",
+    "POST",
+    0,
+    0.7,
+    [
+      [
+        -6,
+        -30,
+        -58
+      ],
+      [
+        -14,
+        -46,
+        -50
+      ],
+      [
+        -12,
+        -62,
+        -42
+      ]
+    ]
+  ],
+  [
+    "SSS",
+    "VEIN",
+    1,
+    3.2,
+    null
+  ],
+  [
+    "TS",
+    "VEIN",
+    1,
+    3.6,
+    [
+      [
+        0,
+        -104,
+        8
+      ],
+      [
+        -28,
+        -100,
+        2
+      ],
+      [
+        -48,
+        -86,
+        -8
+      ],
+      [
+        -57,
+        -66,
+        -20
+      ],
+      [
+        -50,
+        -46,
+        -34
+      ],
+      [
+        -44,
+        -36,
+        -56
+      ]
+    ]
+  ],
+  [
+    "SS",
+    "VEIN",
+    1,
+    2.3,
+    [
+      [
+        0,
+        -48,
+        6
+      ],
+      [
+        0,
+        -74,
+        6
+      ],
+      [
+        0,
+        -100,
+        8
+      ]
+    ],
+    "mid"
+  ],
+  [
+    "ICV",
+    "VEIN",
+    1,
+    1.1,
+    [
+      [
+        -3,
+        2,
+        18
+      ],
+      [
+        -3,
+        -22,
+        16
+      ],
+      [
+        -1,
+        -40,
+        10
+      ],
+      [
+        0,
+        -48,
+        6
+      ]
+    ]
+  ]
 ];
 
-/* ---------- brain states ---------- */
-
-const PLAQUES = window.PLAQUES = [[-22,-10,30,4,5,8],[24,-25,28,4,6,8],[-18,15,22,4,4,7],[20,10,30,3,4,6],[-26,-40,25,4,5,7],[28,-45,20,5,4,6],[-45,-20,40,3,3,3],[5,-25,-30,3,3,3],[12,-30,34,3,4,5],[-14,-58,18,4,5,5]];
+const PLAQUES = window.PLAQUES = [
+  [
+    -22,
+    -10,
+    30,
+    4,
+    5,
+    8
+  ],
+  [
+    24,
+    -25,
+    28,
+    4,
+    6,
+    8
+  ],
+  [
+    -18,
+    15,
+    22,
+    4,
+    4,
+    7
+  ],
+  [
+    20,
+    10,
+    30,
+    3,
+    4,
+    6
+  ],
+  [
+    -26,
+    -40,
+    25,
+    4,
+    5,
+    7
+  ],
+  [
+    28,
+    -45,
+    20,
+    5,
+    4,
+    6
+  ],
+  [
+    -45,
+    -20,
+    40,
+    3,
+    3,
+    3
+  ],
+  [
+    5,
+    -25,
+    -30,
+    3,
+    3,
+    3
+  ],
+  [
+    12,
+    -30,
+    34,
+    3,
+    4,
+    5
+  ],
+  [
+    -14,
+    -58,
+    18,
+    4,
+    5,
+    5
+  ]
+];
 
 const STATES = window.STATES = {
-  normal:{name:'Normal', tag:'Reference adult', cat:'disease', text:{
-    _:'Healthy adult appearance for this scan.',
-    t1:'White matter bright, grey matter mid-grey, CSF dark. Corpus callosum and cerebellar folia are sharp.',
-    t1gd:'Vessels and dural sinuses enhance; brain tissue does not.',
-    t2:'CSF bright, grey matter brighter than white; arteries are black flow voids.',
-    flair:'CSF nulled to black; cortex a little brighter than white matter.',
-    dwi:'Even low-to-mid signal; CSF dark.', swi:'Veins and the iron-rich globus pallidus are dark.',
-    dti:'Corpus callosum red, corticospinal tracts blue, long association bundles green.',
-    mra:'Complete circle of Willis: carotids, middle, anterior and posterior cerebral arteries.',
-    asl:'Grey matter flow ~60 mL/100 g/min, white matter ~20.',
-    mrs:'NAA is the tallest peak; choline below creatine (Hunter’s angle rises to the left).',
-    ctb:'Grey ~38 HU, white ~28 HU, CSF ~5 HU.', ctbone:'Intact inner and outer tables with marrow between.',
-    cta:'Arterial phase: the circle of Willis fills with no cut-off.', fdg:'Cortex, deep grey nuclei and cerebellum take up glucose; white matter is low.',
-    amy:'Negative scan: tracer stays in white matter and the grey–white border is crisp.', hmpao:'Even cortical perfusion; cerebellum highest.',
-    dat:'Two symmetric commas: caudate and putamen fully lit.', cus:'Echo-free ventricles, bright choroid plexus and sulcal lines.',
-    tcd:'MCA mean velocity ~60 cm/s, pulsatility index ~0.9.', dsa:'Normal left ICA run: ACA and MCA territories fill, then drain to the sinuses.'}},
-  stroke:{name:'Acute ischaemic stroke', tag:'Left MCA occlusion', cat:'disease', pos:{axial:14,coronal:-2,sagittal:-42},
-    lesions:[{k:1,c:[-40,-2,14],r:[24,36,30],f:'infarct'},{k:21,c:[-24,3,-12],r:[6,3,3],f:'clot'}],
-    vessels:{occl:'MCA'}, met:{fdg:[{c:[24,-62,-32],s:16,g:-0.35}], hmpao:[{c:[24,-62,-32],s:16,g:-0.35}]}, mrs:'stroke', box:[-44,-4,22,10], tcd:'occl',
-    text:{_:'Infarct in the left middle cerebral artery territory.',
-      t1:'Subtle low signal and gyral swelling; T1 lags behind DWI.', t1gd:'Little enhancement in the first days; gyral enhancement at 1–2 weeks.',
-      t2:'Cortex and white matter turn bright after about 6 hours.', flair:'Bright territory, plus bright vessels distal to the clot.',
-      dwi:'Restricted diffusion makes the core bright within minutes.', swi:'Clot blooms dark in the left M1 segment.',
-      dti:'Fractional anisotropy falls in the infarcted white matter.', mra:'Abrupt cut-off of the left M1; distal MCA branches missing.',
-      asl:'Absent flow in the left MCA territory.', mrs:'Lactate doublet at 1.33 ppm; NAA falling.',
-      ctb:'Hypodense territory with loss of grey–white contrast and a hyperdense MCA sign.', cta:'Left M1 cut-off.',
-      fdg:'No metabolism in the infarct; the right cerebellum dims too.', hmpao:'Perfusion defect with crossed cerebellar diaschisis.',
-      tcd:'No signal from the left MCA; anterior cerebral flow may rise as collateral.', dsa:'Contrast stops in the left M1 (“meniscus”); the MCA territory stays blank.'}},
-  ich:{name:'Intracerebral haemorrhage', tag:'Right putamen', cat:'disease', pos:{axial:3,coronal:2,sagittal:26},
-    lesions:[{k:2,c:[26,2,3],r:[13,18,15],f:'haem'}], vessels:{spot:[24,4,4]},
-    text:{_:'Hypertensive bleed in the right basal ganglia.',
-      t1:'Acute blood is iso- to slightly dark; it turns bright from about day 3.', t1gd:'The clot itself does not enhance.',
-      t2:'Acute deoxyhaemoglobin is dark, ringed by bright oedema.', flair:'Dark clot inside a rim of bright oedema.',
-      dwi:'Dark and heterogeneous: blood products distort the signal.', swi:'Marked blooming: blood looks larger and black.',
-      dti:'Internal capsule fibres are displaced or cut.', ctb:'Hyperdense (60–80 HU) clot with a thin hypodense rim.', cta:'Spot sign: a dot of contrast inside the clot.'}},
-  sah:{name:'Subarachnoid haemorrhage', tag:'Ruptured ACom aneurysm', cat:'disease', pos:{axial:-10,coronal:4,sagittal:0},
-    lesions:[{k:7,c:[0,4,-12],r:[60,44,26],f:'sah'},{k:20,c:[1,16,-8],r:[5,5,5],f:'aneur_rupt'}], hydro:0.45, vessels:{aneurysm:{c:[1,17,-7],r:3.4}}, tcd:'vasospasm',
-    text:{_:'Blood in the basal cisterns and sylvian fissures from a ruptured aneurysm.',
-      flair:'Sulci and cisterns that should be black are bright.', ctb:'Hyperdense blood fills the suprasellar cistern and sylvian fissures (“star” pattern); temporal horns dilate.',
-      cta:'An anterior communicating artery aneurysm.', mra:'Saccular aneurysm at the anterior communicating artery.'}},
-  sdh:{name:'Subdural haematoma', tag:'Left convexity · acute', cat:'disease', pos:{axial:32,coronal:-12,sagittal:-54},
-    lesions:[{k:5,c:[-52,-12,32],r:[30,80,55],p:[10],f:'sdh'}],
-    text:{_:'Blood between the dura and the arachnoid.', ctb:'Crescent of bright blood along the left convexity; it crosses sutures.',
-      t1:'Acute blood is near brain signal; subacute turns bright.', t2:'Crescent of altered signal compressing sulci.', flair:'Bright crescent over the left hemisphere.'}},
-  edh:{name:'Fracture with epidural haematoma', tag:'Left temporal', cat:'disease', pos:{axial:8,coronal:-8,sagittal:-60},
-    lesions:[{k:6,c:[-62,-8,8],r:[36,36,36],p:[17],f:'edh'},{k:11,c:[-70,-8,16],r:[26,26,26],p:[0,0.55,0.83],f:'fracture'}],
-    text:{_:'A skull fracture tears the middle meningeal artery.', ctb:'Lens-shaped bright collection that stops at sutures, under scalp swelling.',
-      ctbone:'Thin lucent line through the left temporal squama with soft-tissue swelling.', t2:'Biconvex collection with the dura as a dark line on its inner side.'}},
-  gbm:{name:'Glioblastoma', tag:'Right frontal', cat:'disease', pos:{axial:24,coronal:32,sagittal:30}, posBySub:{cus:{coronal:32}},
-    lesions:[{k:3,c:[30,32,24],r:[20,22,20],p:[2.3],f:'gbm'}], mrs:'gbm', box:[30,32,24,9],
-    text:{_:'High-grade glial tumour with necrosis and oedema.', t1:'Dark, ill-defined mass.', t1gd:'Thick, irregular ring enhancement around a necrotic centre.',
-      t2:'Necrosis bright; oedema spreads along white matter.', flair:'Finger-like oedema confined to white matter, sparing the cortex.',
-      dwi:'Solid rim can restrict; necrosis stays dark.', swi:'Dark dots from microbleeds and new vessels inside the tumour.', dti:'Low FA in tumour; tracts displaced.',
-      asl:'The solid rim is hyperperfused — a marker of high grade.', mrs:'Choline up, NAA down, lipid–lactate peak from necrosis.',
-      ctb:'Hypodense mass with surrounding oedema.', fdg:'Hypermetabolic rim brighter than cortex, around a cold core.'}},
-  mets:{name:'Metastases', tag:'Three lesions', cat:'disease', pos:{axial:32,coronal:-60,sagittal:-34},
-    lesions:[{k:3,c:[-34,-62,32],r:[7,7,7],p:[3.2],f:'met'},{k:3,c:[40,12,40],r:[6,6,6],p:[3.4],f:'met'},{k:3,c:[-20,48,8],r:[5,5,5],p:[3.0],f:'met'}],
-    text:{_:'Blood-borne tumour deposits at the grey–white junction.', t1gd:'Several small ring- or nodular-enhancing lesions.', flair:'Oedema out of proportion to the lesion size.', t2:'Oedema around each deposit.', ctb:'Small hypodense areas of oedema; the deposits themselves may be invisible.'}},
-  abscess:{name:'Brain abscess', tag:'Left parietal', cat:'disease', pos:{axial:26,coronal:-42,sagittal:-30},
-    lesions:[{k:9,c:[-30,-42,26],r:[12,12,12],p:[2.0],f:'abscess'}], mrs:'abscess', box:[-30,-42,26,7],
-    text:{_:'A walled-off collection of pus.', t1gd:'Thin, smooth ring of enhancement, thinnest on the ventricular side.', dwi:'Pus restricts diffusion: the centre is bright (unlike tumour necrosis).',
-      t2:'Bright centre, dark rim, surrounding oedema.', swi:'A dual rim: dark outer and brighter inner layer.', mrs:'Amino acids, acetate and succinate peaks.'}},
-  ms:{name:'Multiple sclerosis', tag:'Relapsing–remitting', cat:'disease', pos:{axial:26,coronal:-10,sagittal:-20},
-    lesions:PLAQUES.map((q,i)=>({k:4,c:[q[0],q[1],q[2]],r:[q[3],q[4],q[5]],p:[i%3===1?1:0,0],f:'plaque'})).concat([{k:4,c:[-30,0,35],r:[6,6,6],p:[0,1],f:'active'}]), mrs:'ms', box:[-30,0,35,8],
-    text:{_:'Demyelinating plaques in white matter.', t1:'Some plaques are dark “black holes” from axon loss.', t1gd:'An active plaque enhances as an incomplete ring.',
-      t2:'Bright ovoid plaques around the ventricles.', flair:'Plaques point away from the ventricles (Dawson’s fingers).', dwi:'Active plaques can restrict slightly.',
-      swi:'Central vein sign inside plaques.', dti:'Lower FA in plaques.', mrs:'NAA down and choline up in active plaques.', ctb:'Often normal; large plaques may be faintly hypodense.'}},
-  ad:{name:'Alzheimer’s disease', tag:'Moderate', cat:'disease', pos:{axial:-14,coronal:-22,sagittal:-26}, posBySub:{fdg:{axial:30}, hmpao:{axial:30}, asl:{axial:30}, amy:{axial:26}, mrs:{axial:32}}, atrophy:1,
-    lesions:[{k:20,c:[-26,-22,-14],r:[9,20,10],f:'hippo'},{k:20,c:[26,-22,-14],r:[9,20,10],f:'hippo'}],
-    met:{fdg:[{c:[-46,-62,32],s:17,g:-0.5},{c:[46,-62,32],s:17,g:-0.5},{c:[0,-58,34],s:13,g:-0.45},{c:[-52,-24,-12],s:15,g:-0.3},{c:[52,-24,-12],s:15,g:-0.3}],
-         hmpao:[{c:[-46,-62,32],s:17,g:-0.4},{c:[46,-62,32],s:17,g:-0.4},{c:[0,-58,34],s:13,g:-0.35}],
-         asl:[{c:[-46,-62,32],s:17,g:-0.4},{c:[46,-62,32],s:17,g:-0.4},{c:[0,-58,34],s:13,g:-0.4}]},
-    metFind:{fdg:'tp', hmpao:'tp', asl:'tp'}, amyloid:true, mrs:'ad', box:[0,-50,32,9],
-    text:{_:'Neurodegeneration with temporal-predominant atrophy.', t1:'Shrunken hippocampi, wide sulci and enlarged ventricles.', t2:'Atrophy with enlarged temporal horns.',
-      flair:'Atrophy plus mild white-matter changes.', ctb:'Enlarged ventricles, temporal horns and sulci.',
-      fdg:'Temporoparietal and posterior cingulate hypometabolism; motor and visual cortex spared.', amy:'Positive scan: cortical tracer erases the grey–white border.',
-      hmpao:'Temporoparietal hypoperfusion.', asl:'Reduced flow in posterior cingulate and parietal cortex.', mrs:'NAA down, myo-inositol up in the posterior cingulate.'}},
-  tle:{name:'Temporal lobe epilepsy', tag:'Left mesial temporal', cat:'disease', pos:{axial:-14,coronal:-22,sagittal:-26},
-    lesions:[{k:8,c:[-26,-22,-14],r:[10,22,12],f:'mts'}],
-    met:{fdg:[{c:[-46,-14,-22],s:16,g:-0.45}], hmpao:[{c:[-42,-14,-20],s:15,g:0.65}]}, metFind:{fdg:'tle_pet', hmpao:'tle_spect'},
-    text:{_:'Seizure focus in the left mesial temporal lobe.', t1:'Small left hippocampus that has lost its internal structure.', t2:'Small, bright left hippocampus (hippocampal sclerosis).',
-      flair:'Bright, shrunken left hippocampus.', dwi:'Usually normal between seizures.', fdg:'Interictal hypometabolism of the left temporal lobe.', hmpao:'Injected during a seizure: the focus is hyperperfused.'}},
-  hydro:{name:'Obstructive hydrocephalus', tag:'Aqueduct stenosis', cat:'disease', pos:{axial:18,coronal:-10,sagittal:-14}, hydro:1,
-    lesions:[{k:20,c:[0,-8,16],r:[34,46,22],f:'hydro'}],
-    text:{_:'CSF cannot leave the third ventricle, so the lateral and third ventricles balloon.', t1:'Enlarged lateral and third ventricles; normal fourth.',
-      flair:'Bright rim around the ventricles from CSF pushed into the tissue (transependymal flow).', ctb:'Enlarged ventricles with rounded frontal horns; sulci effaced.',
-      t2:'Ballooned ventricles.', cus:'Dilated, rounded ventricles.'}},
-  pd:{name:'Parkinson’s disease', tag:'Right-sided symptoms', cat:'disease', pos:{axial:2,coronal:4,sagittal:-25}, pd:true,
-    lesions:[{k:20,c:[-25,-2,2],r:[10,16,12],f:'dat_loss'}],
-    text:{_:'Loss of dopaminergic nerve terminals.', dat:'Putamen uptake fades from the back, worse on the left: commas become full stops.'}},
-  aneurysm:{name:'Unruptured aneurysm', tag:'Left MCA bifurcation', cat:'disease', pos:{axial:-8,coronal:6,sagittal:-36},
-    lesions:[{k:20,c:[-36,6,-8],r:[6,6,6],f:'aneur'}], vessels:{aneurysm:{c:[-36,6,-6],r:4.2}},
-    text:{_:'Saccular berry aneurysm at a branch point.', mra:'Round outpouching at the left MCA bifurcation.', cta:'Contrast-filled sac; neck and dome can be measured.', dsa:'Sac fills in arterial phase and holds contrast.'}},
-  avm:{name:'Arteriovenous malformation', tag:'Right parietal', cat:'disease', pos:{axial:40,coronal:-48,sagittal:34},
-    lesions:[{k:20,c:[34,-48,40],r:[15,15,15],f:'avm'}], vessels:{avm:{c:[34,-48,40],r:13}}, dsaInj:'ICA-R',
-    text:{_:'A tangle of vessels shunting arterial blood straight into veins.', t2:'Cluster of black serpiginous flow voids.', t1gd:'Enhancing tangle with enlarged draining vein.',
-      mra:'Nidus with feeding arteries and an early draining vein.', cta:'Tangle of opacified vessels.', dsa:'The nidus and its draining vein fill in the arterial phase (early venous drainage).'}},
-  bd:{name:'Brain death', tag:'Absent cerebral circulation', cat:'physio', noFlow:true, eeg:'bd', tcd:'bd',
-    text:{_:'Irreversible loss of all brain function. Imaging is ancillary to the clinical examination.',
-      hmpao:'“Hollow skull”: no tracer in the brain; scalp activity only.', cta:'No intracranial arterial opacification beyond the skull base.',
-      dsa:'Contrast stops at the skull base (“stasis filling”).', asl:'No labelled blood reaches the brain.', eeg:'Electrocerebral silence: no activity above 2 µV.',
-      tcd:'Oscillating flow: forward in systole, reversed in diastole.'}},
-  // ---- ultrasound ----
-  ivh:{name:'Intraventricular haemorrhage', tag:'Grade III (preterm)', cat:'disease', pos:{coronal:-6}, hydro:0.6,
-    lesions:[{k:2,c:[-14,-6,16],r:[8,16,9],f:'ivh'}],
-    text:{_:'Bleeding from the germinal matrix into the ventricle, with dilatation.', cus:'Echogenic clot fills a dilated left lateral ventricle.'}},
-  pvl:{name:'Periventricular leukomalacia', tag:'Preterm white-matter injury', cat:'disease', pos:{coronal:-20},
-    lesions:[{k:22,c:[-22,-20,22],r:[10,22,14],f:'pvl'},{k:22,c:[22,-20,22],r:[10,22,14],f:'pvl'}],
-    text:{_:'Ischaemic injury to the white matter beside the ventricles.', cus:'Bright periventricular flare that may later break down into cysts.'}},
-  vasospasm:{name:'Vasospasm', tag:'Day 7 after SAH', cat:'disease', tcd:'vasospasm', text:{_:'Arterial narrowing after subarachnoid haemorrhage.', tcd:'Mean velocity 160 cm/s, Lindegaard ratio > 3.'}},
-  icp:{name:'Raised intracranial pressure', tag:'Diffuse swelling', cat:'physio', tcd:'icp', text:{_:'Pressure inside the skull approaches arterial diastolic pressure.', tcd:'Diastolic flow collapses; pulsatility index rises above 1.4.'}},
-  // ---- physiological ----
-  eyes_closed:{name:'Awake, eyes closed', tag:'Relaxed', cat:'physio', eeg:'alpha', meg:'alpha', text:{_:'Relaxed wakefulness.', eeg:'A 9–11 Hz alpha rhythm over the back of the head.', meg:'Occipital alpha sources oscillate at 10 Hz.'}},
-  eyes_open:{name:'Awake, eyes open', tag:'Visual input', cat:'physio', eeg:'beta', yeo:{1:1.18}, text:{_:'Alert, looking.', eeg:'Alpha blocks; low-voltage fast activity remains.', fdg:'Visual cortex metabolism rises.'}},
-  n1:{name:'Sleep N1', tag:'Drowsy', cat:'physio', eeg:'n1', text:{_:'Light drowsiness.', eeg:'Alpha drops out; theta and sharp vertex waves appear.'}},
-  n2:{name:'Sleep N2', tag:'Light sleep', cat:'physio', eeg:'n2', text:{_:'Stable light sleep, about half the night.', eeg:'Sleep spindles (12–14 Hz) and K-complexes.'}},
-  n3:{name:'Sleep N3', tag:'Slow-wave sleep', cat:'physio', eeg:'n3', metG:0.74, yeo:{6:0.88,7:0.92}, met:{fdg:[{c:[0,-15,8],s:10,g:-0.3}]},
-    text:{_:'Deep, restorative sleep.', eeg:'High-amplitude delta waves (> 75 µV, < 2 Hz).', fdg:'Global metabolism falls about 25–40%, most in frontal cortex and thalamus.'}},
-  rem:{name:'REM sleep', tag:'Dreaming', cat:'physio', eeg:'rem', yeo:{5:1.15,1:1.1,6:0.8}, met:{fdg:[{c:[0,30,10],s:14,g:0.15}]},
-    text:{_:'Dreaming sleep with muscle atonia.', eeg:'Low-voltage mixed frequencies, sawtooth waves and eye-movement artefact in frontal leads.', fdg:'Limbic and visual association cortex up; dorsolateral prefrontal down.'}},
-  anaes:{name:'General anaesthesia', tag:'Propofol', cat:'physio', eeg:'anaes', metG:0.56, yeo:{6:0.9,7:0.9}, met:{fdg:[{c:[0,-15,8],s:10,g:-0.3}],asl:[{c:[0,-15,8],s:10,g:-0.25}]}, asl:{g:0.65},
-    text:{_:'Drug-induced unconsciousness.', eeg:'Frontal alpha with slow waves (“anteriorisation”).', fdg:'Whole-brain glucose use falls about 40–55%, thalamus most.', asl:'Global blood flow falls with metabolism.'}},
-  burst:{name:'Burst suppression', tag:'Deep anaesthesia / coma', cat:'physio', eeg:'burst', metG:0.45, text:{_:'Very deep anaesthesia, hypothermia or severe brain injury.', eeg:'Bursts of activity alternate with flat suppression.'}},
-  absence:{name:'Absence seizure', tag:'Generalised', cat:'physio', eeg:'absence', text:{_:'A brief lapse of awareness, typical of childhood absence epilepsy.', eeg:'Generalised 3 Hz spike-and-wave, starting and stopping abruptly.'}},
-  focal_sz:{name:'Focal seizure', tag:'Left temporal onset', cat:'physio', eeg:'focal', text:{_:'A seizure starting in the left temporal lobe.', eeg:'Rhythmic theta builds over T7/F7, spreading as it evolves.'}},
-  uws:{name:'Unresponsive wakefulness', tag:'Vegetative state', cat:'physio', eeg:'uws', metG:0.55, yeo:{6:0.75,7:0.7}, metFind:{fdg:'uws'},
-    lesions:[{k:20,c:[0,-58,34],r:[16,18,16],f:'uws'}],
-    text:{_:'Eyes open, sleep–wake cycles, but no signs of awareness.', eeg:'Diffuse slowing with little reactivity.', fdg:'Global metabolism ~50% of normal; frontoparietal and posterior medial cortex worst.'}},
-  // ---- MEG ----
-  aep:{name:'Auditory evoked field', tag:'N100m to a tone', cat:'task', meg:'aep', text:{_:'Tone in both ears.', meg:'Dipoles in Heschl’s gyrus on both sides peak 100 ms after the tone.'}},
-  sep:{name:'Somatosensory evoked field', tag:'N20m, right median nerve', cat:'task', meg:'sep', text:{_:'Electrical pulse at the right wrist.', meg:'A dipole in the left postcentral hand area 20 ms after the pulse.'}},
-  spike:{name:'Interictal spike', tag:'Left temporal', cat:'disease', meg:'spike', text:{_:'Epileptic spike between seizures.', meg:'A dipole in the left anterior temporal lobe; MEG localises it for surgery planning.'}},
-  // ---- fMRI ----
-  motor:{name:'Finger tapping', tag:'Right hand', cat:'task', plane:'axial', pos:{axial:56,coronal:-22,sagittal:-38}, roi:'left M1',
-    act:[{c:[-38,-22,56],s:7,a:1.25},{c:[-40,-30,52],s:6,a:0.55},{c:[-4,-6,60],s:7,a:0.8},{c:[22,-54,-24],s:7,a:0.9},{c:[-26,-4,4],s:5,a:0.35}],
-    text:{_:'Left primary motor cortex (hand knob), supplementary motor area and right cerebellum follow the blocks.'}},
-  visual:{name:'Visual checkerboard', tag:'8 Hz flicker', cat:'task', plane:'sagittal', pos:{axial:4,coronal:-88,sagittal:8}, roi:'V1',
-    act:[{c:[-10,-90,4],s:9,a:1.1},{c:[10,-90,4],s:9,a:1.1},{c:[-22,-88,8],s:8,a:0.75},{c:[22,-88,8],s:8,a:0.75},{c:[-20,-26,-4],s:4,a:0.45},{c:[20,-26,-4],s:4,a:0.45}],
-    text:{_:'Primary visual cortex along the calcarine sulcus lights up on both sides, plus the lateral geniculate nuclei.'}},
-  language:{name:'Verb generation', tag:'Language', cat:'task', plane:'sagittal', pos:{axial:10,coronal:22,sagittal:-50}, roi:'Broca area',
-    act:[{c:[-48,22,12],s:9,a:1.15},{c:[-4,12,56],s:7,a:0.7},{c:[-55,-45,8],s:9,a:0.7},{c:[30,-68,-32],s:8,a:0.6},{c:[46,22,10],s:7,a:0.3}],
-    text:{_:'Left inferior frontal (Broca) and posterior temporal (Wernicke) regions; language is left-lateralised in ~95% of right-handers.'}},
-  poststroke:{name:'Finger tapping after stroke', tag:'Left MCA infarct', cat:'task', plane:'axial', pos:{axial:56,coronal:-22,sagittal:-38}, roi:'right M1',
-    lesions:[{k:1,c:[-40,-2,14],r:[24,36,30],f:'infarct'}],
-    act:[{c:[-38,-22,56],s:7,a:0.35},{c:[38,-22,56],s:7,a:0.8},{c:[-4,-6,60],s:8,a:1.0},{c:[22,-54,-24],s:7,a:0.7},{c:[-30,-18,48],s:6,a:0.5}],
-    text:{_:'Weaker left M1 response; the right motor cortex and SMA are recruited instead.'}},
-  dmn:{name:'Default mode network', tag:'Resting state', cat:'task', plane:'sagittal', pos:{axial:30,coronal:-56,sagittal:-4}, yeoAct:7, roi:'PCC seed',
-    text:{_:'Posterior cingulate, medial prefrontal and angular gyri fluctuate together at rest and quieten during tasks.'}},
-  salience:{name:'Salience network', tag:'Resting state', cat:'task', plane:'axial', pos:{axial:6,coronal:16,sagittal:-38}, yeoAct:4, roi:'anterior insula seed',
-    text:{_:'Anterior insula and anterior cingulate: flags what matters and switches between networks.'}},
-  dan:{name:'Dorsal attention', tag:'Resting state', cat:'task', plane:'axial', pos:{axial:50,coronal:-60,sagittal:-28}, yeoAct:3, roi:'IPS seed',
-    text:{_:'Intraparietal sulcus and frontal eye fields: goal-directed spatial attention.'}},
-  smn:{name:'Somatomotor network', tag:'Resting state', cat:'task', plane:'axial', pos:{axial:56,coronal:-22,sagittal:-38}, yeoAct:2, roi:'M1 seed',
-    text:{_:'Pre- and postcentral gyri of both hemispheres plus SMA and auditory cortex.'}},
-  vis:{name:'Visual network', tag:'Resting state', cat:'task', plane:'axial', pos:{axial:4,coronal:-80,sagittal:8}, yeoAct:1, roi:'V1 seed',
-    text:{_:'Occipital cortex, strongly bilateral.'}},
-  fpn:{name:'Frontoparietal control', tag:'Resting state', cat:'task', plane:'axial', pos:{axial:40,coronal:30,sagittal:-44}, yeoAct:6, roi:'dlPFC seed',
-    text:{_:'Lateral prefrontal and inferior parietal cortex: flexible task control and working memory.'}},
-  limbic:{name:'Limbic network', tag:'Resting state', cat:'task', plane:'axial', pos:{axial:-24,coronal:10,sagittal:-30}, yeoAct:5, roi:'orbitofrontal seed',
-    text:{_:'Orbitofrontal cortex and temporal poles. Prone to signal loss near air-filled sinuses.'}},
+  "normal": {
+    "name": "Normal",
+    "tag": "Reference adult",
+    "cat": "disease",
+    "text": {
+      "_": "Healthy adult appearance for this scan.",
+      "t1": "White matter bright, grey matter mid-grey, CSF dark. Corpus callosum and cerebellar folia are sharp.",
+      "t1gd": "Vessels and dural sinuses enhance; brain tissue does not.",
+      "t2": "CSF bright, grey matter brighter than white; arteries are black flow voids.",
+      "flair": "CSF nulled to black; cortex a little brighter than white matter.",
+      "dwi": "Even low-to-mid signal; CSF dark.",
+      "swi": "Veins and the iron-rich globus pallidus are dark.",
+      "dti": "Corpus callosum red, corticospinal tracts blue, long association bundles green.",
+      "mra": "Complete circle of Willis: carotids, middle, anterior and posterior cerebral arteries.",
+      "asl": "Grey matter flow ~60 mL/100 g/min, white matter ~20.",
+      "mrs": "NAA is the tallest peak; choline below creatine (Hunter’s angle rises to the left).",
+      "ctb": "Grey ~38 HU, white ~28 HU, CSF ~5 HU.",
+      "ctbone": "Intact inner and outer tables with marrow between.",
+      "cta": "Arterial phase: the circle of Willis fills with no cut-off.",
+      "fdg": "Cortex, deep grey nuclei and cerebellum take up glucose; white matter is low.",
+      "amy": "Negative scan: tracer stays in white matter and the grey–white border is crisp.",
+      "hmpao": "Even cortical perfusion; cerebellum highest.",
+      "dat": "Two symmetric commas: caudate and putamen fully lit.",
+      "cus": "Echo-free ventricles, bright choroid plexus and sulcal lines.",
+      "tcd": "MCA mean velocity ~60 cm/s, pulsatility index ~0.9.",
+      "dsa": "Normal left ICA run: ACA and MCA territories fill, then drain to the sinuses."
+    }
+  },
+  "stroke": {
+    "name": "Acute ischaemic stroke",
+    "tag": "Left MCA occlusion",
+    "cat": "disease",
+    "pos": {
+      "axial": 14,
+      "coronal": -2,
+      "sagittal": -42
+    },
+    "lesions": [
+      {
+        "k": 1,
+        "c": [
+          -40,
+          -2,
+          14
+        ],
+        "r": [
+          24,
+          36,
+          30
+        ],
+        "f": "infarct"
+      },
+      {
+        "k": 21,
+        "c": [
+          -24,
+          3,
+          -12
+        ],
+        "r": [
+          6,
+          3,
+          3
+        ],
+        "f": "clot"
+      }
+    ],
+    "vessels": {
+      "occl": "MCA"
+    },
+    "met": {
+      "fdg": [
+        {
+          "c": [
+            24,
+            -62,
+            -32
+          ],
+          "s": 16,
+          "g": -0.35
+        }
+      ],
+      "hmpao": [
+        {
+          "c": [
+            24,
+            -62,
+            -32
+          ],
+          "s": 16,
+          "g": -0.35
+        }
+      ]
+    },
+    "mrs": "stroke",
+    "box": [
+      -44,
+      -4,
+      22,
+      10
+    ],
+    "tcd": "occl",
+    "text": {
+      "_": "Infarct in the left middle cerebral artery territory.",
+      "t1": "Subtle low signal and gyral swelling; T1 lags behind DWI.",
+      "t1gd": "Little enhancement in the first days; gyral enhancement at 1–2 weeks.",
+      "t2": "Cortex and white matter turn bright after about 6 hours.",
+      "flair": "Bright territory, plus bright vessels distal to the clot.",
+      "dwi": "Restricted diffusion makes the core bright within minutes.",
+      "swi": "Clot blooms dark in the left M1 segment.",
+      "dti": "Fractional anisotropy falls in the infarcted white matter.",
+      "mra": "Abrupt cut-off of the left M1; distal MCA branches missing.",
+      "asl": "Absent flow in the left MCA territory.",
+      "mrs": "Lactate doublet at 1.33 ppm; NAA falling.",
+      "ctb": "Hypodense territory with loss of grey–white contrast and a hyperdense MCA sign.",
+      "cta": "Left M1 cut-off.",
+      "fdg": "No metabolism in the infarct; the right cerebellum dims too.",
+      "hmpao": "Perfusion defect with crossed cerebellar diaschisis.",
+      "tcd": "No signal from the left MCA; anterior cerebral flow may rise as collateral.",
+      "dsa": "Contrast stops in the left M1 (“meniscus”); the MCA territory stays blank."
+    }
+  },
+  "ich": {
+    "name": "Intracerebral haemorrhage",
+    "tag": "Right putamen",
+    "cat": "disease",
+    "pos": {
+      "axial": 3,
+      "coronal": 2,
+      "sagittal": 26
+    },
+    "lesions": [
+      {
+        "k": 2,
+        "c": [
+          26,
+          2,
+          3
+        ],
+        "r": [
+          13,
+          18,
+          15
+        ],
+        "f": "haem"
+      }
+    ],
+    "vessels": {
+      "spot": [
+        24,
+        4,
+        4
+      ]
+    },
+    "text": {
+      "_": "Hypertensive bleed in the right basal ganglia.",
+      "t1": "Acute blood is iso- to slightly dark; it turns bright from about day 3.",
+      "t1gd": "The clot itself does not enhance.",
+      "t2": "Acute deoxyhaemoglobin is dark, ringed by bright oedema.",
+      "flair": "Dark clot inside a rim of bright oedema.",
+      "dwi": "Dark and heterogeneous: blood products distort the signal.",
+      "swi": "Marked blooming: blood looks larger and black.",
+      "dti": "Internal capsule fibres are displaced or cut.",
+      "ctb": "Hyperdense (60–80 HU) clot with a thin hypodense rim.",
+      "cta": "Spot sign: a dot of contrast inside the clot."
+    }
+  },
+  "sah": {
+    "name": "Subarachnoid haemorrhage",
+    "tag": "Ruptured ACom aneurysm",
+    "cat": "disease",
+    "pos": {
+      "axial": -10,
+      "coronal": 4,
+      "sagittal": 0
+    },
+    "lesions": [
+      {
+        "k": 7,
+        "c": [
+          0,
+          4,
+          -12
+        ],
+        "r": [
+          60,
+          44,
+          26
+        ],
+        "f": "sah"
+      },
+      {
+        "k": 20,
+        "c": [
+          1,
+          16,
+          -8
+        ],
+        "r": [
+          5,
+          5,
+          5
+        ],
+        "f": "aneur_rupt"
+      }
+    ],
+    "hydro": 0.45,
+    "vessels": {
+      "aneurysm": {
+        "c": [
+          1,
+          17,
+          -7
+        ],
+        "r": 3.4
+      }
+    },
+    "tcd": "vasospasm",
+    "text": {
+      "_": "Blood in the basal cisterns and sylvian fissures from a ruptured aneurysm.",
+      "flair": "Sulci and cisterns that should be black are bright.",
+      "ctb": "Hyperdense blood fills the suprasellar cistern and sylvian fissures (“star” pattern); temporal horns dilate.",
+      "cta": "An anterior communicating artery aneurysm.",
+      "mra": "Saccular aneurysm at the anterior communicating artery."
+    }
+  },
+  "sdh": {
+    "name": "Subdural haematoma",
+    "tag": "Left convexity · acute",
+    "cat": "disease",
+    "pos": {
+      "axial": 32,
+      "coronal": -12,
+      "sagittal": -54
+    },
+    "lesions": [
+      {
+        "k": 5,
+        "c": [
+          -52,
+          -12,
+          32
+        ],
+        "r": [
+          30,
+          80,
+          55
+        ],
+        "p": [
+          10
+        ],
+        "f": "sdh"
+      }
+    ],
+    "text": {
+      "_": "Blood between the dura and the arachnoid.",
+      "ctb": "Crescent of bright blood along the left convexity; it crosses sutures.",
+      "t1": "Acute blood is near brain signal; subacute turns bright.",
+      "t2": "Crescent of altered signal compressing sulci.",
+      "flair": "Bright crescent over the left hemisphere."
+    }
+  },
+  "edh": {
+    "name": "Fracture with epidural haematoma",
+    "tag": "Left temporal",
+    "cat": "disease",
+    "pos": {
+      "axial": 8,
+      "coronal": -8,
+      "sagittal": -60
+    },
+    "lesions": [
+      {
+        "k": 6,
+        "c": [
+          -62,
+          -8,
+          8
+        ],
+        "r": [
+          36,
+          36,
+          36
+        ],
+        "p": [
+          17
+        ],
+        "f": "edh"
+      },
+      {
+        "k": 11,
+        "c": [
+          -70,
+          -8,
+          16
+        ],
+        "r": [
+          26,
+          26,
+          26
+        ],
+        "p": [
+          0,
+          0.55,
+          0.83
+        ],
+        "f": "fracture"
+      }
+    ],
+    "text": {
+      "_": "A skull fracture tears the middle meningeal artery.",
+      "ctb": "Lens-shaped bright collection that stops at sutures, under scalp swelling.",
+      "ctbone": "Thin lucent line through the left temporal squama with soft-tissue swelling.",
+      "t2": "Biconvex collection with the dura as a dark line on its inner side."
+    }
+  },
+  "gbm": {
+    "name": "Glioblastoma",
+    "tag": "Right frontal",
+    "cat": "disease",
+    "pos": {
+      "axial": 24,
+      "coronal": 32,
+      "sagittal": 30
+    },
+    "posBySub": {
+      "cus": {
+        "coronal": 32
+      }
+    },
+    "lesions": [
+      {
+        "k": 3,
+        "c": [
+          30,
+          32,
+          24
+        ],
+        "r": [
+          20,
+          22,
+          20
+        ],
+        "p": [
+          2.3
+        ],
+        "f": "gbm"
+      }
+    ],
+    "mrs": "gbm",
+    "box": [
+      30,
+      32,
+      24,
+      9
+    ],
+    "text": {
+      "_": "High-grade glial tumour with necrosis and oedema.",
+      "t1": "Dark, ill-defined mass.",
+      "t1gd": "Thick, irregular ring enhancement around a necrotic centre.",
+      "t2": "Necrosis bright; oedema spreads along white matter.",
+      "flair": "Finger-like oedema confined to white matter, sparing the cortex.",
+      "dwi": "Solid rim can restrict; necrosis stays dark.",
+      "swi": "Dark dots from microbleeds and new vessels inside the tumour.",
+      "dti": "Low FA in tumour; tracts displaced.",
+      "asl": "The solid rim is hyperperfused — a marker of high grade.",
+      "mrs": "Choline up, NAA down, lipid–lactate peak from necrosis.",
+      "ctb": "Hypodense mass with surrounding oedema.",
+      "fdg": "Hypermetabolic rim brighter than cortex, around a cold core."
+    }
+  },
+  "mets": {
+    "name": "Metastases",
+    "tag": "Three lesions",
+    "cat": "disease",
+    "pos": {
+      "axial": 32,
+      "coronal": -60,
+      "sagittal": -34
+    },
+    "lesions": [
+      {
+        "k": 3,
+        "c": [
+          -34,
+          -62,
+          32
+        ],
+        "r": [
+          7,
+          7,
+          7
+        ],
+        "p": [
+          3.2
+        ],
+        "f": "met"
+      },
+      {
+        "k": 3,
+        "c": [
+          40,
+          12,
+          40
+        ],
+        "r": [
+          6,
+          6,
+          6
+        ],
+        "p": [
+          3.4
+        ],
+        "f": "met"
+      },
+      {
+        "k": 3,
+        "c": [
+          -20,
+          48,
+          8
+        ],
+        "r": [
+          5,
+          5,
+          5
+        ],
+        "p": [
+          3
+        ],
+        "f": "met"
+      }
+    ],
+    "text": {
+      "_": "Blood-borne tumour deposits at the grey–white junction.",
+      "t1gd": "Several small ring- or nodular-enhancing lesions.",
+      "flair": "Oedema out of proportion to the lesion size.",
+      "t2": "Oedema around each deposit.",
+      "ctb": "Small hypodense areas of oedema; the deposits themselves may be invisible."
+    }
+  },
+  "abscess": {
+    "name": "Brain abscess",
+    "tag": "Left parietal",
+    "cat": "disease",
+    "pos": {
+      "axial": 26,
+      "coronal": -42,
+      "sagittal": -30
+    },
+    "lesions": [
+      {
+        "k": 9,
+        "c": [
+          -30,
+          -42,
+          26
+        ],
+        "r": [
+          12,
+          12,
+          12
+        ],
+        "p": [
+          2
+        ],
+        "f": "abscess"
+      }
+    ],
+    "mrs": "abscess",
+    "box": [
+      -30,
+      -42,
+      26,
+      7
+    ],
+    "text": {
+      "_": "A walled-off collection of pus.",
+      "t1gd": "Thin, smooth ring of enhancement, thinnest on the ventricular side.",
+      "dwi": "Pus restricts diffusion: the centre is bright (unlike tumour necrosis).",
+      "t2": "Bright centre, dark rim, surrounding oedema.",
+      "swi": "A dual rim: dark outer and brighter inner layer.",
+      "mrs": "Amino acids, acetate and succinate peaks."
+    }
+  },
+  "ms": {
+    "name": "Multiple sclerosis",
+    "tag": "Relapsing–remitting",
+    "cat": "disease",
+    "pos": {
+      "axial": 26,
+      "coronal": -10,
+      "sagittal": -20
+    },
+    "lesions": [
+      {
+        "k": 4,
+        "c": [
+          -22,
+          -10,
+          30
+        ],
+        "r": [
+          4,
+          5,
+          8
+        ],
+        "p": [
+          0,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          24,
+          -25,
+          28
+        ],
+        "r": [
+          4,
+          6,
+          8
+        ],
+        "p": [
+          1,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          -18,
+          15,
+          22
+        ],
+        "r": [
+          4,
+          4,
+          7
+        ],
+        "p": [
+          0,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          20,
+          10,
+          30
+        ],
+        "r": [
+          3,
+          4,
+          6
+        ],
+        "p": [
+          0,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          -26,
+          -40,
+          25
+        ],
+        "r": [
+          4,
+          5,
+          7
+        ],
+        "p": [
+          1,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          28,
+          -45,
+          20
+        ],
+        "r": [
+          5,
+          4,
+          6
+        ],
+        "p": [
+          0,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          -45,
+          -20,
+          40
+        ],
+        "r": [
+          3,
+          3,
+          3
+        ],
+        "p": [
+          0,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          5,
+          -25,
+          -30
+        ],
+        "r": [
+          3,
+          3,
+          3
+        ],
+        "p": [
+          1,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          12,
+          -30,
+          34
+        ],
+        "r": [
+          3,
+          4,
+          5
+        ],
+        "p": [
+          0,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          -14,
+          -58,
+          18
+        ],
+        "r": [
+          4,
+          5,
+          5
+        ],
+        "p": [
+          0,
+          0
+        ],
+        "f": "plaque"
+      },
+      {
+        "k": 4,
+        "c": [
+          -30,
+          0,
+          35
+        ],
+        "r": [
+          6,
+          6,
+          6
+        ],
+        "p": [
+          0,
+          1
+        ],
+        "f": "active"
+      }
+    ],
+    "mrs": "ms",
+    "box": [
+      -30,
+      0,
+      35,
+      8
+    ],
+    "text": {
+      "_": "Demyelinating plaques in white matter.",
+      "t1": "Some plaques are dark “black holes” from axon loss.",
+      "t1gd": "An active plaque enhances as an incomplete ring.",
+      "t2": "Bright ovoid plaques around the ventricles.",
+      "flair": "Plaques point away from the ventricles (Dawson’s fingers).",
+      "dwi": "Active plaques can restrict slightly.",
+      "swi": "Central vein sign inside plaques.",
+      "dti": "Lower FA in plaques.",
+      "mrs": "NAA down and choline up in active plaques.",
+      "ctb": "Often normal; large plaques may be faintly hypodense."
+    }
+  },
+  "ad": {
+    "name": "Alzheimer’s disease",
+    "tag": "Moderate",
+    "cat": "disease",
+    "pos": {
+      "axial": -14,
+      "coronal": -22,
+      "sagittal": -26
+    },
+    "posBySub": {
+      "fdg": {
+        "axial": 30
+      },
+      "hmpao": {
+        "axial": 30
+      },
+      "asl": {
+        "axial": 30
+      },
+      "amy": {
+        "axial": 26
+      },
+      "mrs": {
+        "axial": 32
+      }
+    },
+    "atrophy": 1,
+    "lesions": [
+      {
+        "k": 20,
+        "c": [
+          -26,
+          -22,
+          -14
+        ],
+        "r": [
+          9,
+          20,
+          10
+        ],
+        "f": "hippo"
+      },
+      {
+        "k": 20,
+        "c": [
+          26,
+          -22,
+          -14
+        ],
+        "r": [
+          9,
+          20,
+          10
+        ],
+        "f": "hippo"
+      }
+    ],
+    "met": {
+      "fdg": [
+        {
+          "c": [
+            -46,
+            -62,
+            32
+          ],
+          "s": 17,
+          "g": -0.5
+        },
+        {
+          "c": [
+            46,
+            -62,
+            32
+          ],
+          "s": 17,
+          "g": -0.5
+        },
+        {
+          "c": [
+            0,
+            -58,
+            34
+          ],
+          "s": 13,
+          "g": -0.45
+        },
+        {
+          "c": [
+            -52,
+            -24,
+            -12
+          ],
+          "s": 15,
+          "g": -0.3
+        },
+        {
+          "c": [
+            52,
+            -24,
+            -12
+          ],
+          "s": 15,
+          "g": -0.3
+        }
+      ],
+      "hmpao": [
+        {
+          "c": [
+            -46,
+            -62,
+            32
+          ],
+          "s": 17,
+          "g": -0.4
+        },
+        {
+          "c": [
+            46,
+            -62,
+            32
+          ],
+          "s": 17,
+          "g": -0.4
+        },
+        {
+          "c": [
+            0,
+            -58,
+            34
+          ],
+          "s": 13,
+          "g": -0.35
+        }
+      ],
+      "asl": [
+        {
+          "c": [
+            -46,
+            -62,
+            32
+          ],
+          "s": 17,
+          "g": -0.4
+        },
+        {
+          "c": [
+            46,
+            -62,
+            32
+          ],
+          "s": 17,
+          "g": -0.4
+        },
+        {
+          "c": [
+            0,
+            -58,
+            34
+          ],
+          "s": 13,
+          "g": -0.4
+        }
+      ]
+    },
+    "metFind": {
+      "fdg": "tp",
+      "hmpao": "tp",
+      "asl": "tp"
+    },
+    "amyloid": true,
+    "mrs": "ad",
+    "box": [
+      0,
+      -50,
+      32,
+      9
+    ],
+    "text": {
+      "_": "Neurodegeneration with temporal-predominant atrophy.",
+      "t1": "Shrunken hippocampi, wide sulci and enlarged ventricles.",
+      "t2": "Atrophy with enlarged temporal horns.",
+      "flair": "Atrophy plus mild white-matter changes.",
+      "ctb": "Enlarged ventricles, temporal horns and sulci.",
+      "fdg": "Temporoparietal and posterior cingulate hypometabolism; motor and visual cortex spared.",
+      "amy": "Positive scan: cortical tracer erases the grey–white border.",
+      "hmpao": "Temporoparietal hypoperfusion.",
+      "asl": "Reduced flow in posterior cingulate and parietal cortex.",
+      "mrs": "NAA down, myo-inositol up in the posterior cingulate."
+    }
+  },
+  "tle": {
+    "name": "Temporal lobe epilepsy",
+    "tag": "Left mesial temporal",
+    "cat": "disease",
+    "pos": {
+      "axial": -14,
+      "coronal": -22,
+      "sagittal": -26
+    },
+    "lesions": [
+      {
+        "k": 8,
+        "c": [
+          -26,
+          -22,
+          -14
+        ],
+        "r": [
+          10,
+          22,
+          12
+        ],
+        "f": "mts"
+      }
+    ],
+    "met": {
+      "fdg": [
+        {
+          "c": [
+            -46,
+            -14,
+            -22
+          ],
+          "s": 16,
+          "g": -0.45
+        }
+      ],
+      "hmpao": [
+        {
+          "c": [
+            -42,
+            -14,
+            -20
+          ],
+          "s": 15,
+          "g": 0.65
+        }
+      ]
+    },
+    "metFind": {
+      "fdg": "tle_pet",
+      "hmpao": "tle_spect"
+    },
+    "text": {
+      "_": "Seizure focus in the left mesial temporal lobe.",
+      "t1": "Small left hippocampus that has lost its internal structure.",
+      "t2": "Small, bright left hippocampus (hippocampal sclerosis).",
+      "flair": "Bright, shrunken left hippocampus.",
+      "dwi": "Usually normal between seizures.",
+      "fdg": "Interictal hypometabolism of the left temporal lobe.",
+      "hmpao": "Injected during a seizure: the focus is hyperperfused."
+    }
+  },
+  "hydro": {
+    "name": "Obstructive hydrocephalus",
+    "tag": "Aqueduct stenosis",
+    "cat": "disease",
+    "pos": {
+      "axial": 18,
+      "coronal": -10,
+      "sagittal": -14
+    },
+    "hydro": 1,
+    "lesions": [
+      {
+        "k": 20,
+        "c": [
+          0,
+          -8,
+          16
+        ],
+        "r": [
+          34,
+          46,
+          22
+        ],
+        "f": "hydro"
+      }
+    ],
+    "text": {
+      "_": "CSF cannot leave the third ventricle, so the lateral and third ventricles balloon.",
+      "t1": "Enlarged lateral and third ventricles; normal fourth.",
+      "flair": "Bright rim around the ventricles from CSF pushed into the tissue (transependymal flow).",
+      "ctb": "Enlarged ventricles with rounded frontal horns; sulci effaced.",
+      "t2": "Ballooned ventricles.",
+      "cus": "Dilated, rounded ventricles."
+    }
+  },
+  "pd": {
+    "name": "Parkinson’s disease",
+    "tag": "Right-sided symptoms",
+    "cat": "disease",
+    "pos": {
+      "axial": 2,
+      "coronal": 4,
+      "sagittal": -25
+    },
+    "pd": true,
+    "lesions": [
+      {
+        "k": 20,
+        "c": [
+          -25,
+          -2,
+          2
+        ],
+        "r": [
+          10,
+          16,
+          12
+        ],
+        "f": "dat_loss"
+      }
+    ],
+    "text": {
+      "_": "Loss of dopaminergic nerve terminals.",
+      "dat": "Putamen uptake fades from the back, worse on the left: commas become full stops."
+    }
+  },
+  "aneurysm": {
+    "name": "Unruptured aneurysm",
+    "tag": "Left MCA bifurcation",
+    "cat": "disease",
+    "pos": {
+      "axial": -8,
+      "coronal": 6,
+      "sagittal": -36
+    },
+    "lesions": [
+      {
+        "k": 20,
+        "c": [
+          -36,
+          6,
+          -8
+        ],
+        "r": [
+          6,
+          6,
+          6
+        ],
+        "f": "aneur"
+      }
+    ],
+    "vessels": {
+      "aneurysm": {
+        "c": [
+          -36,
+          6,
+          -6
+        ],
+        "r": 4.2
+      }
+    },
+    "text": {
+      "_": "Saccular berry aneurysm at a branch point.",
+      "mra": "Round outpouching at the left MCA bifurcation.",
+      "cta": "Contrast-filled sac; neck and dome can be measured.",
+      "dsa": "Sac fills in arterial phase and holds contrast."
+    }
+  },
+  "avm": {
+    "name": "Arteriovenous malformation",
+    "tag": "Right parietal",
+    "cat": "disease",
+    "pos": {
+      "axial": 40,
+      "coronal": -48,
+      "sagittal": 34
+    },
+    "lesions": [
+      {
+        "k": 20,
+        "c": [
+          34,
+          -48,
+          40
+        ],
+        "r": [
+          15,
+          15,
+          15
+        ],
+        "f": "avm"
+      }
+    ],
+    "vessels": {
+      "avm": {
+        "c": [
+          34,
+          -48,
+          40
+        ],
+        "r": 13
+      }
+    },
+    "dsaInj": "ICA-R",
+    "text": {
+      "_": "A tangle of vessels shunting arterial blood straight into veins.",
+      "t2": "Cluster of black serpiginous flow voids.",
+      "t1gd": "Enhancing tangle with enlarged draining vein.",
+      "mra": "Nidus with feeding arteries and an early draining vein.",
+      "cta": "Tangle of opacified vessels.",
+      "dsa": "The nidus and its draining vein fill in the arterial phase (early venous drainage)."
+    }
+  },
+  "bd": {
+    "name": "Brain death",
+    "tag": "Absent cerebral circulation",
+    "cat": "physio",
+    "noFlow": true,
+    "eeg": "bd",
+    "tcd": "bd",
+    "text": {
+      "_": "Irreversible loss of all brain function. Imaging is ancillary to the clinical examination.",
+      "hmpao": "“Hollow skull”: no tracer in the brain; scalp activity only.",
+      "cta": "No intracranial arterial opacification beyond the skull base.",
+      "dsa": "Contrast stops at the skull base (“stasis filling”).",
+      "asl": "No labelled blood reaches the brain.",
+      "eeg": "Electrocerebral silence: no activity above 2 µV.",
+      "tcd": "Oscillating flow: forward in systole, reversed in diastole."
+    }
+  },
+  "ivh": {
+    "name": "Intraventricular haemorrhage",
+    "tag": "Grade III (preterm)",
+    "cat": "disease",
+    "pos": {
+      "coronal": -6
+    },
+    "hydro": 0.6,
+    "lesions": [
+      {
+        "k": 2,
+        "c": [
+          -14,
+          -6,
+          16
+        ],
+        "r": [
+          8,
+          16,
+          9
+        ],
+        "f": "ivh"
+      }
+    ],
+    "text": {
+      "_": "Bleeding from the germinal matrix into the ventricle, with dilatation.",
+      "cus": "Echogenic clot fills a dilated left lateral ventricle."
+    }
+  },
+  "pvl": {
+    "name": "Periventricular leukomalacia",
+    "tag": "Preterm white-matter injury",
+    "cat": "disease",
+    "pos": {
+      "coronal": -20
+    },
+    "lesions": [
+      {
+        "k": 22,
+        "c": [
+          -22,
+          -20,
+          22
+        ],
+        "r": [
+          10,
+          22,
+          14
+        ],
+        "f": "pvl"
+      },
+      {
+        "k": 22,
+        "c": [
+          22,
+          -20,
+          22
+        ],
+        "r": [
+          10,
+          22,
+          14
+        ],
+        "f": "pvl"
+      }
+    ],
+    "text": {
+      "_": "Ischaemic injury to the white matter beside the ventricles.",
+      "cus": "Bright periventricular flare that may later break down into cysts."
+    }
+  },
+  "vasospasm": {
+    "name": "Vasospasm",
+    "tag": "Day 7 after SAH",
+    "cat": "disease",
+    "tcd": "vasospasm",
+    "text": {
+      "_": "Arterial narrowing after subarachnoid haemorrhage.",
+      "tcd": "Mean velocity 160 cm/s, Lindegaard ratio > 3."
+    }
+  },
+  "icp": {
+    "name": "Raised intracranial pressure",
+    "tag": "Diffuse swelling",
+    "cat": "physio",
+    "tcd": "icp",
+    "text": {
+      "_": "Pressure inside the skull approaches arterial diastolic pressure.",
+      "tcd": "Diastolic flow collapses; pulsatility index rises above 1.4."
+    }
+  },
+  "eyes_closed": {
+    "name": "Awake, eyes closed",
+    "tag": "Relaxed",
+    "cat": "physio",
+    "eeg": "alpha",
+    "meg": "alpha",
+    "text": {
+      "_": "Relaxed wakefulness.",
+      "eeg": "A 9–11 Hz alpha rhythm over the back of the head.",
+      "meg": "Occipital alpha sources oscillate at 10 Hz."
+    }
+  },
+  "eyes_open": {
+    "name": "Awake, eyes open",
+    "tag": "Visual input",
+    "cat": "physio",
+    "eeg": "beta",
+    "yeo": {
+      "1": 1.18
+    },
+    "text": {
+      "_": "Alert, looking.",
+      "eeg": "Alpha blocks; low-voltage fast activity remains.",
+      "fdg": "Visual cortex metabolism rises."
+    }
+  },
+  "n1": {
+    "name": "Sleep N1",
+    "tag": "Drowsy",
+    "cat": "physio",
+    "eeg": "n1",
+    "text": {
+      "_": "Light drowsiness.",
+      "eeg": "Alpha drops out; theta and sharp vertex waves appear."
+    }
+  },
+  "n2": {
+    "name": "Sleep N2",
+    "tag": "Light sleep",
+    "cat": "physio",
+    "eeg": "n2",
+    "text": {
+      "_": "Stable light sleep, about half the night.",
+      "eeg": "Sleep spindles (12–14 Hz) and K-complexes."
+    }
+  },
+  "n3": {
+    "name": "Sleep N3",
+    "tag": "Slow-wave sleep",
+    "cat": "physio",
+    "eeg": "n3",
+    "metG": 0.74,
+    "yeo": {
+      "6": 0.88,
+      "7": 0.92
+    },
+    "met": {
+      "fdg": [
+        {
+          "c": [
+            0,
+            -15,
+            8
+          ],
+          "s": 10,
+          "g": -0.3
+        }
+      ]
+    },
+    "text": {
+      "_": "Deep, restorative sleep.",
+      "eeg": "High-amplitude delta waves (> 75 µV, < 2 Hz).",
+      "fdg": "Global metabolism falls about 25–40%, most in frontal cortex and thalamus."
+    }
+  },
+  "rem": {
+    "name": "REM sleep",
+    "tag": "Dreaming",
+    "cat": "physio",
+    "eeg": "rem",
+    "yeo": {
+      "1": 1.1,
+      "5": 1.15,
+      "6": 0.8
+    },
+    "met": {
+      "fdg": [
+        {
+          "c": [
+            0,
+            30,
+            10
+          ],
+          "s": 14,
+          "g": 0.15
+        }
+      ]
+    },
+    "text": {
+      "_": "Dreaming sleep with muscle atonia.",
+      "eeg": "Low-voltage mixed frequencies, sawtooth waves and eye-movement artefact in frontal leads.",
+      "fdg": "Limbic and visual association cortex up; dorsolateral prefrontal down."
+    }
+  },
+  "anaes": {
+    "name": "General anaesthesia",
+    "tag": "Propofol",
+    "cat": "physio",
+    "eeg": "anaes",
+    "metG": 0.56,
+    "yeo": {
+      "6": 0.9,
+      "7": 0.9
+    },
+    "met": {
+      "fdg": [
+        {
+          "c": [
+            0,
+            -15,
+            8
+          ],
+          "s": 10,
+          "g": -0.3
+        }
+      ],
+      "asl": [
+        {
+          "c": [
+            0,
+            -15,
+            8
+          ],
+          "s": 10,
+          "g": -0.25
+        }
+      ]
+    },
+    "asl": {
+      "g": 0.65
+    },
+    "text": {
+      "_": "Drug-induced unconsciousness.",
+      "eeg": "Frontal alpha with slow waves (“anteriorisation”).",
+      "fdg": "Whole-brain glucose use falls about 40–55%, thalamus most.",
+      "asl": "Global blood flow falls with metabolism."
+    }
+  },
+  "burst": {
+    "name": "Burst suppression",
+    "tag": "Deep anaesthesia / coma",
+    "cat": "physio",
+    "eeg": "burst",
+    "metG": 0.45,
+    "text": {
+      "_": "Very deep anaesthesia, hypothermia or severe brain injury.",
+      "eeg": "Bursts of activity alternate with flat suppression."
+    }
+  },
+  "absence": {
+    "name": "Absence seizure",
+    "tag": "Generalised",
+    "cat": "physio",
+    "eeg": "absence",
+    "text": {
+      "_": "A brief lapse of awareness, typical of childhood absence epilepsy.",
+      "eeg": "Generalised 3 Hz spike-and-wave, starting and stopping abruptly."
+    }
+  },
+  "focal_sz": {
+    "name": "Focal seizure",
+    "tag": "Left temporal onset",
+    "cat": "physio",
+    "eeg": "focal",
+    "text": {
+      "_": "A seizure starting in the left temporal lobe.",
+      "eeg": "Rhythmic theta builds over T7/F7, spreading as it evolves."
+    }
+  },
+  "uws": {
+    "name": "Unresponsive wakefulness",
+    "tag": "Vegetative state",
+    "cat": "physio",
+    "eeg": "uws",
+    "metG": 0.55,
+    "yeo": {
+      "6": 0.75,
+      "7": 0.7
+    },
+    "metFind": {
+      "fdg": "uws"
+    },
+    "lesions": [
+      {
+        "k": 20,
+        "c": [
+          0,
+          -58,
+          34
+        ],
+        "r": [
+          16,
+          18,
+          16
+        ],
+        "f": "uws"
+      }
+    ],
+    "text": {
+      "_": "Eyes open, sleep–wake cycles, but no signs of awareness.",
+      "eeg": "Diffuse slowing with little reactivity.",
+      "fdg": "Global metabolism ~50% of normal; frontoparietal and posterior medial cortex worst."
+    }
+  },
+  "aep": {
+    "name": "Auditory evoked field",
+    "tag": "N100m to a tone",
+    "cat": "task",
+    "meg": "aep",
+    "text": {
+      "_": "Tone in both ears.",
+      "meg": "Dipoles in Heschl’s gyrus on both sides peak 100 ms after the tone."
+    }
+  },
+  "sep": {
+    "name": "Somatosensory evoked field",
+    "tag": "N20m, right median nerve",
+    "cat": "task",
+    "meg": "sep",
+    "text": {
+      "_": "Electrical pulse at the right wrist.",
+      "meg": "A dipole in the left postcentral hand area 20 ms after the pulse."
+    }
+  },
+  "spike": {
+    "name": "Interictal spike",
+    "tag": "Left temporal",
+    "cat": "disease",
+    "meg": "spike",
+    "text": {
+      "_": "Epileptic spike between seizures.",
+      "meg": "A dipole in the left anterior temporal lobe; MEG localises it for surgery planning."
+    }
+  },
+  "motor": {
+    "name": "Finger tapping",
+    "tag": "Right hand",
+    "cat": "task",
+    "plane": "axial",
+    "pos": {
+      "axial": 56,
+      "coronal": -22,
+      "sagittal": -38
+    },
+    "roi": "left M1",
+    "act": [
+      {
+        "c": [
+          -38,
+          -22,
+          56
+        ],
+        "s": 7,
+        "a": 1.25
+      },
+      {
+        "c": [
+          -40,
+          -30,
+          52
+        ],
+        "s": 6,
+        "a": 0.55
+      },
+      {
+        "c": [
+          -4,
+          -6,
+          60
+        ],
+        "s": 7,
+        "a": 0.8
+      },
+      {
+        "c": [
+          22,
+          -54,
+          -24
+        ],
+        "s": 7,
+        "a": 0.9
+      },
+      {
+        "c": [
+          -26,
+          -4,
+          4
+        ],
+        "s": 5,
+        "a": 0.35
+      }
+    ],
+    "text": {
+      "_": "Left primary motor cortex (hand knob), supplementary motor area and right cerebellum follow the blocks."
+    }
+  },
+  "visual": {
+    "name": "Visual checkerboard",
+    "tag": "8 Hz flicker",
+    "cat": "task",
+    "plane": "sagittal",
+    "pos": {
+      "axial": 4,
+      "coronal": -88,
+      "sagittal": 8
+    },
+    "roi": "V1",
+    "act": [
+      {
+        "c": [
+          -10,
+          -90,
+          4
+        ],
+        "s": 9,
+        "a": 1.1
+      },
+      {
+        "c": [
+          10,
+          -90,
+          4
+        ],
+        "s": 9,
+        "a": 1.1
+      },
+      {
+        "c": [
+          -22,
+          -88,
+          8
+        ],
+        "s": 8,
+        "a": 0.75
+      },
+      {
+        "c": [
+          22,
+          -88,
+          8
+        ],
+        "s": 8,
+        "a": 0.75
+      },
+      {
+        "c": [
+          -20,
+          -26,
+          -4
+        ],
+        "s": 4,
+        "a": 0.45
+      },
+      {
+        "c": [
+          20,
+          -26,
+          -4
+        ],
+        "s": 4,
+        "a": 0.45
+      }
+    ],
+    "text": {
+      "_": "Primary visual cortex along the calcarine sulcus lights up on both sides, plus the lateral geniculate nuclei."
+    }
+  },
+  "language": {
+    "name": "Verb generation",
+    "tag": "Language",
+    "cat": "task",
+    "plane": "sagittal",
+    "pos": {
+      "axial": 10,
+      "coronal": 22,
+      "sagittal": -50
+    },
+    "roi": "Broca area",
+    "act": [
+      {
+        "c": [
+          -48,
+          22,
+          12
+        ],
+        "s": 9,
+        "a": 1.15
+      },
+      {
+        "c": [
+          -4,
+          12,
+          56
+        ],
+        "s": 7,
+        "a": 0.7
+      },
+      {
+        "c": [
+          -55,
+          -45,
+          8
+        ],
+        "s": 9,
+        "a": 0.7
+      },
+      {
+        "c": [
+          30,
+          -68,
+          -32
+        ],
+        "s": 8,
+        "a": 0.6
+      },
+      {
+        "c": [
+          46,
+          22,
+          10
+        ],
+        "s": 7,
+        "a": 0.3
+      }
+    ],
+    "text": {
+      "_": "Left inferior frontal (Broca) and posterior temporal (Wernicke) regions; language is left-lateralised in ~95% of right-handers."
+    }
+  },
+  "poststroke": {
+    "name": "Finger tapping after stroke",
+    "tag": "Left MCA infarct",
+    "cat": "task",
+    "plane": "axial",
+    "pos": {
+      "axial": 56,
+      "coronal": -22,
+      "sagittal": -38
+    },
+    "roi": "right M1",
+    "lesions": [
+      {
+        "k": 1,
+        "c": [
+          -40,
+          -2,
+          14
+        ],
+        "r": [
+          24,
+          36,
+          30
+        ],
+        "f": "infarct"
+      }
+    ],
+    "act": [
+      {
+        "c": [
+          -38,
+          -22,
+          56
+        ],
+        "s": 7,
+        "a": 0.35
+      },
+      {
+        "c": [
+          38,
+          -22,
+          56
+        ],
+        "s": 7,
+        "a": 0.8
+      },
+      {
+        "c": [
+          -4,
+          -6,
+          60
+        ],
+        "s": 8,
+        "a": 1
+      },
+      {
+        "c": [
+          22,
+          -54,
+          -24
+        ],
+        "s": 7,
+        "a": 0.7
+      },
+      {
+        "c": [
+          -30,
+          -18,
+          48
+        ],
+        "s": 6,
+        "a": 0.5
+      }
+    ],
+    "text": {
+      "_": "Weaker left M1 response; the right motor cortex and SMA are recruited instead."
+    }
+  },
+  "dmn": {
+    "name": "Default mode network",
+    "tag": "Resting state",
+    "cat": "task",
+    "plane": "sagittal",
+    "pos": {
+      "axial": 30,
+      "coronal": -56,
+      "sagittal": -4
+    },
+    "yeoAct": 7,
+    "roi": "PCC seed",
+    "text": {
+      "_": "Posterior cingulate, medial prefrontal and angular gyri fluctuate together at rest and quieten during tasks."
+    }
+  },
+  "salience": {
+    "name": "Salience network",
+    "tag": "Resting state",
+    "cat": "task",
+    "plane": "axial",
+    "pos": {
+      "axial": 6,
+      "coronal": 16,
+      "sagittal": -38
+    },
+    "yeoAct": 4,
+    "roi": "anterior insula seed",
+    "text": {
+      "_": "Anterior insula and anterior cingulate: flags what matters and switches between networks."
+    }
+  },
+  "dan": {
+    "name": "Dorsal attention",
+    "tag": "Resting state",
+    "cat": "task",
+    "plane": "axial",
+    "pos": {
+      "axial": 50,
+      "coronal": -60,
+      "sagittal": -28
+    },
+    "yeoAct": 3,
+    "roi": "IPS seed",
+    "text": {
+      "_": "Intraparietal sulcus and frontal eye fields: goal-directed spatial attention."
+    }
+  },
+  "smn": {
+    "name": "Somatomotor network",
+    "tag": "Resting state",
+    "cat": "task",
+    "plane": "axial",
+    "pos": {
+      "axial": 56,
+      "coronal": -22,
+      "sagittal": -38
+    },
+    "yeoAct": 2,
+    "roi": "M1 seed",
+    "text": {
+      "_": "Pre- and postcentral gyri of both hemispheres plus SMA and auditory cortex."
+    }
+  },
+  "vis": {
+    "name": "Visual network",
+    "tag": "Resting state",
+    "cat": "task",
+    "plane": "axial",
+    "pos": {
+      "axial": 4,
+      "coronal": -80,
+      "sagittal": 8
+    },
+    "yeoAct": 1,
+    "roi": "V1 seed",
+    "text": {
+      "_": "Occipital cortex, strongly bilateral."
+    }
+  },
+  "fpn": {
+    "name": "Frontoparietal control",
+    "tag": "Resting state",
+    "cat": "task",
+    "plane": "axial",
+    "pos": {
+      "axial": 40,
+      "coronal": 30,
+      "sagittal": -44
+    },
+    "yeoAct": 6,
+    "roi": "dlPFC seed",
+    "text": {
+      "_": "Lateral prefrontal and inferior parietal cortex: flexible task control and working memory."
+    }
+  },
+  "limbic": {
+    "name": "Limbic network",
+    "tag": "Resting state",
+    "cat": "task",
+    "plane": "axial",
+    "pos": {
+      "axial": -24,
+      "coronal": 10,
+      "sagittal": -30
+    },
+    "yeoAct": 5,
+    "roi": "orbitofrontal seed",
+    "text": {
+      "_": "Orbitofrontal cortex and temporal poles. Prone to signal loss near air-filled sinuses."
+    }
+  }
 };
-
-/* ---------- findings (hover + click to learn) ---------- */
 
 const FINDINGS = window.FINDINGS = {
-  infarct:{title:'Acute infarct, left MCA territory', what:'Brain tissue dying because the left middle cerebral artery is blocked.',
-    why:'Cells lose energy within minutes, ion pumps fail and water moves into the cells (cytotoxic oedema). Water that can no longer diffuse freely lights up DWI first; free water (T2/FLAIR) and lower density (CT) follow over hours.',
-    teach:['DWI positive within minutes; CT may stay normal for hours.','Right-sided weakness and aphasia when the left (dominant) MCA is involved.','Thrombolysis up to 4.5 h, thrombectomy up to 24 h in selected patients.'],
-    mimics:'Seizure (Todd’s paresis), hypoglycaemia, migraine with aura, tumour.'},
-  clot:{title:'Clot in the left M1 segment', what:'The thrombus blocking the middle cerebral artery.',
-    why:'Packed red cells are dense on CT (hyperdense MCA sign), dephase spins on SWI (susceptibility vessel sign) and stop flow-related signal on MRA, CTA and DSA.',
-    teach:['A proximal large-vessel occlusion is a target for thrombectomy.','Look for the dense artery before the infarct is visible.'], mimics:'Calcified vessel wall, high haematocrit.'},
-  haem:{title:'Intracerebral haemorrhage', what:'A bleed into the brain, here the classic hypertensive site in the putamen.',
-    why:'Fresh clot is dense on CT (protein and packed cells). On MR the signal depends on the iron state of haemoglobin, which changes over days: deoxyhaemoglobin (dark T2), methaemoglobin (bright T1), haemosiderin (dark rim).',
-    teach:['CT is the first test for any acute stroke to exclude this.','The CTA spot sign predicts haematoma growth.','Other hypertensive sites: thalamus, pons, cerebellum.'], mimics:'Haemorrhagic tumour, haemorrhagic transformation of infarct.'},
-  sah:{title:'Subarachnoid blood', what:'Blood in the CSF spaces around the base of the brain.',
-    why:'Blood replaces dark CSF in the cisterns: dense on CT, and on FLAIR the protein-rich bloody CSF is no longer nulled so it turns bright.',
-    teach:['“Worst headache of my life” — thunderclap onset.','CT sensitivity falls over days; lumbar puncture for xanthochromia if CT is negative.','Watch for vasospasm at days 4–14 and hydrocephalus.'], mimics:'Pseudo-SAH from diffuse brain swelling, FLAIR artefact from oxygen.'},
-  aneur_rupt:{title:'Ruptured ACom aneurysm', what:'Source of the haemorrhage: a sac on the anterior communicating artery.',
-    why:'Seen on angiographic techniques as a contrast-filled outpouching.', teach:['ACom is the commonest aneurysm site.','Treated by coiling or clipping to prevent re-bleeding.'], mimics:'Infundibulum (a funnel-shaped origin < 3 mm).'},
-  sdh:{title:'Acute subdural haematoma', what:'Torn bridging veins bleed into the space under the dura.',
-    why:'Blood spreads freely under the dura, so it follows the curve of the brain as a crescent and can cross suture lines. It pushes the brain inward.',
-    teach:['Elderly and anticoagulated patients; may follow minor trauma.','Crescent crosses sutures, stops at the falx.','Chronic SDH becomes darker than brain on CT.'], mimics:'Subdural hygroma, empyema.'},
-  edh:{title:'Epidural haematoma', what:'Arterial bleed between skull and dura, usually the middle meningeal artery.',
-    why:'The dura is stuck to the skull at the sutures, so the blood bulges inward as a lens and stops at suture lines.',
-    teach:['Classic lucid interval, then rapid deterioration.','Lens shape, does not cross sutures.','A surgical emergency.'], mimics:'Subdural haematoma (crescent, crosses sutures).'},
-  fracture:{title:'Temporal bone fracture', what:'A linear crack in the thin squamous temporal bone.',
-    why:'Bone is the brightest thing on CT; a fracture shows as a sharp dark line, best seen in the bone window.',
-    teach:['The middle meningeal artery runs in a groove just inside.','Distinguish from sutures (symmetric, serrated) and vascular grooves.'], mimics:'Sutures, vascular channels.'},
-  gbm:{title:'Glioblastoma', what:'The commonest and most aggressive primary brain tumour (WHO grade 4).',
-    why:'Leaky new vessels let contrast into the rim; the centre outgrows its blood supply and dies (necrosis). Vasogenic oedema spreads along white-matter tracts but spares the cortex.',
-    teach:['Thick irregular ring enhancement with necrosis.','Can cross the corpus callosum (“butterfly glioma”).','Raised choline, lipid–lactate on MRS; high rCBV on perfusion.'], mimics:'Abscess (thin smooth rim, restricted centre), metastasis, tumefactive MS.'},
-  met:{title:'Metastasis', what:'A deposit of cancer that has spread through the blood.',
-    why:'Tumour cells lodge where vessels narrow at the grey–white junction. They have leaky vessels (enhance) and provoke a lot of vasogenic oedema.',
-    teach:['Commonest brain tumour in adults overall.','Multiple lesions at the grey–white junction suggest metastases.','Lung, breast, melanoma, kidney, colon.'], mimics:'Abscesses, septic emboli, glioma.'},
-  abscess:{title:'Pyogenic abscess', what:'A bacterial infection walled off by a capsule.',
-    why:'Thick, viscous pus restricts water diffusion, so the core is bright on DWI and dark on ADC — the key difference from tumour necrosis. The capsule makes a thin, smooth enhancing ring.',
-    teach:['DWI bright centre: think abscess.','Ring is thinnest on the ventricular side (less blood supply).','Amino acid, acetate and succinate peaks on MRS.'], mimics:'Glioblastoma, metastasis.'},
-  plaque:{title:'Demyelinating plaque', what:'An area where the myelin around axons has been stripped by inflammation.',
-    why:'Loss of myelin frees water (bright on T2/FLAIR). Plaques form around small veins that run out from the ventricles, so they line up at right angles to them.',
-    teach:['Dawson’s fingers: ovoid lesions perpendicular to the ventricles.','McDonald criteria: dissemination in space and time.','Central vein sign helps separate MS from small-vessel disease.'], mimics:'Small-vessel ischaemia, migraine, ADEM.'},
-  active:{title:'Active (enhancing) plaque', what:'A plaque with ongoing inflammation.',
-    why:'Inflammation opens the blood–brain barrier, so gadolinium leaks in, often as an open ring facing the cortex.',
-    teach:['Enhancing and non-enhancing plaques together show dissemination in time.','Enhancement fades over about 4–6 weeks.'], mimics:'Tumour, abscess (closed ring).'},
-  hippo:{title:'Hippocampal atrophy', what:'Shrinkage of the memory centres in the medial temporal lobes.',
-    why:'Neurofibrillary tangles and neuron loss start in the entorhinal cortex and hippocampus, so these shrink first and the temporal horns widen.',
-    teach:['Scheltens MTA score on coronal T1.','Episodic memory loss is the early symptom.'], mimics:'Normal ageing, hippocampal sclerosis, frontotemporal dementia.'},
-  tp:{title:'Temporoparietal hypometabolism', what:'Reduced glucose use in posterior association cortex and posterior cingulate.',
-    why:'Synaptic failure lowers energy demand before tissue is lost, so PET shows the disease pattern years before atrophy is obvious.',
-    teach:['Bilateral temporoparietal + posterior cingulate = Alzheimer’s pattern.','Frontal-predominant = frontotemporal dementia; occipital = Lewy body.'], mimics:'Lewy body dementia, vascular dementia.'},
-  mts:{title:'Mesial temporal sclerosis', what:'Neuron loss and scarring (gliosis) in the left hippocampus.',
-    why:'Scarring raises water content (bright T2/FLAIR) and lost neurons shrink the structure, so the temporal horn grows.',
-    teach:['Commonest cause of drug-resistant focal epilepsy in adults.','Often follows prolonged febrile seizures in childhood.','Surgery (anterior temporal lobectomy) gives ~70% seizure freedom.'], mimics:'Low-grade tumour, normal asymmetry.'},
-  tle_pet:{title:'Left temporal hypometabolism', what:'The epileptogenic temporal lobe uses less glucose between seizures.',
-    why:'Interictal dysfunction and neuron loss lower metabolism around the focus, often more widely than the MRI lesion.',
-    teach:['Helps lateralise the focus when MRI is normal.','Inject between seizures for FDG.'], mimics:'Post-ictal changes, contralateral focus.'},
-  tle_spect:{title:'Ictal hyperperfusion', what:'Blood flow surges in the seizure focus during the seizure.',
-    why:'HMPAO is trapped within a minute of injection, freezing the blood-flow pattern of that moment for later scanning.',
-    teach:['Inject within seconds of seizure onset.','SISCOM subtracts an interictal scan to find the focus.'], mimics:'Propagated seizure activity.'},
-  hydro:{title:'Ventricular enlargement', what:'The lateral and third ventricles are dilated.',
-    why:'CSF keeps being produced by the choroid plexus but cannot drain past the narrowed cerebral aqueduct, so pressure balloons the ventricles upstream.',
-    teach:['Normal fourth ventricle points to aqueductal stenosis.','Rounded frontal horns and effaced sulci separate it from atrophy.','Treat with shunt or endoscopic third ventriculostomy.'], mimics:'Atrophy (ex vacuo dilation with wide sulci).'},
-  dat_loss:{title:'Reduced putamen uptake', what:'Loss of dopamine transporters in the left striatum.',
-    why:'Nigrostriatal neurons die from the back of the putamen forward, so uptake fades posterior-first and on the side opposite the worse symptoms.',
-    teach:['Separates Parkinsonism from essential tremor (normal scan).','Does not separate PD from atypical parkinsonism.'], mimics:'Drug-induced parkinsonism (normal), vascular parkinsonism.'},
-  aneur:{title:'Saccular aneurysm', what:'A berry-shaped outpouching at the left MCA bifurcation.',
-    why:'Flow hits the apex of the branch point where the vessel wall media is weakest.',
-    teach:['Risk of rupture rises with size, location and growth.','Associations: polycystic kidney disease, connective tissue disorders, smoking.'], mimics:'Infundibulum, vessel loop.'},
-  avm:{title:'Arteriovenous malformation', what:'Arteries connect straight to veins through a tangle (nidus) with no capillary bed.',
-    why:'High-flow vessels appear as flow voids on T2, and on angiography the veins fill early, at the same time as the arteries.',
-    teach:['Presents with haemorrhage or seizures.','Spetzler–Martin grade guides surgery (size, eloquence, venous drainage).'], mimics:'Vascular tumour, developmental venous anomaly.'},
-  nofill:{title:'Absent intracranial filling', what:'No contrast or tracer reaches the brain.',
-    why:'When intracranial pressure exceeds arterial pressure, blood can no longer enter the skull.',
-    teach:['Ancillary test only; brain death is a clinical diagnosis.'], mimics:'Technical failure of injection.'},
-  ivh:{title:'Germinal matrix haemorrhage', what:'Bleeding into the left lateral ventricle in a preterm infant.',
-    why:'Fresh clot reflects sound strongly, so it is bright inside the normally echo-free ventricle.',
-    teach:['Papile grading I–IV; grade III has ventricular dilatation.','Most occur in the first 72 hours of life in babies < 32 weeks.'], mimics:'Normal choroid plexus (smooth, ends at the caudothalamic groove).'},
-  pvl:{title:'Periventricular flare', what:'Injured white matter beside the ventricles.',
-    why:'Oedematous, injured white matter scatters more sound and looks brighter than the choroid plexus.',
-    teach:['Cystic PVL (weeks later) predicts spastic diplegia.'], mimics:'Normal transient periventricular flare.'},
-  uws:{title:'Posterior medial hypometabolism', what:'Low metabolism in the precuneus and posterior cingulate.',
-    why:'These hubs are among the most active at rest in conscious people; their recovery tracks the return of awareness.',
-    teach:['FDG-PET helps separate minimally conscious from unresponsive patients.'], mimics:'Sedation.'},
+  "infarct": {
+    "title": "Acute infarct, left MCA territory",
+    "what": "Brain tissue dying because the left middle cerebral artery is blocked.",
+    "why": "Cells lose energy within minutes, ion pumps fail and water moves into the cells (cytotoxic oedema). Water that can no longer diffuse freely lights up DWI first; free water (T2/FLAIR) and lower density (CT) follow over hours.",
+    "teach": [
+      "DWI positive within minutes; CT may stay normal for hours.",
+      "Right-sided weakness and aphasia when the left (dominant) MCA is involved.",
+      "Thrombolysis up to 4.5 h, thrombectomy up to 24 h in selected patients."
+    ],
+    "mimics": "Seizure (Todd’s paresis), hypoglycaemia, migraine with aura, tumour."
+  },
+  "clot": {
+    "title": "Clot in the left M1 segment",
+    "what": "The thrombus blocking the middle cerebral artery.",
+    "why": "Packed red cells are dense on CT (hyperdense MCA sign), dephase spins on SWI (susceptibility vessel sign) and stop flow-related signal on MRA, CTA and DSA.",
+    "teach": [
+      "A proximal large-vessel occlusion is a target for thrombectomy.",
+      "Look for the dense artery before the infarct is visible."
+    ],
+    "mimics": "Calcified vessel wall, high haematocrit."
+  },
+  "haem": {
+    "title": "Intracerebral haemorrhage",
+    "what": "A bleed into the brain, here the classic hypertensive site in the putamen.",
+    "why": "Fresh clot is dense on CT (protein and packed cells). On MR the signal depends on the iron state of haemoglobin, which changes over days: deoxyhaemoglobin (dark T2), methaemoglobin (bright T1), haemosiderin (dark rim).",
+    "teach": [
+      "CT is the first test for any acute stroke to exclude this.",
+      "The CTA spot sign predicts haematoma growth.",
+      "Other hypertensive sites: thalamus, pons, cerebellum."
+    ],
+    "mimics": "Haemorrhagic tumour, haemorrhagic transformation of infarct."
+  },
+  "sah": {
+    "title": "Subarachnoid blood",
+    "what": "Blood in the CSF spaces around the base of the brain.",
+    "why": "Blood replaces dark CSF in the cisterns: dense on CT, and on FLAIR the protein-rich bloody CSF is no longer nulled so it turns bright.",
+    "teach": [
+      "“Worst headache of my life” — thunderclap onset.",
+      "CT sensitivity falls over days; lumbar puncture for xanthochromia if CT is negative.",
+      "Watch for vasospasm at days 4–14 and hydrocephalus."
+    ],
+    "mimics": "Pseudo-SAH from diffuse brain swelling, FLAIR artefact from oxygen."
+  },
+  "aneur_rupt": {
+    "title": "Ruptured ACom aneurysm",
+    "what": "Source of the haemorrhage: a sac on the anterior communicating artery.",
+    "why": "Seen on angiographic techniques as a contrast-filled outpouching.",
+    "teach": [
+      "ACom is the commonest aneurysm site.",
+      "Treated by coiling or clipping to prevent re-bleeding."
+    ],
+    "mimics": "Infundibulum (a funnel-shaped origin < 3 mm)."
+  },
+  "sdh": {
+    "title": "Acute subdural haematoma",
+    "what": "Torn bridging veins bleed into the space under the dura.",
+    "why": "Blood spreads freely under the dura, so it follows the curve of the brain as a crescent and can cross suture lines. It pushes the brain inward.",
+    "teach": [
+      "Elderly and anticoagulated patients; may follow minor trauma.",
+      "Crescent crosses sutures, stops at the falx.",
+      "Chronic SDH becomes darker than brain on CT."
+    ],
+    "mimics": "Subdural hygroma, empyema."
+  },
+  "edh": {
+    "title": "Epidural haematoma",
+    "what": "Arterial bleed between skull and dura, usually the middle meningeal artery.",
+    "why": "The dura is stuck to the skull at the sutures, so the blood bulges inward as a lens and stops at suture lines.",
+    "teach": [
+      "Classic lucid interval, then rapid deterioration.",
+      "Lens shape, does not cross sutures.",
+      "A surgical emergency."
+    ],
+    "mimics": "Subdural haematoma (crescent, crosses sutures)."
+  },
+  "fracture": {
+    "title": "Temporal bone fracture",
+    "what": "A linear crack in the thin squamous temporal bone.",
+    "why": "Bone is the brightest thing on CT; a fracture shows as a sharp dark line, best seen in the bone window.",
+    "teach": [
+      "The middle meningeal artery runs in a groove just inside.",
+      "Distinguish from sutures (symmetric, serrated) and vascular grooves."
+    ],
+    "mimics": "Sutures, vascular channels."
+  },
+  "gbm": {
+    "title": "Glioblastoma",
+    "what": "The commonest and most aggressive primary brain tumour (WHO grade 4).",
+    "why": "Leaky new vessels let contrast into the rim; the centre outgrows its blood supply and dies (necrosis). Vasogenic oedema spreads along white-matter tracts but spares the cortex.",
+    "teach": [
+      "Thick irregular ring enhancement with necrosis.",
+      "Can cross the corpus callosum (“butterfly glioma”).",
+      "Raised choline, lipid–lactate on MRS; high rCBV on perfusion."
+    ],
+    "mimics": "Abscess (thin smooth rim, restricted centre), metastasis, tumefactive MS."
+  },
+  "met": {
+    "title": "Metastasis",
+    "what": "A deposit of cancer that has spread through the blood.",
+    "why": "Tumour cells lodge where vessels narrow at the grey–white junction. They have leaky vessels (enhance) and provoke a lot of vasogenic oedema.",
+    "teach": [
+      "Commonest brain tumour in adults overall.",
+      "Multiple lesions at the grey–white junction suggest metastases.",
+      "Lung, breast, melanoma, kidney, colon."
+    ],
+    "mimics": "Abscesses, septic emboli, glioma."
+  },
+  "abscess": {
+    "title": "Pyogenic abscess",
+    "what": "A bacterial infection walled off by a capsule.",
+    "why": "Thick, viscous pus restricts water diffusion, so the core is bright on DWI and dark on ADC — the key difference from tumour necrosis. The capsule makes a thin, smooth enhancing ring.",
+    "teach": [
+      "DWI bright centre: think abscess.",
+      "Ring is thinnest on the ventricular side (less blood supply).",
+      "Amino acid, acetate and succinate peaks on MRS."
+    ],
+    "mimics": "Glioblastoma, metastasis."
+  },
+  "plaque": {
+    "title": "Demyelinating plaque",
+    "what": "An area where the myelin around axons has been stripped by inflammation.",
+    "why": "Loss of myelin frees water (bright on T2/FLAIR). Plaques form around small veins that run out from the ventricles, so they line up at right angles to them.",
+    "teach": [
+      "Dawson’s fingers: ovoid lesions perpendicular to the ventricles.",
+      "McDonald criteria: dissemination in space and time.",
+      "Central vein sign helps separate MS from small-vessel disease."
+    ],
+    "mimics": "Small-vessel ischaemia, migraine, ADEM."
+  },
+  "active": {
+    "title": "Active (enhancing) plaque",
+    "what": "A plaque with ongoing inflammation.",
+    "why": "Inflammation opens the blood–brain barrier, so gadolinium leaks in, often as an open ring facing the cortex.",
+    "teach": [
+      "Enhancing and non-enhancing plaques together show dissemination in time.",
+      "Enhancement fades over about 4–6 weeks."
+    ],
+    "mimics": "Tumour, abscess (closed ring)."
+  },
+  "hippo": {
+    "title": "Hippocampal atrophy",
+    "what": "Shrinkage of the memory centres in the medial temporal lobes.",
+    "why": "Neurofibrillary tangles and neuron loss start in the entorhinal cortex and hippocampus, so these shrink first and the temporal horns widen.",
+    "teach": [
+      "Scheltens MTA score on coronal T1.",
+      "Episodic memory loss is the early symptom."
+    ],
+    "mimics": "Normal ageing, hippocampal sclerosis, frontotemporal dementia."
+  },
+  "tp": {
+    "title": "Temporoparietal hypometabolism",
+    "what": "Reduced glucose use in posterior association cortex and posterior cingulate.",
+    "why": "Synaptic failure lowers energy demand before tissue is lost, so PET shows the disease pattern years before atrophy is obvious.",
+    "teach": [
+      "Bilateral temporoparietal + posterior cingulate = Alzheimer’s pattern.",
+      "Frontal-predominant = frontotemporal dementia; occipital = Lewy body."
+    ],
+    "mimics": "Lewy body dementia, vascular dementia."
+  },
+  "mts": {
+    "title": "Mesial temporal sclerosis",
+    "what": "Neuron loss and scarring (gliosis) in the left hippocampus.",
+    "why": "Scarring raises water content (bright T2/FLAIR) and lost neurons shrink the structure, so the temporal horn grows.",
+    "teach": [
+      "Commonest cause of drug-resistant focal epilepsy in adults.",
+      "Often follows prolonged febrile seizures in childhood.",
+      "Surgery (anterior temporal lobectomy) gives ~70% seizure freedom."
+    ],
+    "mimics": "Low-grade tumour, normal asymmetry."
+  },
+  "tle_pet": {
+    "title": "Left temporal hypometabolism",
+    "what": "The epileptogenic temporal lobe uses less glucose between seizures.",
+    "why": "Interictal dysfunction and neuron loss lower metabolism around the focus, often more widely than the MRI lesion.",
+    "teach": [
+      "Helps lateralise the focus when MRI is normal.",
+      "Inject between seizures for FDG."
+    ],
+    "mimics": "Post-ictal changes, contralateral focus."
+  },
+  "tle_spect": {
+    "title": "Ictal hyperperfusion",
+    "what": "Blood flow surges in the seizure focus during the seizure.",
+    "why": "HMPAO is trapped within a minute of injection, freezing the blood-flow pattern of that moment for later scanning.",
+    "teach": [
+      "Inject within seconds of seizure onset.",
+      "SISCOM subtracts an interictal scan to find the focus."
+    ],
+    "mimics": "Propagated seizure activity."
+  },
+  "hydro": {
+    "title": "Ventricular enlargement",
+    "what": "The lateral and third ventricles are dilated.",
+    "why": "CSF keeps being produced by the choroid plexus but cannot drain past the narrowed cerebral aqueduct, so pressure balloons the ventricles upstream.",
+    "teach": [
+      "Normal fourth ventricle points to aqueductal stenosis.",
+      "Rounded frontal horns and effaced sulci separate it from atrophy.",
+      "Treat with shunt or endoscopic third ventriculostomy."
+    ],
+    "mimics": "Atrophy (ex vacuo dilation with wide sulci)."
+  },
+  "dat_loss": {
+    "title": "Reduced putamen uptake",
+    "what": "Loss of dopamine transporters in the left striatum.",
+    "why": "Nigrostriatal neurons die from the back of the putamen forward, so uptake fades posterior-first and on the side opposite the worse symptoms.",
+    "teach": [
+      "Separates Parkinsonism from essential tremor (normal scan).",
+      "Does not separate PD from atypical parkinsonism."
+    ],
+    "mimics": "Drug-induced parkinsonism (normal), vascular parkinsonism."
+  },
+  "aneur": {
+    "title": "Saccular aneurysm",
+    "what": "A berry-shaped outpouching at the left MCA bifurcation.",
+    "why": "Flow hits the apex of the branch point where the vessel wall media is weakest.",
+    "teach": [
+      "Risk of rupture rises with size, location and growth.",
+      "Associations: polycystic kidney disease, connective tissue disorders, smoking."
+    ],
+    "mimics": "Infundibulum, vessel loop."
+  },
+  "avm": {
+    "title": "Arteriovenous malformation",
+    "what": "Arteries connect straight to veins through a tangle (nidus) with no capillary bed.",
+    "why": "High-flow vessels appear as flow voids on T2, and on angiography the veins fill early, at the same time as the arteries.",
+    "teach": [
+      "Presents with haemorrhage or seizures.",
+      "Spetzler–Martin grade guides surgery (size, eloquence, venous drainage)."
+    ],
+    "mimics": "Vascular tumour, developmental venous anomaly."
+  },
+  "nofill": {
+    "title": "Absent intracranial filling",
+    "what": "No contrast or tracer reaches the brain.",
+    "why": "When intracranial pressure exceeds arterial pressure, blood can no longer enter the skull.",
+    "teach": [
+      "Ancillary test only; brain death is a clinical diagnosis."
+    ],
+    "mimics": "Technical failure of injection."
+  },
+  "ivh": {
+    "title": "Germinal matrix haemorrhage",
+    "what": "Bleeding into the left lateral ventricle in a preterm infant.",
+    "why": "Fresh clot reflects sound strongly, so it is bright inside the normally echo-free ventricle.",
+    "teach": [
+      "Papile grading I–IV; grade III has ventricular dilatation.",
+      "Most occur in the first 72 hours of life in babies < 32 weeks."
+    ],
+    "mimics": "Normal choroid plexus (smooth, ends at the caudothalamic groove)."
+  },
+  "pvl": {
+    "title": "Periventricular flare",
+    "what": "Injured white matter beside the ventricles.",
+    "why": "Oedematous, injured white matter scatters more sound and looks brighter than the choroid plexus.",
+    "teach": [
+      "Cystic PVL (weeks later) predicts spastic diplegia."
+    ],
+    "mimics": "Normal transient periventricular flare."
+  },
+  "uws": {
+    "title": "Posterior medial hypometabolism",
+    "what": "Low metabolism in the precuneus and posterior cingulate.",
+    "why": "These hubs are among the most active at rest in conscious people; their recovery tracks the return of awareness.",
+    "teach": [
+      "FDG-PET helps separate minimally conscious from unresponsive patients."
+    ],
+    "mimics": "Sedation."
+  }
 };
-
-/* ---------- MRS spectra (peak ppm, height, width) ---------- */
 
 const MRS = window.MRS = {
-  normal:[[2.01,1.0,0.03],[3.03,0.55,0.03],[3.92,0.3,0.04],[3.21,0.45,0.03],[3.56,0.3,0.04],[2.3,0.18,0.08]],
-  gbm:[[2.01,0.25,0.03],[3.03,0.35,0.03],[3.92,0.18,0.04],[3.21,1.05,0.03],[3.56,0.15,0.04],[1.3,1.2,0.12],[0.9,0.6,0.1]],
-  stroke:[[2.01,0.55,0.03],[3.03,0.45,0.03],[3.92,0.22,0.04],[3.21,0.4,0.03],[1.30,0.65,0.022],[1.36,0.65,0.022]],
-  abscess:[[2.01,0.1,0.03],[3.03,0.1,0.03],[3.21,0.15,0.03],[0.9,0.6,0.05],[1.92,0.5,0.03],[2.4,0.45,0.03],[1.30,0.6,0.022],[1.36,0.6,0.022],[1.47,0.3,0.03]],
-  ad:[[2.01,0.7,0.03],[3.03,0.55,0.03],[3.92,0.3,0.04],[3.21,0.5,0.03],[3.56,0.55,0.04],[2.3,0.18,0.08]],
-  ms:[[2.01,0.7,0.03],[3.03,0.55,0.03],[3.92,0.3,0.04],[3.21,0.7,0.03],[3.56,0.45,0.04],[1.3,0.2,0.1]],
+  "normal": [
+    [
+      2.01,
+      1,
+      0.03
+    ],
+    [
+      3.03,
+      0.55,
+      0.03
+    ],
+    [
+      3.92,
+      0.3,
+      0.04
+    ],
+    [
+      3.21,
+      0.45,
+      0.03
+    ],
+    [
+      3.56,
+      0.3,
+      0.04
+    ],
+    [
+      2.3,
+      0.18,
+      0.08
+    ]
+  ],
+  "gbm": [
+    [
+      2.01,
+      0.25,
+      0.03
+    ],
+    [
+      3.03,
+      0.35,
+      0.03
+    ],
+    [
+      3.92,
+      0.18,
+      0.04
+    ],
+    [
+      3.21,
+      1.05,
+      0.03
+    ],
+    [
+      3.56,
+      0.15,
+      0.04
+    ],
+    [
+      1.3,
+      1.2,
+      0.12
+    ],
+    [
+      0.9,
+      0.6,
+      0.1
+    ]
+  ],
+  "stroke": [
+    [
+      2.01,
+      0.55,
+      0.03
+    ],
+    [
+      3.03,
+      0.45,
+      0.03
+    ],
+    [
+      3.92,
+      0.22,
+      0.04
+    ],
+    [
+      3.21,
+      0.4,
+      0.03
+    ],
+    [
+      1.3,
+      0.65,
+      0.022
+    ],
+    [
+      1.36,
+      0.65,
+      0.022
+    ]
+  ],
+  "abscess": [
+    [
+      2.01,
+      0.1,
+      0.03
+    ],
+    [
+      3.03,
+      0.1,
+      0.03
+    ],
+    [
+      3.21,
+      0.15,
+      0.03
+    ],
+    [
+      0.9,
+      0.6,
+      0.05
+    ],
+    [
+      1.92,
+      0.5,
+      0.03
+    ],
+    [
+      2.4,
+      0.45,
+      0.03
+    ],
+    [
+      1.3,
+      0.6,
+      0.022
+    ],
+    [
+      1.36,
+      0.6,
+      0.022
+    ],
+    [
+      1.47,
+      0.3,
+      0.03
+    ]
+  ],
+  "ad": [
+    [
+      2.01,
+      0.7,
+      0.03
+    ],
+    [
+      3.03,
+      0.55,
+      0.03
+    ],
+    [
+      3.92,
+      0.3,
+      0.04
+    ],
+    [
+      3.21,
+      0.5,
+      0.03
+    ],
+    [
+      3.56,
+      0.55,
+      0.04
+    ],
+    [
+      2.3,
+      0.18,
+      0.08
+    ]
+  ],
+  "ms": [
+    [
+      2.01,
+      0.7,
+      0.03
+    ],
+    [
+      3.03,
+      0.55,
+      0.03
+    ],
+    [
+      3.92,
+      0.3,
+      0.04
+    ],
+    [
+      3.21,
+      0.7,
+      0.03
+    ],
+    [
+      3.56,
+      0.45,
+      0.04
+    ],
+    [
+      1.3,
+      0.2,
+      0.1
+    ]
+  ]
 };
-const MRS_LABELS = window.MRS_LABELS = [[2.01,'NAA'],[3.03,'Cr'],[3.21,'Cho'],[3.56,'mI'],[1.33,'Lac'],[0.9,'Lip/AA'],[1.92,'Ac'],[2.4,'Suc']];
 
-/* ---------- TCD (cm/s) ---------- */
+const MRS_LABELS = window.MRS_LABELS = [
+  [
+    2.01,
+    "NAA"
+  ],
+  [
+    3.03,
+    "Cr"
+  ],
+  [
+    3.21,
+    "Cho"
+  ],
+  [
+    3.56,
+    "mI"
+  ],
+  [
+    1.33,
+    "Lac"
+  ],
+  [
+    0.9,
+    "Lip/AA"
+  ],
+  [
+    1.92,
+    "Ac"
+  ],
+  [
+    2.4,
+    "Suc"
+  ]
+];
+
 const TCD = window.TCD = {
-  normal:{psv:100,edv:45,label:'L MCA · 55 mm'}, vasospasm:{psv:230,edv:115,label:'L MCA · 55 mm'}, occl:{psv:0,edv:0,label:'L MCA · 55 mm — no signal'},
-  icp:{psv:95,edv:8,label:'L MCA · 55 mm'}, bd:{psv:70,edv:-40,osc:true,label:'L MCA · 55 mm'},
+  "normal": {
+    "psv": 100,
+    "edv": 45,
+    "label": "L MCA · 55 mm"
+  },
+  "vasospasm": {
+    "psv": 230,
+    "edv": 115,
+    "label": "L MCA · 55 mm"
+  },
+  "occl": {
+    "psv": 0,
+    "edv": 0,
+    "label": "L MCA · 55 mm — no signal"
+  },
+  "icp": {
+    "psv": 95,
+    "edv": 8,
+    "label": "L MCA · 55 mm"
+  },
+  "bd": {
+    "psv": 70,
+    "edv": -40,
+    "osc": true,
+    "label": "L MCA · 55 mm"
+  }
 };
-
-/* ---------- anatomy knowledge ---------- */
