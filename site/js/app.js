@@ -12,6 +12,7 @@ const MRS = window.MRS;
 const MRS_LABELS = window.MRS_LABELS;
 const TCD = window.TCD;
 const REGION_INFO = window.REGION_INFO;
+const regionNameEs = window.regionNameEs;
 const GROUP_COLORS = window.GROUP_COLORS;
 const GROUP_ORDER = window.GROUP_ORDER;
 const SOMATO = window.SOMATO;
@@ -390,10 +391,10 @@ function describePoint(p){
     const id = lab >= 128 ? lab - 128 : lab; const r = REG[id];
     if (lab >= 128){
       const tr = META.jhu[jhu];
-      return {name: tr ? tr.name + (tr.hemi !== 'M' ? ' (' + HEMI[tr.hemi] + ')' : '') : 'Sustancia blanca', sub: tr ? 'tracto de sustancia blanca' : 'por debajo de ' + r.name.toLowerCase(), region:r};
+      return {name: tr ? tr.name + (tr.hemi !== 'M' ? ' (' + HEMI[tr.hemi] + ')' : '') : 'Sustancia blanca', sub: tr ? 'tracto de sustancia blanca' : 'por debajo de ' + regionNameEs(r.name).toLowerCase(), region:r};
     }
     const ju = META.juelich[jue];
-    return {name: r.name + (r.hemi !== 'M' ? ' (' + HEMI[r.hemi] + ')' : ''), sub: (ju ? ju.name.replace(/_/g,' ') + ' · ' : '') + groupEs(r.group).toLowerCase(), region:r};
+    return {name: regionNameEs(r.name) + (r.hemi !== 'M' ? ' (' + HEMI[r.hemi] + ')' : ''), sub: (ju ? ju.name.replace(/_/g,' ') + ' · ' : '') + groupEs(r.group).toLowerCase(), region:r};
   }
   if (csf > 150) return {name:'Líquido cefalorraquídeo', sub:'espacio subaracnoideo'};
   if (gm + wm > 200) return {name:'Encéfalo', sub:'sin etiquetar'};
@@ -1504,7 +1505,7 @@ function bodySVG(){
       <path id="earR" d="M90 40 q-6 6 0 14" stroke="#a9b6bc" stroke-width="2" fill="none"/><path id="earL" d="M150 40 q6 6 0 14" stroke="#a9b6bc" stroke-width="2" fill="none"/>
     </g>
     <g id="fx"></g>
-    <text x="40" y="474" fill="#7d8e95" font-size="11" font-family="Azeret Mono, monospace">R</text><text x="194" y="474" fill="#7d8e95" font-size="11" font-family="Azeret Mono, monospace">L</text>
+    <text x="40" y="474" fill="#7d8e95" font-size="11" font-family="Azeret Mono, monospace">D</text><text x="194" y="474" fill="#7d8e95" font-size="11" font-family="Azeret Mono, monospace">I</text>
   </svg>`;
 }
 const PART_TARGET = { // part -> [group to animate, animation, parts to colour]
@@ -1590,12 +1591,12 @@ function renderLabPanel(){
   const el = $('#labPanel');
   if (LAB.tool === 'stim'){
     const s = LAB.stim;
-    const use3d = typeof lbBuild === 'function' && !!lbBuild();
+    const use3d = !!(s || LB.r) && !!lbBuild();
     el.innerHTML = `<div class="lh"><span class="eb">Mapeo por estimulación cortical</span><h2>${s ? s.effect.title : 'Toque el encéfalo'}</h2></div>
       <div class="lb">
         <div class="lab-fb">
         ${s ? `<div class="stim-res"><div class="sr-top"><span class="k">Sitio de estimulación</span><span class="sr-mni">MNI ${s.p.map(v=>v.toFixed(0)).join(', ')}</span></div>
-          <b class="sr-reg">${s.region.name}</b><span class="sr-hemi">${s.region.hemi !== 'M' ? 'hemisferio ' + HEMI[s.region.hemi] : 'línea media'}${s.effect.side && s.effect.side !== 'both' && s.region.hemi !== 'M' ? ' → lado ' + (s.effect.side === 'right' ? 'derecho' : 'izquierdo') + ' del cuerpo' : ''}</span>
+          <b class="sr-reg">${regionNameEs(s.region.name)}</b><span class="sr-hemi">${s.region.hemi !== 'M' ? 'hemisferio ' + HEMI[s.region.hemi] : 'línea media'}${s.effect.side && s.effect.side !== 'both' && s.region.hemi !== 'M' ? ' → lado ' + (s.effect.side === 'right' ? 'derecho' : 'izquierdo') + ' del cuerpo' : ''}</span>
           <p>${s.effect.text}</p></div>` : `<p class="lab-intro">Pulse un punto de la corteza. La estimulación de la corteza motora mueve el lado opuesto del cuerpo; la sensitiva lo hace hormiguear; la visual produce destellos de luz en el campo visual opuesto; las áreas del lenguaje detienen el habla. La figura está de frente, así que la derecha del paciente queda a su izquierda.</p>`}
         ${use3d ? '<div class="lab-body" id="labBody"></div>' : `<div class="body-wrap">${bodySVG()}</div>`}
         </div>
@@ -1606,7 +1607,7 @@ function renderLabPanel(){
     if (use3d) lbMount($('#labBody'), s); else if (s) requestAnimationFrame(()=>animateBody(s.effect));
   } else {
     const r = LAB.selR > 0 ? REG[LAB.selR] : null, info = r ? (REGION_INFO[r.name] || {}) : null;
-    el.innerHTML = `<div class="lh"><span class="eb">${r ? groupEs(r.group) + (r.hemi !== 'M' ? ' · ' + HEMI[r.hemi] : '') : 'Disección'}</span><h2>${r ? r.name : 'Elija una estructura'}</h2></div>
+    el.innerHTML = `<div class="lh"><span class="eb">${r ? groupEs(r.group) + (r.hemi !== 'M' ? ' · ' + HEMI[r.hemi] : '') : 'Disección'}</span><h2>${r ? regionNameEs(r.name) : 'Elija una estructura'}</h2></div>
       <div class="lb">${r ? `<dl><dt>Función</dt><dd>${info.fn || '—'}</dd><dt>Si se lesiona</dt><dd>${info.clin || '—'}</dd><dt>Irrigación</dt><dd>${info.supply || '—'}</dd></dl>
         <div class="row"><button type="button" class="mini" id="labHide">Ocultar esta</button><button type="button" class="mini" id="labIso">Aislar</button><button type="button" class="mini" id="labAll2">Mostrar todo</button></div>`
         : `<p>Pulse cualquier estructura para ver qué hace, qué ocurre cuando se lesiona y qué arteria la irriga. Desactive los cuatro lóbulos para revelar el tálamo, los ganglios basales, el hipocampo y los ventrículos subyacentes.</p>`}
@@ -1656,7 +1657,7 @@ LAB.hover = function(cx, cy, clientX, clientY){
   const hit = pickAt(cx, cy);
   const id = hit ? hit.id : -1;
   if (id !== this.hoverR){ this.hoverR = id; dirty = true; }
-  if (hit && REG[hit.id]){ const r = REG[hit.id]; tip.innerHTML = `<b>${r.name}${r.hemi !== 'M' ? ' (' + HEMI[r.hemi] + ')' : ''}</b><span>${groupEs(r.group)}${this.tool === 'stim' ? ' · pulse para estimular' : ' · pulse para ver detalles'}</span>`; tip.hidden = false;
+  if (hit && REG[hit.id]){ const r = REG[hit.id]; tip.innerHTML = `<b>${regionNameEs(r.name)}${r.hemi !== 'M' ? ' (' + HEMI[r.hemi] + ')' : ''}</b><span>${groupEs(r.group)}${this.tool === 'stim' ? ' · pulse para estimular' : ' · pulse para ver detalles'}</span>`; tip.hidden = false;
     tip.style.left = Math.min(cx + 16, stageW - 270) + 'px'; tip.style.top = Math.min(cy + 14, stageH - 60) + 'px'; }
   else tip.hidden = true;
 };
@@ -1666,10 +1667,18 @@ LAB.click = function(cx, cy){
   if (this.tool === 'dissect'){ this.selR = hit.id; renderLabPanel(); dirty = true; return; }
   const eff = stimEffect(r, hit.p);
   this.stim = {p:hit.p, region:r, effect:eff, t0:performance.now()};
-  this.log.unshift({where:`${r.name}${r.hemi !== 'M' ? ' (' + r.hemi + ')' : ''}`, what:eff.title}); this.log = this.log.slice(0, 5);
+  this.log.unshift({where:`${regionNameEs(r.name)}${r.hemi !== 'M' ? ' (' + HEMI[r.hemi] + ')' : ''}`, what:eff.title}); this.log = this.log.slice(0, 5);
   if (this.scan !== 'none') centreSliceOn(hit.p);
   renderLabPanel(); vesKey = ''; dirty = true; syncHud();
 };
+LAB.scanSub = function(){ return subById(this.scan === 'fmri' ? 'bold' : this.scan === 'fdg' ? 'fdg' : this.scan === 'dti' ? 'dti' : 't1'); };
+LAB.clipPlane = function(){
+    if (!this.cut.on || this.explode > 0.01 || S.tab !== 'lab') return null;
+    const ax = {axial:[0,0,1], coronal:[0,1,0], sagittal:[1,0,0]}[this.cut.axis];
+    const n = this.cut.flip ? v3.mul(ax, -1) : ax;
+    return [n[0], n[1], n[2], -v3.dot(n, v3.mul(ax, this.cut.pos))];
+  };
+LAB.snap = function(){ animateTo(S.plane === 'free' ? 'sagittal' : S.plane, S.slice); return true; };
 LAB.enter = function(){
   this.scan = S.labScan = this.scan || 'none';
   renderLabRail(); renderLabPanel(); labApplyRegions();
@@ -5127,7 +5136,7 @@ function lbBuild(){
 
 function lbMount(host, s){
   if (!lbBuild() || !host) return false;
-  host.innerHTML = `<span class="lb-tag"></span><span class="lb-side" data-s="R" title="Derecha del paciente">R</span><span class="lb-side" data-s="L" title="Izquierda del paciente">L</span><span class="lb-bub" hidden></span><span class="lb-hint">De frente · arrastre para girar · pulse para repetir</span><button type="button" class="lb-view">Cara</button>`;
+  host.innerHTML = `<span class="lb-tag"></span><span class="lb-side" data-s="R" title="Derecha del paciente">D</span><span class="lb-side" data-s="L" title="Izquierda del paciente">I</span><span class="lb-bub" hidden></span><span class="lb-hint">De frente · arrastre para girar · pulse para repetir</span><button type="button" class="lb-view">Cara</button>`;
   host.prepend(LB.cv); LB.host = host;
   LB.sideR = host.querySelector('[data-s="R"]'); LB.sideL = host.querySelector('[data-s="L"]'); LB.bub = host.querySelector('.lb-bub');
   const tag = host.querySelector('.lb-tag');
