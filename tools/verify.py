@@ -170,6 +170,19 @@ def check_data_structures():
       });
     } catch(e) { errors.push('methods.js failed: ' + e.message); }
 
+    // 8. CHAPTERS (10 scanner walkthrough chapters)
+    try {
+      eval(fs.readFileSync('site/data/chapters.js', 'utf8'));
+      const chKeys = Object.keys(window.CHAPTERS || {});
+      if (chKeys.length !== 10) errors.push('CHAPTERS length is ' + chKeys.length + ', expected 10');
+      chKeys.forEach(k => {
+        const c = window.CHAPTERS[k];
+        if (!c.full || !c.lede || !Array.isArray(c.steps)) {
+          errors.push('CHAPTERS[' + k + '] missing full, lede or steps');
+        }
+      });
+    } catch(e) { errors.push('chapters.js failed: ' + e.message); }
+
     // 7. CASES (15 clinical interactive cases)
     try {
       eval(fs.readFileSync('site/data/cases.js', 'utf8'));

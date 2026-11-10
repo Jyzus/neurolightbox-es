@@ -26,6 +26,7 @@ const FS_MESH = window.FS_MESH;
 const LAB = window.LAB;
 const METHOD_CARD = window.METHOD_CARD;
 const CASES = window.CASES;
+const CHAPTERS = window.CHAPTERS;
 
 const $ = s => document.querySelector(s);
 const v3 = {
